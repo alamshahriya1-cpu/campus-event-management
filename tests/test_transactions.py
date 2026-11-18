@@ -1,6 +1,7 @@
 import sqlite3
 import tempfile
 import threading
+from contextlib import closing
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 from unittest.mock import patch
@@ -75,7 +76,7 @@ class TransactionAcceptanceTests(TransactionTestCase):
         with tempfile.TemporaryDirectory() as folder:
             backup = copy_database(source, Path(folder)/"backup.sqlite3")
             restored = copy_database(backup, Path(folder)/"restored.sqlite3")
-            with sqlite3.connect(source) as original, sqlite3.connect(restored) as restored_conn:
+            with closing(sqlite3.connect(source)) as original, closing(sqlite3.connect(restored)) as restored_conn:
                 for table in ["auth_user", "auth_user_groups", "accounts_studentprofile", "events_event", "registrations_registration"]:
                     self.assertEqual(original.execute(f"SELECT * FROM {table} ORDER BY 1").fetchall(), restored_conn.execute(f"SELECT * FROM {table} ORDER BY 1").fetchall())
                 self.assertEqual(restored_conn.execute("PRAGMA integrity_check").fetchone()[0], "ok")
