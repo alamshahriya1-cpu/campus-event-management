@@ -6,7 +6,7 @@ Students discover events, reserve a place, or join a waiting list when an event 
 
 ## Current status - 18 November 2026
 
-The first executable version is implemented. **39 automated local tests passed**, including competing requests for the final seat and transaction rollback. Django's production configuration check passed. **The application has not yet been deployed to a public URL.** Live hosting, complete Chrome/Edge user journeys, and final assessment acceptance are pending.
+The application now includes organizer user management and Dongshin University branding. **62 automated local tests passed** on Linux, including account permissions, password resets, competing requests for the final seat, and transaction rollback. The earlier 43-test version also passed on the team's Windows computer. The new user-management pages still require Windows and browser acceptance checks. **The application has not yet been deployed to a public URL.**
 
 See the [test report](docs/development/TEST_REPORT.md) and [requirement implementation status](docs/development/IMPLEMENTATION_STATUS.md) for local evidence and outstanding checks.
 
@@ -29,10 +29,11 @@ On a fresh local database, sign in as `organizer` or `student1` through `student
 - Atomic seat allocation, duplicate prevention, and an ordered waitlist.
 - Personal history, current queue rank, cancellation, and automatic promotion.
 - Organizer rosters, attendance marking/correction, and summary dashboards.
+- Organizer search and editing of student names, student IDs and email addresses, plus password resets.
 - Server validation, CSRF protection, escaped output, and environment-based configuration.
 - Migrations, synthetic demo data, backup/restore commands, and automated tests.
 
-Account provisioning uses a management command. Public self-registration, email notifications, payments, and calendar synchronization are outside this requirements baseline. The semester Gantt chart remains in the documentation.
+Account provisioning uses a management command. Existing student account maintenance is documented in the [user-management addendum](docs/development/USER_MANAGEMENT.md), which extends the baseline with FR019–FR021. Public self-registration, email notifications, payments, and calendar synchronization are outside this requirements baseline. The semester Gantt chart remains in the documentation.
 
 ## Project documents
 

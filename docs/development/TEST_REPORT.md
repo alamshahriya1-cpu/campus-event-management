@@ -1,7 +1,23 @@
 # Local verification report
 
 **Recorded: 18 November 2026**
-**Result: 39 automated tests passed; live deployment acceptance remains pending.**
+**Latest result: 62 automated tests passed locally on Linux; user-management Windows/browser acceptance and live deployment remain pending.**
+
+## User-management extension - 18 November 2026
+
+The full suite passed **62 tests in 1.589 seconds**, including 19 new checks for
+FR019–FR021. The [recorded output](user-management-tests.txt) includes the
+existing event, waitlist, transaction, and Windows SQLite cleanup regressions.
+Django system checks passed and no model/migration changes were detected.
+See [USER_MANAGEMENT.md](USER_MANAGEMENT.md) for requirements and manual checks.
+
+The team's Windows screenshot confirms the earlier **43-test suite passed in
+3.226 seconds**. Local Chrome screenshots also show the university logo on the
+student catalog and sign-in page. These observations do not establish that the
+new user-management pages have been tested on Windows. That rerun and the
+new-page browser check remain pending.
+
+The remaining sections retain the initial 39-test execution record as history.
 
 ## Version and environment
 

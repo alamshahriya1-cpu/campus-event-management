@@ -1,6 +1,7 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from accounts.forms import CampusAuthenticationForm
+from accounts import user_views
 from events import views as event
 from registrations import views as registration
 from reports import views as report
@@ -16,6 +17,9 @@ urlpatterns = [
     path("events/<int:event_id>/participants/", registration.roster, name="roster"),
     path("my-registrations/", registration.mine, name="my_registrations"),
     path("organizer/", report.dashboard, name="dashboard"),
+    path("organizer/users/", user_views.user_list, name="user_list"),
+    path("organizer/users/<int:user_id>/edit/", user_views.user_edit, name="user_edit"),
+    path("organizer/users/<int:user_id>/password/", user_views.user_password, name="user_password"),
     path("api/events/", event.events_api),
     path("api/events/<int:event_id>/", event.event_api),
     path("api/events/<int:event_id>/publish/", event.publish_api),

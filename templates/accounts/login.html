@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Sign in{% endblock %}
 {% block content %}
 <div class="login-layout">
   <section class="login-story"><p class="eyebrow">YOUR CAMPUS. YOUR COMMUNITY.</p><h1>Make room for<br>something new.</h1><p class="lead-copy">Find your next workshop, meet your community, and take part in campus life.</p><div class="login-visual" aria-hidden="true"><div class="visual-grid"></div><div class="visual-date"><span>YOU’RE INVITED</span><strong>Be there.</strong><i>Learn. Connect. Participate.</i></div><span class="visual-dot"></span></div><p class="story-caption">One place for events, registrations, and what comes next.</p></section>
-  <section class="login-panel"><span class="tiny-label">CAMPUS ACCESS</span><h2>Welcome back</h2><p class="muted">Sign in with the account provided by your project team.</p>
+  <section class="login-panel"><div class="login-university"><img src="{% static 'images/dongshin-university-symbol.png' %}" width="1176" height="1124" alt=""><div><span class="tiny-label">DONGSHIN UNIVERSITY</span><span class="login-university-subtitle">Campus event registration</span></div></div><h2>Welcome back</h2><p class="muted">Sign in with the account provided by your project team.</p>
   {% if form.errors %}<div class="alert alert-danger" role="alert">Sign-in failed. Check your username and password and ensure your account has an active campus role.</div>{% endif %}
   <form method="post" action="{% url 'login' %}" class="login-form">{% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}">

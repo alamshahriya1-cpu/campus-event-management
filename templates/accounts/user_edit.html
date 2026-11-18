@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Edit student{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{% static 'css/users.css' %}">{% endblock %}
+{% block content %}
+<a class="back-link" href="{% url 'user_list' %}">← Back to users</a>
+<section class="page-intro"><div><p class="eyebrow">STUDENT ACCOUNT</p><h1>Edit student details.</h1><p class="muted">Update contact details and the name shown on participant rosters.</p></div></section>
+<div class="user-editor-layout">
+  <form class="editor-panel user-edit-form" method="post" action="{% url 'user_edit' student.pk %}">{% csrf_token %}
+    <h2>Personal details</h2>
+    {% if form.non_field_errors %}<div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+    <div class="form-grid">
+    {% for field in form %}<div><label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required %} <span class="muted small">(optional)</span>{% endif %}</label>{{ field }}{% if field.errors %}<div class="user-field-errors" role="alert">{{ field.errors }}</div>{% endif %}</div>{% endfor %}
+    </div>
+    <div class="form-actions"><a class="btn btn-outline-dark" href="{% url 'user_list' %}">Cancel</a><button class="btn btn-primary" type="submit">Save changes →</button></div>
+  </form>
+  <aside class="user-account-panel"><h2>Account access</h2><dl><dt>Username</dt><dd>{{ student.username }}</dd><dt>Role</dt><dd>Student</dd><dt>Status</dt><dd>{% if student.is_active %}Active{% else %}Inactive{% endif %}</dd></dl><p class="muted small">The username stays the same. Existing event registrations and waitlist positions are preserved.</p><a class="btn btn-outline-dark" href="{% url 'user_password' student.pk %}">Reset password</a></aside>
+</div>
+{% endblock %}
