@@ -1,0 +1,23 @@
+digraph Activity {
+graph [bgcolor="white", fontname="DejaVu Sans", pad="0.25", nodesep="0.45", ranksep="0.65"];
+node [fontname="DejaVu Sans", fontsize=12, color="#567086", fontcolor="#173B56", style="rounded,filled", fillcolor="#F0F5F8", shape=box, margin="0.16,0.12"];
+edge [fontname="DejaVu Sans", fontsize=10, color="#63798B", fontcolor="#374D5E", arrowsize=0.75];
+rankdir=TB;nodesep=.35;ranksep=.35;
+start [label="Register request",shape=oval,fillcolor="#DCEAF3"];
+auth [label="Session, CSRF and\nStudent role valid?",shape=diamond];
+reject [label="Reject request\nNo saved changes",fillcolor="#FFF1E8"];
+lock [label="Begin atomic transaction\nAcquire event write serialization"];
+open [label="Event Published and\nserver time before closing?",shape=diamond];
+exists [label="Existing Confirmed or\nWaitlisted registration?",shape=diamond];
+same [label="Return existing status\nNo extra seat or queue entry"];
+seat [label="Seat available and\nno earlier eligible waitlist?",shape=diamond];
+confirmed [label="Create or reuse record\nSet Confirmed"];
+waitlisted [label="Create or reuse record\nSet Waitlisted"];
+save [label="Set new joined_at for entry / re-entry\nClear previous cancellation and attendance\nEnforce unique student-event pair"];
+commit [label="Commit transaction\nReturn registration status",shape=oval,fillcolor="#E3F0EB"];
+start -> auth;auth -> reject [label="No"];auth -> lock [label="Yes"];
+lock -> open;open -> reject [label="No: rollback"];
+open -> exists [label="Yes"];exists -> same [label="Yes"];exists -> seat [label="No"];
+seat -> confirmed [label="Yes"];seat -> waitlisted [label="No"];
+confirmed -> save;waitlisted -> save;save -> commit;
+}

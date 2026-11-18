@@ -1,0 +1,16 @@
+digraph Lifecycle {
+graph [bgcolor="white", fontname="DejaVu Sans", pad="0.25", nodesep="0.45", ranksep="0.65"];
+node [fontname="DejaVu Sans", fontsize=12, color="#567086", fontcolor="#173B56", style="rounded,filled", fillcolor="#F0F5F8", shape=box, margin="0.16,0.12"];
+edge [fontname="DejaVu Sans", fontsize=10, color="#63798B", fontcolor="#374D5E", arrowsize=0.75];
+rankdir=LR;ranksep=.9;
+initial [label="",shape=circle,width=.16,style=filled,fillcolor="#173B56"];
+draft [label="Draft\nNot visible in Student catalog",fillcolor="#F0F5F8"];
+published [label="Published\nVisible before event start",fillcolor="#E3F0EB"];
+cancelled [label="Cancelled\nRegistration disabled",fillcolor="#FFF1E8"];
+initial -> draft [label="Create valid event"];
+draft -> draft [label="Edit draft fields"];
+draft -> published [label="Publish\nnow < closing < start < end"];
+draft -> cancelled [label="Organizer cancels\nbefore start; reason required"];
+published -> cancelled [label="Organizer cancels before start\nCancel all active registrations atomically"];
+published -> published [label="Before start: edit descriptive fields only\nFrom start: record eligible attendance"];
+}

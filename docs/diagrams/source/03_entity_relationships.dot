@@ -1,0 +1,16 @@
+digraph ERD {
+graph [bgcolor="white", fontname="DejaVu Sans", pad="0.25", nodesep="0.45", ranksep="0.65"];
+node [fontname="DejaVu Sans", fontsize=12, color="#567086", fontcolor="#173B56", style="rounded,filled", fillcolor="#F0F5F8", shape=box, margin="0.16,0.12"];
+edge [fontname="DejaVu Sans", fontsize=10, color="#63798B", fontcolor="#374D5E", arrowsize=0.75];
+rankdir=LR; node [shape=record,style=filled,fontsize=10];
+user [label="{USER (Django)|id : PK\lusername : UNIQUE\lfirst_name, last_name\lpassword : hash\lis_active\l}"];
+profile [label="{STUDENT_PROFILE|user_id : PK, FK User\lstudent_number : UNIQUE\l}"];
+event [label="{EVENT|id : PK\ltitle, description, category, venue\lstart_at, end_at, registration_closes_at\lcapacity : 1..200\lstatus : Draft / Published / Cancelled\lcreated_by : FK User\lcreated_at, updated_at\lcancelled_by : FK User, nullable\lcancelled_at, cancellation_reason\lallocation_version\l}"];
+registration [label="{REGISTRATION|id : PK\levent_id : FK Event\lstudent_id : FK User\lstatus : Confirmed / Waitlisted / Cancelled\ljoined_at, confirmed_at, cancelled_at\lcancellation_source : Student / Event\lattended : boolean\lattendance_updated_at\lattendance_updated_by : FK User, nullable\lUNIQUE(event_id, student_id)\l}"];
+group [label="{GROUP (Django)|id : PK\lname : UNIQUE\lStudent or Organizer\l}"];
+user -> profile [label="has",taillabel="1",headlabel="0..1",dir=none,labeldistance=1.7];
+user -> event [label="creates",taillabel="1",headlabel="0..*",dir=none,labeldistance=1.7];
+user -> registration [label="registers",taillabel="1",headlabel="0..*",dir=none,labeldistance=1.7];
+event -> registration [label="contains",taillabel="1",headlabel="0..*",dir=none,labeldistance=1.7];
+user -> group [label="business role",taillabel="0..*",headlabel="1",dir=none,labeldistance=1.7];
+}
