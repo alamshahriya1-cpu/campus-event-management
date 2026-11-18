@@ -1,46 +1,68 @@
 # Requirement implementation status
 
-Evidence date: **18 November 2026**. The submitted SRS/RTM are preserved as the 29 October baseline. This supplement records the first coded version; it does not certify deployment or professor acceptance.
+Evidence date: **18 November 2026**. The submitted SRS/RTM retain their
+**29 October 2026** baseline. This supplement records implementation and observed
+verification; it does not certify professor acceptance.
 
-All 18 baseline functional requirements have implementations and passing local automated tests. The [user-management addendum](USER_MANAGEMENT.md) adds FR019–FR021 with passing local automated tests; Windows/browser acceptance for this extension is pending. Seven non-functional requirements have the evidence and limits below. See [TEST_REPORT.md](TEST_REPORT.md) and [the full source mapping](IMPLEMENTATION_STATUS.csv).
+**Live application: https://alamshahriya1.pythonanywhere.com/**
+
+All 18 baseline functional requirements and the three user-management extension
+requirements have implementations and passing automated checks. The full
+**62-test suite passed on Linux, Windows, and PythonAnywhere**. Hosted browser
+screenshots confirm the specific actions identified below. Remaining acceptance
+is retained in the [CSV source mapping](IMPLEMENTATION_STATUS.csv),
+[hosted verification record](HOSTED_VERIFICATION.md), and
+[test report](TEST_REPORT.md).
 
 | Requirement | Feature | Test ID | Current evidence |
 | --- | --- | --- | --- |
-| FR001 | Authentication | TC001 | Implemented - local tests passed |
-| FR002 | Sign-out | TC002 | Implemented - local tests passed |
-| FR003 | Roles and ownership | TC003 | Implemented - local tests passed |
-| FR004 | Create Draft | TC004 | Implemented - local tests passed |
-| FR005 | Controlled edits | TC005 | Implemented - local tests passed |
-| FR006 | Publication | TC006 | Implemented - local tests passed |
-| FR007 | Catalog search/filter | TC007 | Implemented - local tests passed |
-| FR008 | Event details/privacy | TC008 | Implemented - local tests passed |
-| FR009 | Atomic seat allocation | TC009 | Implemented - local tests passed |
-| FR010 | Duplicate prevention | TC010 | Implemented - local tests passed |
-| FR011 | Personal history/rank | TC011 | Implemented - local tests passed |
-| FR012 | Cancel and rejoin | TC012 | Implemented - local tests passed |
-| FR013 | FIFO promotion | TC013 | Implemented - local tests passed |
-| FR014 | Cancel event | TC014 | Implemented - local tests passed |
-| FR015 | Organizer roster | TC015 | Implemented - local tests passed |
-| FR016 | Attendance/audit | TC016 | Implemented - local tests passed |
-| FR017 | Dashboard counts | TC017 | Implemented - local tests passed |
-| FR018 | Backend validation | TC018 | Implemented - local tests passed |
-| FR019 | Student account search and access | TC026 | Extension - local tests passed; browser acceptance pending |
-| FR020 | Student detail editing | TC027 | Extension - local tests passed; browser acceptance pending |
-| FR021 | Student password resets | TC028 | Extension - local tests passed; browser acceptance pending |
-| NFR001 | Response time | TC019 | Partial - local benchmark only |
-| NFR002 | Security configuration | TC020 | Partial - local security checks passed |
-| NFR003 | Integrity and persistence | TC021 | Local transaction tests passed |
-| NFR004 | Browser/mobile usability | TC022 | Partial - layout and render checks |
-| NFR005 | Maintainable setup | TC023 | Implemented - local setup verified |
-| NFR006 | Free live deployment | TC024 | Pending - not deployed |
-| NFR007 | Backup and restore | TC025 | Partial - local restore passed |
+| FR001 | Authentication | TC001 | Automated tests passed; hosted sign-in observed |
+| FR002 | Sign-out | TC002 | Automated tests passed |
+| FR003 | Roles and ownership | TC003 | Automated tests passed; hosted role views observed |
+| FR004 | Create Draft | TC004 | Automated tests passed; Windows draft creation observed |
+| FR005 | Controlled edits | TC005 | Automated tests passed |
+| FR006 | Publication | TC006 | Automated tests passed; Windows publication observed |
+| FR007 | Catalog search/filter | TC007 | Automated tests passed |
+| FR008 | Event details/privacy | TC008 | Automated tests passed |
+| FR009 | Atomic seat allocation | TC009 | Automated tests passed; hosted capacity preserved in promotion |
+| FR010 | Duplicate prevention | TC010 | Automated tests passed |
+| FR011 | Personal history/rank | TC011 | Automated tests passed; hosted personal history observed |
+| FR012 | Cancel and rejoin | TC012 | Automated tests passed; hosted cancellation passed |
+| FR013 | FIFO promotion | TC013 | Automated tests passed; hosted promotion passed |
+| FR014 | Cancel event | TC014 | Automated tests passed |
+| FR015 | Organizer roster | TC015 | Automated tests passed; hosted roster observed |
+| FR016 | Attendance/audit | TC016 | Automated tests passed; hosted attendance marking passed |
+| FR017 | Dashboard counts | TC017 | Automated tests passed; initial hosted totals observed |
+| FR018 | Backend validation | TC018 | Automated tests passed |
+| FR019 | Student account search and access | TC026 | Extension - automated tests passed; hosted list observed |
+| FR020 | Student detail editing | TC027 | Extension - automated tests passed; hosted name edit passed |
+| FR021 | Student password resets | TC028 | Extension - automated tests passed; manual reset acceptance pending |
+| NFR001 | Response time | TC019 | Partial - in-process benchmark only |
+| NFR002 | Security configuration | TC020 | Partial - production configuration and public HTTPS checked |
+| NFR003 | Integrity and persistence | TC021 | Partial - transaction tests and hosted saved-state checks passed |
+| NFR004 | Browser/mobile usability | TC022 | Partial - hosted desktop flows observed |
+| NFR005 | Maintainable setup | TC023 | Implemented - Windows and hosted setup verified |
+| NFR006 | Free live deployment | TC024 | Deployed - evaluator acceptance pending |
+| NFR007 | Backup and restore | TC025 | Partial - automated backup/restore passed on host |
 
 ## Outstanding acceptance
 
-1. Upload the latest logo and user-management changes; inspect GitHub Actions once the workflow is present.
-2. The earlier 43-test version passed on Windows and the logo was visually checked. Rerun the expanded 62-test suite on Windows and complete the new user-management browser demonstration.
-3. Deploy the Django backend and frontend under the team's hosting account.
-4. Test complete flows in Chrome, Edge and a 390px viewport; verify HTTPS and data persistence.
-5. Record deployed performance, backup/restore results and hosting expiry. Share private Student/Organizer access with the professor.
+1. Complete remaining hosted journeys and direct Student access-denial cases.
+   Record the password-reset and old-session invalidation sequence separately.
+2. Record the full Chrome, Edge, and 390px/mobile browser matrix, including versions.
+3. Verify saved registrations and attendance after a full Web-app restart and
+   from a separate session/device.
+4. Measure NFR001 through the actual HTTPS URL with the baseline dataset and
+   connection details; complete NFR007 recovery using a demonstration-database copy.
+5. Share private Student/Organizer access with the professor and record independent
+   evaluation. The free-app expiry was observed as **18 December 2026**; recheck
+   and extend it before assessment.
 
-Update this supplement with the actual URL, date and evidence as checks are completed. Do not change a requirement to Verified solely because code exists or a configuration check passes.
+The source containing the logo and user-management changes was uploaded as
+`6ff589484c6c09a2d1502517bd7c3717d96b01b1`. The current public commit has no
+GitHub Actions workflow, so remote CI is not claimed. The Windows application
+was started manually; batch-launcher execution remains unverified.
+
+A requirement stays partial where its complete acceptance criteria have not
+been demonstrated. Passing automated tests, successful hosting, and professor
+acceptance are recorded as distinct evidence.

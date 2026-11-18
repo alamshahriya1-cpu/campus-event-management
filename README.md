@@ -6,9 +6,13 @@ Students discover events, reserve a place, or join a waiting list when an event 
 
 ## Current status - 18 November 2026
 
-The application now includes organizer user management and Dongshin University branding. **62 automated local tests passed** on Linux, including account permissions, password resets, competing requests for the final seat, and transaction rollback. The earlier 43-test version also passed on the team's Windows computer. The new user-management pages still require Windows and browser acceptance checks. **The application has not yet been deployed to a public URL.**
+**Live application: [Campus Events](https://alamshahriya1.pythonanywhere.com/)**
 
-See the [test report](docs/development/TEST_REPORT.md) and [requirement implementation status](docs/development/IMPLEMENTATION_STATUS.md) for local evidence and outstanding checks.
+The Django frontend and backend are running on PythonAnywhere with Dongshin University branding and organizer user management. **All 62 automated tests passed on Linux, Windows, and the PythonAnywhere host.** Hosted browser evidence confirms Organizer and Student sign-in, student name editing, personal registrations, cancellation with automatic waitlist promotion, participant rosters, and attendance marking.
+
+The online accounts use private passwords chosen by the team. Ask the project team for Student or Organizer demonstration access; the local development password below does not apply to the hosted site.
+
+See the [hosted verification record](docs/development/HOSTED_VERIFICATION.md), [test report](docs/development/TEST_REPORT.md), and [requirement status](docs/development/IMPLEMENTATION_STATUS.md). Full Chrome/Edge/mobile acceptance, host-restart persistence, hosted performance and recovery exercises, and the professor's evaluation remain open.
 
 ## Run on Windows
 
@@ -43,6 +47,7 @@ Account provisioning uses a management command. Existing student account mainten
 | System diagrams | [Diagram index](docs/diagrams/README.md) · [Diagram PDF](docs/diagrams/System_Diagrams.pdf) | [Diagram sources](docs/diagrams/source/) |
 | Requirements Traceability Matrix | [RTM overview](docs/rtm/README.md) · [Baseline CSV](docs/rtm/RTM.csv) | [RTM workbook](docs/rtm/RTM.xlsx) |
 | Implementation evidence | [Current status](docs/development/IMPLEMENTATION_STATUS.md) · [Test report](docs/development/TEST_REPORT.md) | [Status CSV](docs/development/IMPLEMENTATION_STATUS.csv) |
+| Live demonstration | [Campus Events](https://alamshahriya1.pythonanywhere.com/) · [Hosted verification](docs/development/HOSTED_VERIFICATION.md) | [Deployment and maintenance](docs/development/DEPLOYMENT.md) |
 | Developer reference | [API reference](docs/development/API.md) · [Team upload guide](docs/development/TEAM_UPLOAD.md) | Source code and tests |
 
 The SRS and RTM retain their **29 October 2026** baseline. Their original Planned records are preserved; the implementation supplement records newer evidence. Diagrams were prepared on **18 November 2026**. The original Gantt chart is a plan, not a claim of actual completion.
@@ -60,7 +65,7 @@ The SRS and RTM retain their **29 October 2026** baseline. Their original Planne
 | Reports | `reports/`: organizer counts and dashboard |
 | Shared code | `common/`: API errors, authentication middleware, database copies |
 | Verification | `tests/`: requirement-linked acceptance and transaction tests |
-| Deployment target | PythonAnywhere free tier/provider subdomain; live verification pending |
+| Hosting | PythonAnywhere free tier, Python 3.12, provider subdomain and HTTPS |
 
 JavaScript calls the coded backend; it does not decide allocation or permissions. SQLite writes are serialized inside transactions. A busy database returns a retryable error rather than an uncommitted success.
 
@@ -74,7 +79,9 @@ python manage.py makemigrations --check --dry-run
 python manage.py test tests --verbosity 2
 ```
 
-GitHub Actions runs these checks after upload. Inspect its remote result; a local pass does not establish that Actions has run.
+On the production host, use `DJANGO_DEBUG=True python manage.py test tests --noinput` for this development test suite. That prefix applies only to the test process; the web app retains `DJANGO_DEBUG=False`. Tests use a separate database.
+
+The current public source commit does not include a GitHub Actions workflow. Remote CI is not claimed; the recorded runs were executed locally and in the PythonAnywhere Bash console.
 
 ## Team and milestones
 

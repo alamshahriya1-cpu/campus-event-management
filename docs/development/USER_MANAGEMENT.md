@@ -72,14 +72,23 @@ reseed the existing database when installing this update.
   accounts, injected transaction failures, duplicate ID prevention, tampered
   fields, escaped output, search/pagination, password validation, session
   invalidation, and unchanged registration rows after a profile edit.
-- The earlier 43-test version passed on the team's Windows computer. This
-  expanded 62-test version still needs the Windows rerun and browser checks below.
-- New-page browser visual inspection was not completed in the preparation
-  environment. Public deployment and hosted acceptance remain pending.
+- The expanded **62-test suite passed on Windows in 4.059 seconds** and on
+  **PythonAnywhere in 7.488 seconds**. The earlier SQLite cleanup failure did
+  not recur in those reported runs.
+- On the [live site](https://alamshahriya1.pythonanywhere.com/), the organizer
+  listed the four demo students and saved a new name for `student1`. The updated
+  name appeared on the list, Student header, and participant rosters. Existing
+  registrations were still present after the edit.
+- Student sign-in was demonstrated after password-reset instructions. A separate
+  hosted reset success, old-password rejection, and session-invalidation sequence
+  was not captured, so those manual acceptance items remain open. Automated tests
+  cover them. See [HOSTED_VERIFICATION.md](HOSTED_VERIFICATION.md).
 
-### Windows acceptance checklist
+### Repeatable acceptance checklist
 
-Use the existing local project and synthetic demo accounts.
+Use synthetic demo accounts in the environment being evaluated. Record which
+environment and browser were used; do not treat the completed subset above as
+evidence that every step below has been performed.
 
 1. Run `.venv\Scripts\python.exe manage.py test tests --noinput` in the project
    folder. Expect **62 tests** and **OK**.
@@ -94,7 +103,7 @@ Use the existing local project and synthetic demo accounts.
 6. Sign in as a Student. Confirm **Manage users** is absent and direct access to
    `/organizer/users/` is rejected.
 7. Check the pages and navigation in Chrome, Edge, and a 390px mobile viewport.
-   Record results before deployment.
+   Record browser versions and results for the final evaluation.
 
 ## Framework references
 
