@@ -1,0 +1,27 @@
+digraph UseCases {
+graph [bgcolor="white", fontname="DejaVu Sans", pad="0.25", nodesep="0.45", ranksep="0.65"];
+node [fontname="DejaVu Sans", fontsize=12, color="#567086", fontcolor="#173B56", style="rounded,filled", fillcolor="#F0F5F8", shape=box, margin="0.16,0.12"];
+edge [fontname="DejaVu Sans", fontsize=10, color="#63798B", fontcolor="#374D5E", arrowsize=0.75];
+rankdir=LR;
+student [label="Student",shape=box,fillcolor="#E3F0EB"];
+organizer [label="Organizer",shape=box,fillcolor="#E3F0EB"];
+subgraph cluster_system {label="Campus Event Registration and Waitlist Management System";fontname="DejaVu Sans";fontsize=13;color="#BAC9D3";
+node [shape=ellipse];
+auth [label="UC001\nSign in and sign out"];
+browse [label="UC005\nBrowse events and details"];
+register [label="UC006\nRegister or join waitlist"];
+own [label="UC007\nView own registrations"];
+cancel [label="UC008\nCancel own registration"];
+edit [label="UC003\nCreate and edit events"];
+publish [label="UC004\nPublish an event"];
+ce [label="UC009\nCancel an event"];
+roster [label="UC010\nView participant roster"];
+attendance [label="UC011\nRecord attendance"];
+summary [label="UC012\nView organizer summaries"];
+policy [shape=note,label="UC002: enforce role and ownership rules\nApplies to every protected operation.",fillcolor="#FFF8E9"];
+{rank=same;auth;browse;register;own;cancel;policy;}
+{rank=same;edit;publish;ce;roster;attendance;summary;}
+auth -> edit [style=invis]; browse -> publish [style=invis];register -> ce [style=invis];own -> roster [style=invis];cancel -> attendance [style=invis];policy -> summary [style=invis];}
+student -> auth [dir=none];student -> browse [dir=none];student -> register [dir=none];student -> own [dir=none];student -> cancel [dir=none];
+auth -> organizer [dir=none];edit -> organizer [dir=none];publish -> organizer [dir=none];ce -> organizer [dir=none];roster -> organizer [dir=none];attendance -> organizer [dir=none];summary -> organizer [dir=none];
+}

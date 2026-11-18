@@ -1,0 +1,21 @@
+digraph Architecture {
+graph [bgcolor="white", fontname="DejaVu Sans", pad="0.25", nodesep="0.45", ranksep="0.65"];
+node [fontname="DejaVu Sans", fontsize=12, color="#567086", fontcolor="#173B56", style="rounded,filled", fillcolor="#F0F5F8", shape=box, margin="0.16,0.12"];
+edge [fontname="DejaVu Sans", fontsize=10, color="#63798B", fontcolor="#374D5E", arrowsize=0.75];
+rankdir=TB;
+students [label="Student browser\nEvent catalog and personal registrations"];
+organizers [label="Organizer browser\nEvent management, rosters and attendance"];
+{rank=same;students;organizers;}
+subgraph cluster_host {label="Planned web hosting environment";fontname="DejaVu Sans";fontsize=13;color="#BAC9D3";style=rounded;
+web [label="Django web application\nHTML templates + Bootstrap + JavaScript\nHTTPS routes and same-origin JSON APIs",fillcolor="#DCEAF3"];
+auth [label="Request protection\nSessions, CSRF and role authorization"];
+events [label="Event service\nValidation and lifecycle"];
+registration [label="Registration service\nCapacity, uniqueness, cancellation\nand FIFO waitlist promotion"];
+reports [label="Organizer services\nRoster, attendance and summaries"];
+{rank=same;events;registration;reports;}
+orm [label="Django ORM and transaction boundary\nSerialize event mutations and enforce constraints"];
+db [label="SQLite database\nUsers, groups, profiles, events and registrations",shape=cylinder,fillcolor="#E3F0EB"];
+web -> auth;auth -> events;auth -> registration;auth -> reports;
+events -> orm;registration -> orm;reports -> orm;orm -> db [label="Persistent read / write",dir=both];}
+students -> web [label="HTTPS",dir=both];organizers -> web [label="HTTPS",dir=both];
+}
