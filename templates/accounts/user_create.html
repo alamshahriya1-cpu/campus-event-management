@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Add student{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{% static 'css/users.css' %}">{% endblock %}
+{% block content %}
+<a class="back-link" href="{% url 'user_list' %}">← Back to users</a>
+<section class="page-intro"><div><p class="eyebrow">STUDENT ACCOUNT</p><h1>Add a student.</h1><p class="muted">Give a student access to campus events using their student ID.</p></div></section>
+<div class="user-editor-layout">
+  <form class="editor-panel user-edit-form" method="post" action="{% url 'user_create' %}">{% csrf_token %}
+    <h2>Student details</h2>
+    {% if form.non_field_errors %}<div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+    <div class="form-grid">
+    {% for field in form %}<div{% if field.name == 'password1' or field.name == 'password2' %} class="user-form-full"{% endif %}><label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required %} <span class="muted small">(optional)</span>{% endif %}</label>{{ field }}{% if field.help_text %}<div class="user-help" id="{{ field.auto_id }}_helptext">{{ field.help_text }}</div>{% endif %}{% if field.errors %}<div class="user-field-errors" role="alert">{{ field.errors }}</div>{% endif %}</div>{% endfor %}
+    </div>
+    <div class="form-actions"><a class="btn btn-outline-dark" href="{% url 'user_list' %}">Cancel</a><button class="btn btn-primary" type="submit">Create student →</button></div>
+  </form>
+  <aside class="user-account-panel"><h2>Ready to sign in</h2><p class="muted">The student ID will be the account's username. Enter the ID exactly as the student should type it.</p><p class="muted small">The account receives Student access. Share the student ID and initial password privately after creating it.</p></aside>
+</div>
+{% endblock %}

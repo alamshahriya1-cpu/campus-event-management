@@ -3,6 +3,10 @@ from django.core.exceptions import ValidationError
 from .permissions import role_for
 
 class CampusAuthenticationForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["username"].label = "Student ID or organizer username"
+
     def confirm_login_allowed(self, user):
         super().confirm_login_allowed(user)
         if role_for(user) is None:

@@ -1,5 +1,53 @@
 # Verification report
 
+## Student access and unused-account deletion — 18 November 2026
+
+**110 tests passed locally on Linux in 3.087 s**, Python 3.12.14 / Django 5.2.19.
+See [student-lifecycle-tests.txt](student-lifecycle-tests.txt). The 27 added tests
+map to TC031–TC032 and cover account deactivation/reactivation, rejected inactive
+logins, invalidated existing sessions, fresh sign-in after reactivation, other
+users' session preservation, unchanged registrations/attendance, and retained
+waitlist eligibility. Deletion requires the exact Student ID and rejects every
+registration status, past events, attendance audit links, and event creator/
+canceller references. Tests also cover CSRF, role boundaries, protected master
+accounts, GET safety, tampered input, changed targets/links between review and
+submission, escaping, no-store headers, rollback, and retryable lock failures.
+
+The full suite includes the prior 83 tests. Django system checks passed and
+`makemigrations --check --dry-run` reported no changes. There are no new schema
+migrations or dependencies. All test data was synthetic; no hosted account was
+deleted or deactivated. The team reported copying the previous account-creation
+patch to Windows, but no new Windows result was supplied. Windows, hosted, and
+interactive browser acceptance of this combined update remain pending.
+
+This extends the addendum with FR024 and FR025; the original SRS/RTM files are
+unchanged. See [STUDENT_ACCOUNT_CONTROLS.md](STUDENT_ACCOUNT_CONTROLS.md) for
+installation and manual checks.
+
+## Student creation and ID login extension — 18 November 2026
+
+**83 tests passed locally on Linux in 2.374 s**, Python 3.12.14 / Django 5.2.19.
+See [student-id-tests.txt](student-id-tests.txt). The 21 new tests map to
+TC029–TC030. They cover account creation/login/registration, a fixed Student role,
+CSRF/authorization, duplicate IDs and login collisions, input/password validation,
+no password redisplay, rollback/lock errors, 30 added Students with pagination,
+and old-account ID changes that preserve the primary key, password, registrations,
+queue order, and attendance. CLI and fresh-demo provisioning use student IDs too.
+
+The full suite retains the earlier transaction/backup and user-management checks.
+Django system checks passed and `makemigrations --check --dry-run` found no model
+changes. The new version has not yet been tested on Windows/PythonAnywhere or
+visually inspected in a browser; the earlier 62-test results below are history.
+
+The team subsequently reported phone checks by Shahriya and Miraj. A screenshot
+shows successful backup and separate restore-copy creation on PythonAnywhere,
+followed by the restored database running locally at port 8001. The team confirmed
+the requested data comparison completed. Record this as team-reported NFR007
+verification; the database itself was not supplied for an independent row comparison.
+Device/browser versions and a distinct host-restart sequence were not recorded.
+
+## Previous deployed version — 62 tests
+
 **Recorded: 18 November 2026**
 **Latest result: all 62 automated tests passed on Linux, Windows, and PythonAnywhere. The HTTPS application is live, and the hosted workflows listed below were demonstrated.**
 

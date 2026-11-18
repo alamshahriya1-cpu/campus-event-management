@@ -8,11 +8,11 @@ Students discover events, reserve a place, or join a waiting list when an event 
 
 **Live application: [Campus Events](https://alamshahriya1.pythonanywhere.com/)**
 
-The Django frontend and backend are running on PythonAnywhere with Dongshin University branding and organizer user management. **All 62 automated tests passed on Linux, Windows, and the PythonAnywhere host.** Hosted browser evidence confirms Organizer and Student sign-in, student name editing, personal registrations, cancellation with automatic waitlist promotion, participant rosters, and attendance marking.
+The previously deployed Django application is running on PythonAnywhere with Dongshin University branding and organizer user management. Its **62-test version passed on Linux, Windows, and PythonAnywhere**. The combined **student creation, student-ID login, deactivate/reactivate, and unused-account deletion update passed 110 tests locally on Linux**. The team reported copying the earlier account-creation files to Windows; no new Windows/host test result is recorded. See the [current installation guide](docs/development/STUDENT_ACCOUNT_CONTROLS.md). Hosted browser evidence below belongs to the earlier version and confirms Organizer and Student sign-in, student name editing, personal registrations, cancellation with automatic waitlist promotion, participant rosters, and attendance marking.
 
 The online accounts use private passwords chosen by the team. Ask the project team for Student or Organizer demonstration access; the local development password below does not apply to the hosted site.
 
-See the [hosted verification record](docs/development/HOSTED_VERIFICATION.md), [test report](docs/development/TEST_REPORT.md), and [requirement status](docs/development/IMPLEMENTATION_STATUS.md). Full Chrome/Edge/mobile acceptance, host-restart persistence, hosted performance and recovery exercises, and the professor's evaluation remain open.
+See the [hosted verification record](docs/development/HOSTED_VERIFICATION.md), [test report](docs/development/TEST_REPORT.md), and [requirement status](docs/development/IMPLEMENTATION_STATUS.md). The team reports successful phone checks and a demonstration-database restore on Windows. Full Chrome/Edge evidence, separately recorded host-restart persistence, hosted performance, and professor evaluation remain open. The new account forms need their own browser/host checks.
 
 ## Run on Windows
 
@@ -21,7 +21,7 @@ See the [hosted verification record](docs/development/HOSTED_VERIFICATION.md), [
 3. In the extracted folder containing `manage.py`, double-click **`run_local.bat`**.
 4. Open **http://127.0.0.1:8000/** after setup finishes.
 
-On a fresh local database, sign in as `organizer` or `student1` through `student4`, using the development password `CampusDemo!2026`. These are synthetic local accounts. Hosted accounts must have different, private passwords. Keep the command window open while using the app.
+On a fresh local database, sign in as `organizer` or `DEMO-001` through `DEMO-004`, using the development password `CampusDemo!2026`. These are synthetic local accounts. Hosted accounts must have different, private passwords. Keep the command window open while using the app.
 
 [Complete setup and demo](docs/development/QUICK_START.md) | [Deployment](docs/development/DEPLOYMENT.md) | [Backup and restore](docs/development/BACKUP_RESTORE.md)
 
@@ -33,11 +33,12 @@ On a fresh local database, sign in as `organizer` or `student1` through `student
 - Atomic seat allocation, duplicate prevention, and an ordered waitlist.
 - Personal history, current queue rank, cancellation, and automatic promotion.
 - Organizer rosters, attendance marking/correction, and summary dashboards.
-- Organizer search and editing of student names, student IDs and email addresses, plus password resets.
+- Organizer creation of Student accounts, search, name/ID/email editing, and password resets. Student IDs become login usernames on creation or save; Organizer logins are preserved.
+- Organizer deactivation/reactivation of Students, preserving their registrations and attendance. Permanent deletion requires typing the Student ID and is allowed only for accounts with no linked event records.
 - Server validation, CSRF protection, escaped output, and environment-based configuration.
 - Migrations, synthetic demo data, backup/restore commands, and automated tests.
 
-Account provisioning uses a management command. Existing student account maintenance is documented in the [user-management addendum](docs/development/USER_MANAGEMENT.md), which extends the baseline with FR019–FR021. Public self-registration, email notifications, payments, and calendar synchronization are outside this requirements baseline. The semester Gantt chart remains in the documentation.
+Organizers can provision Students through **Manage users → Add student** and manage access through **Edit details → Account access**. Organizer/master accounts are excluded from student controls. Command-line provisioning remains available for the project team; for Students, the username must equal the student number. The [user-management addendum](docs/development/USER_MANAGEMENT.md) maps FR019–FR025 and the revised ID-edit behavior. Public self-registration, email notifications, payments, and calendar synchronization are outside this requirements baseline. The semester Gantt chart remains in the documentation.
 
 ## Project documents
 
@@ -50,7 +51,7 @@ Account provisioning uses a management command. Existing student account mainten
 | Live demonstration | [Campus Events](https://alamshahriya1.pythonanywhere.com/) · [Hosted verification](docs/development/HOSTED_VERIFICATION.md) | [Deployment and maintenance](docs/development/DEPLOYMENT.md) |
 | Developer reference | [API reference](docs/development/API.md) · [Team upload guide](docs/development/TEAM_UPLOAD.md) | Source code and tests |
 
-The SRS and RTM retain their **29 October 2026** baseline. Their original Planned records are preserved; the implementation supplement records newer evidence. Diagrams were prepared on **18 November 2026**. The original Gantt chart is a plan, not a claim of actual completion.
+The SRS and RTM retain their **29 October 2026** baseline. Their original Planned records are preserved; the implementation supplement records newer evidence. The user-management addendum supplies the additional SRS requirements and RTM mapping, including FR022–FR025. Diagrams were prepared on **18 November 2026**. The original Gantt chart is a plan, not a claim of actual completion.
 
 ## Technology and code organization
 

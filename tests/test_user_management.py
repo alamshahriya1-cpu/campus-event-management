@@ -100,7 +100,7 @@ class UserManagementTests(TestCase):
         for name in ["user_edit", "user_password"]:
             self.assertEqual(self.client.get(reverse(name, args=[99999])).status_code, 404)
 
-    def test_TC027_saves_details_and_preserves_registration_rows_and_login(self):
+    def test_TC027_saves_details_and_preserves_registration_rows_and_password(self):
         event = create_event(self.organizer, event_fields(capacity=1))
         publish_event(self.organizer, event.pk)
         register(self.other, event.pk)
@@ -113,7 +113,7 @@ class UserManagementTests(TestCase):
         self.assertEqual(self.student.get_full_name(), "Updated Student")
         self.assertEqual(self.student.email, "updated@example.test")
         self.assertEqual(self.student.student_profile.student_number, "NEW-001")
-        self.assertEqual(self.student.username, "student_one")
+        self.assertEqual(self.student.username, "NEW-001")
         self.assertEqual(self.student.password, password_hash)
         self.assertEqual(list(Registration.objects.order_by("pk").values()), before)
         roster = self.client.get(f"/api/events/{event.pk}/participants/").json()["participants"]
@@ -187,6 +187,7 @@ class UserManagementTests(TestCase):
         self.assertEqual(self.student.first_name, "Demo")
         self.assertEqual(self.student.email, "demo.one@example.test")
         self.assertEqual(self.student.student_profile.student_number, "ID-student_one")
+        self.assertEqual(self.student.username, "student_one")
 
     def test_TC027_database_lock_is_retryable_and_rolls_back(self):
         with patch.object(StudentProfile, "save", side_effect=OperationalError("database is locked")):

@@ -3,7 +3,7 @@
 {% block title %}Manage users{% endblock %}
 {% block styles %}<link rel="stylesheet" href="{% static 'css/users.css' %}">{% endblock %}
 {% block content %}
-<section class="page-intro"><div><p class="eyebrow">ORGANIZER WORKSPACE</p><h1>Manage users.</h1><p class="muted">Find a student account and keep their details up to date.</p></div><span class="user-total">{{ total_students }} student account{{ total_students|pluralize }}</span></section>
+<section class="page-intro"><div><p class="eyebrow">ORGANIZER WORKSPACE</p><h1>Manage users.</h1><p class="muted">Add students and keep their account details up to date.</p></div><div class="user-intro-actions"><span class="user-total">{{ total_students }} student account{{ total_students|pluralize }}</span><a class="btn btn-primary" href="{% url 'user_create' %}">+ Add student</a></div></section>
 <form class="filter-bar user-search" method="get" action="{% url 'user_list' %}" role="search">
   <div class="search-field"><label for="user-search">Search students</label><input class="form-control" id="user-search" type="search" name="q" value="{{ query }}" maxlength="150" placeholder="Name, username, student ID or email"></div>
   <button class="btn btn-dark" type="submit">Find students</button><a class="text-button" href="{% url 'user_list' %}">Reset</a>
@@ -13,13 +13,13 @@
 <ul class="user-list">
 {% for student in page_obj %}
   <li class="user-row">
-    <div class="user-identity"><strong>{{ student.get_full_name|default:student.username }}</strong><span class="muted small">Username: {{ student.username }}</span><span class="user-state {% if student.is_active %}user-state-active{% endif %}">{% if student.is_active %}Active{% else %}Inactive{% endif %}</span></div>
+    <div class="user-identity"><strong>{{ student.get_full_name|default:student.username }}</strong><span class="muted small">Sign-in ID: {{ student.username }}</span><span class="user-state {% if student.is_active %}user-state-active{% endif %}">{% if student.is_active %}Active{% else %}Inactive{% endif %}</span></div>
     <div class="user-value"><span class="tiny-label">STUDENT ID</span><span>{{ student.student_profile.student_number }}</span></div>
     <div class="user-value"><span class="tiny-label">EMAIL</span><span>{{ student.email|default:'Not provided' }}</span></div>
     <a class="btn btn-outline-primary btn-sm" href="{% url 'user_edit' student.pk %}" aria-label="Edit details for {{ student.get_full_name|default:student.username }}">Edit details <span aria-hidden="true">→</span></a>
   </li>
 {% empty %}
-  <li class="user-empty"><h2>No students found</h2><p class="muted">{% if query %}Try another name, student ID or email address.{% else %}Student accounts will appear here once your project team creates them.{% endif %}</p></li>
+  <li class="user-empty"><h2>No students found</h2><p class="muted">{% if query %}Try another name, student ID or email address.{% else %}Choose Add student to create the first account.{% endif %}</p></li>
 {% endfor %}
 </ul>
 {% if page_obj.has_other_pages %}<nav class="user-pagination" aria-label="Student account pages">

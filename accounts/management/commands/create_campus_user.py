@@ -6,6 +6,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from accounts.models import StudentProfile
+from accounts.student_ids import validate_student_id
 
 
 class Command(BaseCommand):
@@ -21,11 +22,18 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         User = get_user_model()
-        if User.objects.filter(username=options["username"]).exists():
+        if User.objects.filter(username__iexact=options["username"]).exists():
             raise CommandError("Username already exists. Use changepassword for a password reset.")
         number = (options["student_number"] or "").strip()
-        if options["role"] == "Student" and (not number or len(number) > 20 or StudentProfile.objects.filter(student_number=number).exists()):
-            raise CommandError("Provide a unique student number of 1 to 20 characters.")
+        if options["role"] == "Student":
+            if options["username"] != number:
+                raise CommandError("For a Student account, the username must equal --student-number. Use the student ID for both.")
+            try:
+                validate_student_id(number)
+            except ValidationError as exc:
+                raise CommandError("; ".join(exc.messages))
+        elif StudentProfile.objects.filter(student_number__iexact=options["username"]).exists():
+            raise CommandError("This username is reserved by an existing student ID.")
         password = getpass("New password: ")
         if password != getpass("Confirm password: "):
             raise CommandError("Passwords do not match.")

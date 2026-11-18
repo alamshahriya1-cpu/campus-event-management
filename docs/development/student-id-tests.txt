@@ -1,0 +1,119 @@
+Creating test database for alias 'default' ('/workspace/scratch/bbc1d10d34e8/campus-event-management/test_db.sqlite3')...
+Destroying old test database for alias 'default' ('/workspace/scratch/bbc1d10d34e8/campus-event-management/test_db.sqlite3')...
+Found 83 test(s).
+Operations to perform:
+  Synchronize unmigrated apps: messages, reports, staticfiles
+  Apply all migrations: accounts, auth, contenttypes, events, registrations, sessions
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0001_initial... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying accounts.0001_initial... OK
+  Applying events.0001_initial... OK
+  Applying registrations.0001_initial... OK
+  Applying sessions.0001_initial...test_TC001_anonymous_pages_and_apis (tests.test_application.AcceptanceTests.test_TC001_anonymous_pages_and_apis) ... ok
+test_TC001_invalid_or_multiple_roles_cannot_sign_in (tests.test_application.AcceptanceTests.test_TC001_invalid_or_multiple_roles_cannot_sign_in) ... ok
+test_TC001_valid_invalid_and_inactive_login (tests.test_application.AcceptanceTests.test_TC001_valid_invalid_and_inactive_login) ... ok
+test_TC002_logout_invalidates_previous_session (tests.test_application.AcceptanceTests.test_TC002_logout_invalidates_previous_session) ... ok
+test_TC003_other_students_registration_is_not_accessible (tests.test_application.AcceptanceTests.test_TC003_other_students_registration_is_not_accessible) ... ok
+test_TC003_student_cannot_access_organizer_endpoints (tests.test_application.AcceptanceTests.test_TC003_student_cannot_access_organizer_endpoints) ... ok
+test_TC004_create_draft_and_hide_from_students (tests.test_application.AcceptanceTests.test_TC004_create_draft_and_hide_from_students) ... ok
+test_TC004_invalid_capacity_and_time_never_create (tests.test_application.AcceptanceTests.test_TC004_invalid_capacity_and_time_never_create) ... ok
+test_TC005_edit_draft_and_published_rules (tests.test_application.AcceptanceTests.test_TC005_edit_draft_and_published_rules) ... ok
+test_TC005_started_and_cancelled_events_read_only (tests.test_application.AcceptanceTests.test_TC005_started_and_cancelled_events_read_only) ... ok
+test_TC006_publish_once_and_reject_expired_draft (tests.test_application.AcceptanceTests.test_TC006_publish_once_and_reject_expired_draft) ... ok
+test_TC007_search_category_date_and_empty_filters (tests.test_application.AcceptanceTests.test_TC007_search_category_date_and_empty_filters) ... ok
+test_TC008_availability_and_no_participant_identity (tests.test_application.AcceptanceTests.test_TC008_availability_and_no_participant_identity) ... ok
+test_TC009_capacity_allocation_and_no_GET_mutations (tests.test_application.AcceptanceTests.test_TC009_capacity_allocation_and_no_GET_mutations) ... ok
+test_TC009_deadline_equality_rejected (tests.test_application.AcceptanceTests.test_TC009_deadline_equality_rejected) ... ok
+test_TC010_retries_and_database_uniqueness (tests.test_application.AcceptanceTests.test_TC010_retries_and_database_uniqueness) ... ok
+test_TC011_personal_history_and_queue_rank (tests.test_application.AcceptanceTests.test_TC011_personal_history_and_queue_rank) ... ok
+test_TC012_cancel_at_deadline_does_not_change_state (tests.test_application.AcceptanceTests.test_TC012_cancel_at_deadline_does_not_change_state) ... ok
+test_TC012_repeated_cancel_and_rejoin_new_priority (tests.test_application.AcceptanceTests.test_TC012_repeated_cancel_and_rejoin_new_priority) ... ok
+test_TC013_FIFO_promotion_and_idempotent_cancellation (tests.test_application.AcceptanceTests.test_TC013_FIFO_promotion_and_idempotent_cancellation) ... ok
+test_TC013_cancel_response_does_not_reveal_promoted_student (tests.test_application.AcceptanceTests.test_TC013_cancel_response_does_not_reveal_promoted_student) ... ok
+test_TC013_equal_timestamps_use_id_tiebreaker (tests.test_application.AcceptanceTests.test_TC013_equal_timestamps_use_id_tiebreaker) ... ok
+test_TC013_promotion_failure_rolls_back_cancellation (tests.test_application.AcceptanceTests.test_TC013_promotion_failure_rolls_back_cancellation) ... ok
+test_TC014_blank_reason_and_started_cancellation_rejected (tests.test_application.AcceptanceTests.test_TC014_blank_reason_and_started_cancellation_rejected) ... ok
+test_TC014_event_cancellation_preserves_history_no_promotion (tests.test_application.AcceptanceTests.test_TC014_event_cancellation_preserves_history_no_promotion) ... ok
+test_TC015_roster_filter_identity_and_queue_order (tests.test_application.AcceptanceTests.test_TC015_roster_filter_identity_and_queue_order) ... ok
+test_TC016_attendance_boundary_audit_and_correction (tests.test_application.AcceptanceTests.test_TC016_attendance_boundary_audit_and_correction) ... ok
+test_TC017_summary_excludes_draft_cancelled_and_started (tests.test_application.AcceptanceTests.test_TC017_summary_excludes_draft_cancelled_and_started) ... ok
+test_TC018_lock_failure_returns_retryable_error (tests.test_application.AcceptanceTests.test_TC018_lock_failure_returns_retryable_error) ... ok
+test_TC018_malformed_and_tampered_requests_rejected (tests.test_application.AcceptanceTests.test_TC018_malformed_and_tampered_requests_rejected) ... ok
+test_TC019_local_30_events_300_registrations (tests.test_application.AcceptanceTests.test_TC019_local_30_events_300_registrations) ... ok
+test_TC020_csrf_missing_and_valid_token (tests.test_application.AcceptanceTests.test_TC020_csrf_missing_and_valid_token) ... ok
+test_TC020_escaped_text_and_hash_storage (tests.test_application.AcceptanceTests.test_TC020_escaped_text_and_hash_storage) ... ok
+test_TC022_all_required_pages_render (tests.test_application.AcceptanceTests.test_TC022_all_required_pages_render) ... ok
+test_TC030_fresh_demo_uses_ids_and_repeat_seeding_preserves_records (tests.test_student_accounts.DemoStudentIdTests.test_TC030_fresh_demo_uses_ids_and_repeat_seeding_preserves_records) ... ok
+test_TC030_seed_refuses_to_replace_legacy_accounts (tests.test_student_accounts.DemoStudentIdTests.test_TC030_seed_refuses_to_replace_legacy_accounts) ... ok
+test_TC029_create_navigation_get_cache_and_method_boundaries (tests.test_student_accounts.StudentAccountTests.test_TC029_create_navigation_get_cache_and_method_boundaries) ... ok
+test_TC029_create_stores_hashed_password_and_fixed_student_role (tests.test_student_accounts.StudentAccountTests.test_TC029_create_stores_hashed_password_and_fixed_student_role) ... ok
+test_TC029_created_student_can_register_and_view_own_history (tests.test_student_accounts.StudentAccountTests.test_TC029_created_student_can_register_and_view_own_history) ... ok
+test_TC029_creation_requires_csrf (tests.test_student_accounts.StudentAccountTests.test_TC029_creation_requires_csrf) ... ok
+test_TC029_database_lock_is_retryable_without_partial_account (tests.test_student_accounts.StudentAccountTests.test_TC029_database_lock_is_retryable_without_partial_account) ... ok
+test_TC029_duplicate_ids_and_any_existing_login_are_rejected (tests.test_student_accounts.StudentAccountTests.test_TC029_duplicate_ids_and_any_existing_login_are_rejected) ... ok
+test_TC029_duplicate_submit_and_more_than_thirty_accounts (tests.test_student_accounts.StudentAccountTests.test_TC029_duplicate_submit_and_more_than_thirty_accounts) ... ok
+test_TC029_invalid_identity_fields_never_create_accounts (tests.test_student_accounts.StudentAccountTests.test_TC029_invalid_identity_fields_never_create_accounts) ... ok
+test_TC029_only_active_single_role_organizers_can_create (tests.test_student_accounts.StudentAccountTests.test_TC029_only_active_single_role_organizers_can_create) ... ok
+test_TC029_optional_contact_fields_and_trimmed_id (tests.test_student_accounts.StudentAccountTests.test_TC029_optional_contact_fields_and_trimmed_id) ... ok
+test_TC029_password_validation_and_no_password_redisplay (tests.test_student_accounts.StudentAccountTests.test_TC029_password_validation_and_no_password_redisplay) ... ok
+test_TC029_privilege_identity_and_extra_fields_are_rejected (tests.test_student_accounts.StudentAccountTests.test_TC029_privilege_identity_and_extra_fields_are_rejected) ... ok
+test_TC029_profile_failure_rolls_back_user_and_membership (tests.test_student_accounts.StudentAccountTests.test_TC029_profile_failure_rolls_back_user_and_membership) ... ok
+test_TC030_command_provisions_ids_and_preserves_organizer_login (tests.test_student_accounts.StudentAccountTests.test_TC030_command_provisions_ids_and_preserves_organizer_login) ... ok
+test_TC030_command_rejects_mismatch_and_reserved_ids_before_password (tests.test_student_accounts.StudentAccountTests.test_TC030_command_rejects_mismatch_and_reserved_ids_before_password) ... ok
+test_TC030_edit_does_not_reactivate_student (tests.test_student_accounts.StudentAccountTests.test_TC030_edit_does_not_reactivate_student) ... ok
+test_TC030_existing_account_gets_id_login_without_losing_records (tests.test_student_accounts.StudentAccountTests.test_TC030_existing_account_gets_id_login_without_losing_records) ... ok
+test_TC030_failed_profile_write_rolls_back_login_change (tests.test_student_accounts.StudentAccountTests.test_TC030_failed_profile_write_rolls_back_login_change) ... ok
+test_TC030_id_change_rejects_login_collisions_and_invalid_format (tests.test_student_accounts.StudentAccountTests.test_TC030_id_change_rejects_login_collisions_and_invalid_format) ... ok
+test_TC026_anonymous_and_students_cannot_access_management (tests.test_user_management.UserManagementTests.test_TC026_anonymous_and_students_cannot_access_management) ... ok
+test_TC026_navigation_is_organizer_only (tests.test_user_management.UserManagementTests.test_TC026_navigation_is_organizer_only) ... ok
+test_TC026_organizers_and_privileged_or_invalid_students_are_protected (tests.test_user_management.UserManagementTests.test_TC026_organizers_and_privileged_or_invalid_students_are_protected) ... ok
+test_TC026_search_limits_and_pagination (tests.test_user_management.UserManagementTests.test_TC026_search_limits_and_pagination) ... ok
+test_TC026_search_name_username_id_and_email (tests.test_user_management.UserManagementTests.test_TC026_search_name_username_id_and_email) ... ok
+test_TC026_sensitive_pages_are_not_cached_and_unknown_ids_are_404 (tests.test_user_management.UserManagementTests.test_TC026_sensitive_pages_are_not_cached_and_unknown_ids_are_404) ... ok
+test_TC027_database_lock_is_retryable_and_rolls_back (tests.test_user_management.UserManagementTests.test_TC027_database_lock_is_retryable_and_rolls_back) ... ok
+test_TC027_duplicate_id_is_rejected_without_partial_user_changes (tests.test_user_management.UserManagementTests.test_TC027_duplicate_id_is_rejected_without_partial_user_changes) ... ok
+test_TC027_get_requests_never_change_records (tests.test_user_management.UserManagementTests.test_TC027_get_requests_never_change_records) ... ok
+test_TC027_integrity_failure_rolls_back_name_and_email (tests.test_user_management.UserManagementTests.test_TC027_integrity_failure_rolls_back_name_and_email) ... ok
+test_TC027_names_and_search_text_are_html_escaped (tests.test_user_management.UserManagementTests.test_TC027_names_and_search_text_are_html_escaped) ... ok
+test_TC027_optional_fields_and_trimmed_values (tests.test_user_management.UserManagementTests.test_TC027_optional_fields_and_trimmed_values) ... ok
+test_TC027_post_requires_csrf_and_other_write_methods_are_rejected (tests.test_user_management.UserManagementTests.test_TC027_post_requires_csrf_and_other_write_methods_are_rejected) ... ok
+test_TC027_saves_details_and_preserves_registration_rows_and_password (tests.test_user_management.UserManagementTests.test_TC027_saves_details_and_preserves_registration_rows_and_password) ... ok
+test_TC027_tampered_privilege_and_identity_fields_are_rejected (tests.test_user_management.UserManagementTests.test_TC027_tampered_privilege_and_identity_fields_are_rejected) ... ok
+test_TC027_validation_rejects_blank_overlong_and_invalid_values (tests.test_user_management.UserManagementTests.test_TC027_validation_rejects_blank_overlong_and_invalid_values) ... ok
+test_TC028_password_reset_invalidates_student_session_only (tests.test_user_management.UserManagementTests.test_TC028_password_reset_invalidates_student_session_only) ... ok
+test_TC028_reset_rejects_privilege_fields_and_does_not_reactivate (tests.test_user_management.UserManagementTests.test_TC028_reset_rejects_privilege_fields_and_does_not_reactivate) ... ok
+test_TC028_weak_or_mismatched_passwords_do_not_change_account (tests.test_user_management.UserManagementTests.test_TC028_weak_or_mismatched_passwords_do_not_change_account) ... ok
+test_TC021_competing_requests_for_last_seat (tests.test_transactions.TransactionAcceptanceTests.test_TC021_competing_requests_for_last_seat) ... ok
+test_TC021_concurrent_duplicate_requests (tests.test_transactions.TransactionAcceptanceTests.test_TC021_concurrent_duplicate_requests) ... ok
+test_TC021_event_cancellation_rolls_back_on_update_failure (tests.test_transactions.TransactionAcceptanceTests.test_TC021_event_cancellation_rolls_back_on_update_failure) ... ok
+test_TC021_registration_persists_after_connection_restart (tests.test_transactions.TransactionAcceptanceTests.test_TC021_registration_persists_after_connection_restart) ... ok
+test_TC025_backup_restore_exact_rows_and_no_overwrite (tests.test_transactions.TransactionAcceptanceTests.test_TC025_backup_restore_exact_rows_and_no_overwrite) ... ok
+test_TC025_backup_closes_connections_before_return (tests.test_backup.BackupResourceTests.test_TC025_backup_closes_connections_before_return) ... ok
+test_TC025_destination_open_failure_closes_source (tests.test_backup.BackupResourceTests.test_TC025_destination_open_failure_closes_source) ... ok
+test_TC025_failed_backup_closes_connections_before_cleanup (tests.test_backup.BackupResourceTests.test_TC025_failed_backup_closes_connections_before_cleanup) ... ok
+test_TC025_integrity_failure_closes_connections_before_cleanup (tests.test_backup.BackupResourceTests.test_TC025_integrity_failure_closes_connections_before_cleanup) ... ok
+
+----------------------------------------------------------------------
+Ran 83 tests in 2.374s
+
+OK
+Destroying test database for alias 'default' ('/workspace/scratch/bbc1d10d34e8/campus-event-management/test_db.sqlite3')...
+ OK
+System check identified no issues (0 silenced).
+LOCAL_TC019_SECONDS=[0.003122, 0.003013, 0.003148, 0.003022, 0.003269, 0.002989, 0.002982, 0.003402, 0.002987, 0.002952, 0.002966, 0.003278, 0.00297, 0.002966, 0.002937, 0.003072, 0.002989, 0.002968, 0.002957, 0.003166]

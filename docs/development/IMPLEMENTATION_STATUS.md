@@ -6,9 +6,10 @@ verification; it does not certify professor acceptance.
 
 **Live application: https://alamshahriya1.pythonanywhere.com/**
 
-All 18 baseline functional requirements and the three user-management extension
-requirements have implementations and passing automated checks. The full
-**62-test suite passed on Linux, Windows, and PythonAnywhere**. Hosted browser
+All 18 baseline functional requirements and seven user-management extension
+requirements have implementations and passing automated checks. The latest
+**110-test suite passed on Linux**. The previous **62-test version passed on
+Windows and PythonAnywhere**; the new version awaits those runs and deployment. Hosted browser
 screenshots confirm the specific actions identified below. Remaining acceptance
 is retained in the [CSV source mapping](IMPLEMENTATION_STATUS.csv),
 [hosted verification record](HOSTED_VERIFICATION.md), and
@@ -35,17 +36,30 @@ is retained in the [CSV source mapping](IMPLEMENTATION_STATUS.csv),
 | FR017 | Dashboard counts | TC017 | Automated tests passed; initial hosted totals observed |
 | FR018 | Backend validation | TC018 | Automated tests passed |
 | FR019 | Student account search and access | TC026 | Extension - automated tests passed; hosted list observed |
-| FR020 | Student detail editing | TC027 | Extension - automated tests passed; hosted name edit passed |
+| FR020 | Student detail editing (revised ID synchronization) | TC027, TC030 | Local tests passed; previous hosted name edit observed |
 | FR021 | Student password resets | TC028 | Extension - automated tests passed; manual reset acceptance pending |
+| FR022 | Organizer student creation | TC029 | Implemented locally - 110-test suite passed; host acceptance pending |
+| FR023 | Student ID login | TC030 | Implemented locally - preservation and login tests passed; host acceptance pending |
+| FR024 | Student deactivation/reactivation | TC031 | Implemented locally - login/session and record-preservation checks passed; host acceptance pending |
+| FR025 | Delete unused student account | TC032 | Implemented locally - confirmation, linked-record protection, permissions, and rollback checks passed; host acceptance pending |
 | NFR001 | Response time | TC019 | Partial - in-process benchmark only |
 | NFR002 | Security configuration | TC020 | Partial - production configuration and public HTTPS checked |
 | NFR003 | Integrity and persistence | TC021 | Partial - transaction tests and hosted saved-state checks passed |
-| NFR004 | Browser/mobile usability | TC022 | Partial - hosted desktop flows observed |
+| NFR004 | Browser/mobile usability | TC022 | Partial - desktop evidence and team-reported phone checks; full matrix pending |
 | NFR005 | Maintainable setup | TC023 | Implemented - Windows and hosted setup verified |
 | NFR006 | Free live deployment | TC024 | Deployed - evaluator acceptance pending |
-| NFR007 | Backup and restore | TC025 | Partial - automated backup/restore passed on host |
+| NFR007 | Backup and restore | TC025 | Verified by team report - demonstration backup restored locally and compared |
+
+The new requirements and revised FR020 criteria are specified in
+[USER_MANAGEMENT.md](USER_MANAGEMENT.md). The original SRS/RTM baseline is
+unchanged; this supplement now maps 32 requirements (25 FR and 7 NFR).
 
 ## Outstanding acceptance
+
+Install and verify the combined student-account patch on Windows and
+PythonAnywhere, following [STUDENT_ACCOUNT_CONTROLS.md](STUDENT_ACCOUNT_CONTROLS.md).
+Earlier deployment evidence does not certify the new behavior.
+
 
 1. Complete remaining hosted journeys and direct Student access-denial cases.
    Record the password-reset and old-session invalidation sequence separately.
@@ -53,7 +67,7 @@ is retained in the [CSV source mapping](IMPLEMENTATION_STATUS.csv),
 3. Verify saved registrations and attendance after a full Web-app restart and
    from a separate session/device.
 4. Measure NFR001 through the actual HTTPS URL with the baseline dataset and
-   connection details; complete NFR007 recovery using a demonstration-database copy.
+   connection details; retain the private recovery copy from the team-reported NFR007 exercise.
 5. Share private Student/Organizer access with the professor and record independent
    evaluation. The free-app expiry was observed as **18 December 2026**; recheck
    and extend it before assessment.

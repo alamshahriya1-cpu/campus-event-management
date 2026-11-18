@@ -10,10 +10,17 @@
     <h2>Personal details</h2>
     {% if form.non_field_errors %}<div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>{% endif %}
     <div class="form-grid">
-    {% for field in form %}<div><label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required %} <span class="muted small">(optional)</span>{% endif %}</label>{{ field }}{% if field.errors %}<div class="user-field-errors" role="alert">{{ field.errors }}</div>{% endif %}</div>{% endfor %}
+    {% for field in form %}<div><label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required %} <span class="muted small">(optional)</span>{% endif %}</label>{{ field }}{% if field.help_text %}<div class="user-help" id="{{ field.auto_id }}_helptext">{{ field.help_text }}</div>{% endif %}{% if field.errors %}<div class="user-field-errors" role="alert">{{ field.errors }}</div>{% endif %}</div>{% endfor %}
     </div>
     <div class="form-actions"><a class="btn btn-outline-dark" href="{% url 'user_list' %}">Cancel</a><button class="btn btn-primary" type="submit">Save changes →</button></div>
   </form>
-  <aside class="user-account-panel"><h2>Account access</h2><dl><dt>Username</dt><dd>{{ student.username }}</dd><dt>Role</dt><dd>Student</dd><dt>Status</dt><dd>{% if student.is_active %}Active{% else %}Inactive{% endif %}</dd></dl><p class="muted small">The username stays the same. Existing event registrations and waitlist positions are preserved.</p><a class="btn btn-outline-dark" href="{% url 'user_password' student.pk %}">Reset password</a></aside>
+  <aside class="user-account-panel">
+    <h2>Account access</h2>
+    <dl><dt>Sign-in ID</dt><dd>{{ student.username }}</dd><dt>Role</dt><dd>Student</dd><dt>Status</dt><dd>{% if student.is_active %}Active{% else %}Inactive{% endif %}</dd></dl>
+    <p class="muted small">Saving makes the Student ID the sign-in username. If the ID changes, share the new login with the student. Their password, registrations, waitlist position, and attendance are preserved.</p>
+    <a class="btn btn-outline-dark" href="{% url 'user_password' student.pk %}">Reset password</a>
+    {% if student.is_active %}<a class="btn btn-outline-dark" href="{% url 'user_deactivate' student.pk %}">Deactivate account</a>{% else %}<a class="btn btn-primary" href="{% url 'user_reactivate' student.pk %}">Reactivate account</a>{% endif %}
+    <div class="user-delete-section"><h3>Delete unused account</h3><p class="muted small">Permanent deletion is available only when the student has no linked event or attendance records. Deactivate an account to keep its history.</p><a class="btn btn-outline-danger" href="{% url 'user_delete' student.pk %}">Review deletion</a></div>
+  </aside>
 </div>
 {% endblock %}

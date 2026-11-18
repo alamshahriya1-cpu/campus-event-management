@@ -24,8 +24,8 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         User = get_user_model()
-        names = ["organizer", "student1", "student2", "student3", "student4"]
-        if User.objects.filter(username__in=names).exists():
+        names = ["organizer", "student1", "student2", "student3", "student4"] + [f"DEMO-{i:03d}" for i in range(1, 5)]
+        if any(User.objects.filter(username__iexact=name).exists() or StudentProfile.objects.filter(student_number__iexact=name).exists() for name in names):
             raise CommandError("Demo account names already exist. Existing users and registrations were preserved. Use a fresh database for a fresh demo.")
         if options["local_demo"]:
             if not settings.DEBUG:
@@ -47,7 +47,7 @@ class Command(BaseCommand):
         organizer.groups.add(organizer_group)
         students = []
         for index in range(1, 5):
-            user = User.objects.create_user(f"student{index}", password=password, first_name="Demo", last_name=f"Student {index}")
+            user = User.objects.create_user(f"DEMO-{index:03d}", password=password, first_name="Demo", last_name=f"Student {index}")
             user.groups.add(student_group)
             StudentProfile.objects.create(user=user, student_number=f"DEMO-{index:03d}")
             students.append(user)
@@ -73,7 +73,7 @@ class Command(BaseCommand):
             category="Community", venue="Main Auditorium", capacity=40, status="Published", created_by=organizer,
             registration_closes_at=now-timedelta(days=2), start_at=now-timedelta(hours=2), end_at=now-timedelta(hours=1))
         Registration.objects.create(event=past, student=students[0], status="Confirmed", joined_at=now-timedelta(days=3), confirmed_at=now-timedelta(days=3))
-        self.stdout.write(self.style.SUCCESS("Created organizer and student1–student4, five upcoming events, and an attendance example."))
-        self.stdout.write("The first event has two Confirmed students and student3 on the waitlist. Cancel student1 to demonstrate promotion.")
+        self.stdout.write(self.style.SUCCESS("Created organizer and DEMO-001–DEMO-004, five upcoming events, and an attendance example."))
+        self.stdout.write("The first event has two Confirmed students and DEMO-003 on the waitlist. Cancel DEMO-001 to demonstrate promotion.")
         if options["local_demo"]:
             self.stdout.write("Local development password for all five accounts: CampusDemo!2026")

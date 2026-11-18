@@ -1,5 +1,13 @@
 # PythonAnywhere deployment and maintenance
 
+**Pending feature update:** the combined student creation, ID-login, access
+controls, and unused-account deletion patch passed 110 tests locally on Linux.
+The recorded hosted 62-test result below belongs to the earlier version.
+Follow [STUDENT_ACCOUNT_CONTROLS.md](STUDENT_ACCOUNT_CONTROLS.md) before claiming
+the new features are deployed; no schema migration or reseeding is needed. Fresh
+seed accounts now use DEMO-001–DEMO-004. Existing account usernames change only
+when an Organizer saves their details.
+
 **Live URL: https://alamshahriya1.pythonanywhere.com/**
 
 Deployment recorded on **18 November 2026**, using application commit
@@ -89,7 +97,7 @@ python manage.py seed_demo
 ```
 
 `seed_demo` asks for a private password twice. Input is not echoed. This creates
-`organizer` and `student1` through `student4`, initially sharing the chosen
+`organizer` and `DEMO-001` through `DEMO-004`, initially sharing the chosen
 password, plus five upcoming events and one past attendance example. Use a
 strong private password that satisfies the configured minimum of 10 characters.
 The command protects existing demo accounts from being overwritten.

@@ -1,4 +1,6 @@
 .user-total{color:var(--muted);font-size:.84rem;white-space:nowrap}
+.user-intro-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.user-form-full{grid-column:1/-1}
 .user-search .search-field{flex:1}
 .user-list{list-style:none;padding:0;margin:0;display:grid;gap:14px}
 .user-row{display:grid;grid-template-columns:minmax(180px,1.2fr) minmax(100px,.7fr) minmax(160px,1.2fr) auto;align-items:center;gap:24px;padding:24px;background:#fff;border:1px solid var(--line);border-radius:12px}
@@ -24,5 +26,15 @@
 .user-password-field{margin-top:24px}
 .user-help{color:var(--muted);font-size:.78rem;line-height:1.7;margin-top:10px}
 .user-help ul{padding-left:20px;margin-bottom:0}
+.user-delete-section{border-top:1px solid var(--line);margin-top:28px;padding-top:22px}
+.user-delete-section h3{font-size:1rem}
+.user-action-panel{max-width:720px}
+.user-action-identity{overflow-wrap:anywhere;line-height:1.8}
+.user-action-field{margin-top:24px}
+.user-action-panel .user-confirm{display:flex;align-items:flex-start;gap:10px;cursor:pointer}
+.user-confirm input{flex-shrink:0;margin-top:4px}
+.user-action-panel .errorlist{list-style:none;padding:0;margin:0}
+.user-action-panel .btn{white-space:normal}
+.user-action-panel .form-actions{flex-wrap:wrap}
 @media(max-width:1000px){.user-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}.user-row>.btn{justify-self:start}.user-editor-layout{grid-template-columns:1fr}.user-account-panel dl{display:grid;grid-template-columns:90px minmax(0,1fr);gap:10px;margin-bottom:20px}.user-account-panel dd{margin:0}.user-account-panel .btn{width:auto}}
 @media(max-width:767px){.user-row{padding:20px;gap:18px}.user-identity,.user-row>.btn{grid-column:1/-1}.user-account-panel{padding:22px}.user-edit-form .form-actions>a,.user-password-form .form-actions>a{width:100%}.user-search .search-field{flex-basis:100%}.user-pagination{gap:12px;flex-wrap:wrap}}

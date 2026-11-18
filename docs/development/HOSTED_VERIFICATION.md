@@ -1,5 +1,25 @@
 # Hosted verification record
 
+## Later team confirmation and pending account update
+
+On 18 November, Shahriya reported that he and Miraj checked the website on their
+phones successfully. Phone/browser models and versions were not recorded.
+Screenshots then showed PythonAnywhere creating `backups/final-check.sqlite3`
+and `backups/restored-check.sqlite3`, followed by the Windows local server on
+port 8001. After being asked to compare accounts, events, registration states,
+queue order, and attendance, the team reported "all done". The manual recovery
+exercise is team-verified; no independent database row comparison was performed.
+The full host-restart comparison was not separately evidenced.
+
+The combined **Add student, ID-based login, deactivate/reactivate, and unused
+account deletion extension** passed 110 tests locally on Linux. The team reported
+copying the earlier creation/ID files to Windows, but no subsequent test result
+was supplied. The latest package has not been verified on Windows/PythonAnywhere
+or in a browser. Earlier screenshots and the 62-test hosted run below belong to
+the previous version. See [STUDENT_ACCOUNT_CONTROLS.md](STUDENT_ACCOUNT_CONTROLS.md).
+
+## Previous hosted record
+
 **Recorded: 18 November 2026**  
 **Application: https://alamshahriya1.pythonanywhere.com/**  
 **Application commit: `6ff589484c6c09a2d1502517bd7c3717d96b01b1`**
@@ -84,9 +104,8 @@ the remaining Student direct-access checks are listed below.
   registrations and attendance from a separate session/device.
 - NFR001 external timing with 30 events/300 registrations and 20 warm requests.
   The in-process TC019 output is not a network/browser benchmark.
-- NFR007 backup/restore against a copy of the demonstration database and a
-  separate verification instance. Automated synthetic-data tests are not that
-  manual recovery exercise.
+- Retain the private recovery copy and record the team-reported NFR007 manual
+  restore result described above; repeat if the evaluated database changes.
 - Private Student/Organizer access for the professor and independent evaluator
   acceptance. No credentials have been published or sent on the team's behalf.
 

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% if action == 'delete' %}Delete unused student{% elif action == 'deactivate' %}Deactivate student{% else %}Reactivate student{% endif %}{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{% static 'css/users.css' %}">{% endblock %}
+{% block content %}
+<a class="back-link" href="{% url 'user_edit' student.pk %}">← Back to student details</a>
+<section class="page-intro"><div><p class="eyebrow">STUDENT ACCOUNT</p><h1>{% if action == 'delete' %}Delete unused account.{% elif action == 'deactivate' %}Deactivate account.{% else %}Reactivate account.{% endif %}</h1></div></section>
+<section class="editor-panel user-action-panel">
+  <h2>{{ student.get_full_name|default:student.username }}</h2>
+  <p class="user-action-identity">Student ID: <strong>{{ student.student_profile.student_number }}</strong><br>Sign-in ID: {{ student.username }}<br>Status: {% if student.is_active %}Active{% else %}Inactive{% endif %}</p>
+  {% if action == 'delete' %}
+    {% if blockers %}
+      <div class="alert alert-danger" role="alert"><strong>This account cannot be deleted.</strong><p>It is linked to:</p><ul>{% for reason in blockers %}<li>{{ reason }}</li>{% endfor %}</ul></div>
+      <p>Keep this account to preserve its history. Deactivation blocks sign-in while keeping the records.</p>
+      <div class="form-actions"><a class="btn btn-outline-dark" href="{% url 'user_edit' student.pk %}">Back to student</a>{% if student.is_active %}<a class="btn btn-primary" href="{% url 'user_deactivate' student.pk %}">Deactivate account</a>{% endif %}</div>
+    {% else %}
+      <p>This permanently removes the student's account and profile. The student will lose access, and this action cannot be undone from the app. Linked records will be checked again when you confirm.</p>
+    {% endif %}
+  {% elif action == 'deactivate' %}
+    <p>The student will be signed out and unable to sign in. Their password, registrations, reserved places, waitlist entries, and attendance history will be kept. Existing registrations remain eligible for normal waitlist promotion.</p>
+    <p>You can reactivate the account later.</p>
+  {% else %}
+    <p>The student can sign in again with the sign-in ID shown above and their existing password. Their registrations and attendance history will be kept. A fresh sign-in is required.</p>
+  {% endif %}
+  {% if not blockers %}
+  <form method="post">{% csrf_token %}
+    {% if form.non_field_errors %}<div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+    {% for field in form %}<div class="user-action-field">{% if action == 'delete' %}<label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% else %}<label class="user-confirm" for="{{ field.id_for_label }}">{{ field }} <span>{{ field.label }}</span></label>{% endif %}{% if field.errors %}<div class="user-field-errors" role="alert">{{ field.errors }}</div>{% endif %}</div>{% endfor %}
+    <div class="form-actions"><a class="btn btn-outline-dark" href="{% url 'user_edit' student.pk %}">Cancel</a><button class="btn {% if action == 'delete' %}btn-danger{% else %}btn-primary{% endif %}" type="submit">{% if action == 'delete' %}Permanently delete account{% elif action == 'deactivate' %}Deactivate account{% else %}Reactivate account{% endif %}</button></div>
+  </form>
+  {% endif %}
+</section>
+{% endblock %}
