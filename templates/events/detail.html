@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}{{ event.title }}{% endblock %}
+{% block content %}
+<a class="back-link" href="{% url 'catalog' %}">← Back to events</a>
+<div class="detail-layout"><section><div class="detail-hero tone-one"><span class="banner-category">{{ event.category }}</span><h1>{{ event.title }}</h1><p>{{ event.venue }}</p></div><div class="content-panel"><span class="status-pill {{ event.status|lower }}">{{ event.status }}</span><h2>About this event</h2><p class="preserve-lines">{{ event.description }}</p><div class="detail-facts"><div><span>WHEN</span><strong>{{ event.start_at|date:'l, j F Y' }}</strong><p>{{ event.start_at|date:'H:i' }} – {{ event.end_at|date:'j M, H:i' }} KST</p></div><div><span>WHERE</span><strong>{{ event.venue }}</strong><p>{{ event.category }}</p></div></div>{% if event.cancellation_reason %}<div class="alert alert-warning"><strong>Event cancelled</strong><p class="mb-0">{{ event.cancellation_reason }}</p></div>{% endif %}</div></section>
+<aside class="booking-panel"><p class="eyebrow">YOUR PLACE ON CAMPUS</p><h2>{% if event.remaining_seats %}{{ event.remaining_seats }} <span class="muted">places left</span>{% else %}At capacity{% endif %}</h2><p class="muted">{{ event.confirmed_count }} of {{ event.capacity }} places reserved</p><div class="capacity-track" role="progressbar" aria-label="Reserved places" aria-valuemin="0" aria-valuemax="{{ event.capacity }}" aria-valuenow="{{ event.confirmed_count }}"><span style="width:{{ event.fill_percent }}%"></span></div><dl><dt>Registration closes</dt><dd>{{ event.registration_closes_at|date:'j M Y, H:i' }} KST</dd><dt>Waiting list</dt><dd>{{ event.waitlisted_count }} waiting</dd></dl>
+{% if business_role == 'Student' %}
+  {% if registration %}<div class="registration-summary"><span class="tiny-label">YOUR STATUS</span><p><span class="status-pill {{ registration.status|lower }}">{{ registration.status }}</span></p>{% if registration.queue_rank %}<p>Position <strong>{{ registration.queue_rank }}</strong> on the waiting list.</p>{% endif %}{% if registration.attended %}<p>Attendance recorded ✓</p>{% endif %}</div>{% endif %}
+  {% if event.registration_open %}
+    {% if not registration or registration.status == 'Cancelled' %}<button class="btn btn-primary w-100" data-api="/api/events/{{ event.id }}/register/">{% if event.remaining_seats and not event.waitlisted_count %}Reserve my place{% else %}Join the waitlist{% endif %}</button>{% else %}<a class="btn btn-primary w-100" href="{% url 'my_registrations' %}">View my registrations</a><button class="text-button danger w-100 mt-3" data-api="/api/registrations/{{ registration.registration_id }}/cancel/" data-confirm="Cancel your registration? A released place may go to the next waiting student.">Cancel my registration</button>{% endif %}
+  {% else %}<div class="closed-notice">Registration is closed.</div>{% endif %}
+  <p class="booking-note">Waitlist places are offered in joining order. Check this page again to see any status changes.</p>
+{% else %}
+  <a class="btn btn-primary w-100" href="{% url 'roster' event.id %}">View participant roster</a>
+  {% if event.can_edit %}<a class="btn btn-outline-dark w-100 mt-2" href="{% url 'event_edit' event.id %}">Edit event</a>{% endif %}
+  {% if event.status == 'Draft' %}<button class="btn btn-outline-primary w-100 mt-2" data-api="/api/events/{{ event.id }}/publish/" data-confirm="Publish this event? Capacity and event times will become fixed.">Publish event</button>{% endif %}
+  {% if event.can_cancel %}<details class="cancel-section"><summary>Cancel this event</summary><form data-cancel-event="{{ event.id }}"><label for="cancel-reason">Cancellation reason</label><textarea id="cancel-reason" class="form-control" name="reason" maxlength="500" required></textarea><button class="btn btn-outline-danger w-100 mt-2">Cancel event and registrations</button></form></details>{% endif %}
+{% endif %}
+</aside></div>{% endblock %}

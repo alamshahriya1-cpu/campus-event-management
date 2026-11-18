@@ -1,0 +1,77 @@
+Creating test database for alias 'default' ('<PROJECT_ROOT>/test_db.sqlite3')...
+Destroying old test database for alias 'default' ('<PROJECT_ROOT>/test_db.sqlite3')...
+Found 39 test(s).
+Operations to perform:
+  Synchronize unmigrated apps: messages, reports, staticfiles
+  Apply all migrations: accounts, auth, contenttypes, events, registrations, sessions
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0001_initial... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying accounts.0001_initial... OK
+  Applying events.0001_initial... OK
+  Applying registrations.0001_initial... OK
+  Applying sessions.0001_initial...test_TC001_anonymous_pages_and_apis (tests.test_application.AcceptanceTests.test_TC001_anonymous_pages_and_apis) ... <PROJECT_ROOT>/.venv/lib/python3.12/site-packages/django/core/handlers/base.py:61: UserWarning: No directory at: <PROJECT_ROOT>/staticfiles/
+  mw_instance = middleware(adapted_handler)
+ok
+test_TC001_invalid_or_multiple_roles_cannot_sign_in (tests.test_application.AcceptanceTests.test_TC001_invalid_or_multiple_roles_cannot_sign_in) ... ok
+test_TC001_valid_invalid_and_inactive_login (tests.test_application.AcceptanceTests.test_TC001_valid_invalid_and_inactive_login) ... ok
+test_TC002_logout_invalidates_previous_session (tests.test_application.AcceptanceTests.test_TC002_logout_invalidates_previous_session) ... ok
+test_TC003_other_students_registration_is_not_accessible (tests.test_application.AcceptanceTests.test_TC003_other_students_registration_is_not_accessible) ... ok
+test_TC003_student_cannot_access_organizer_endpoints (tests.test_application.AcceptanceTests.test_TC003_student_cannot_access_organizer_endpoints) ... ok
+test_TC004_create_draft_and_hide_from_students (tests.test_application.AcceptanceTests.test_TC004_create_draft_and_hide_from_students) ... ok
+test_TC004_invalid_capacity_and_time_never_create (tests.test_application.AcceptanceTests.test_TC004_invalid_capacity_and_time_never_create) ... ok
+test_TC005_edit_draft_and_published_rules (tests.test_application.AcceptanceTests.test_TC005_edit_draft_and_published_rules) ... ok
+test_TC005_started_and_cancelled_events_read_only (tests.test_application.AcceptanceTests.test_TC005_started_and_cancelled_events_read_only) ... ok
+test_TC006_publish_once_and_reject_expired_draft (tests.test_application.AcceptanceTests.test_TC006_publish_once_and_reject_expired_draft) ... ok
+test_TC007_search_category_date_and_empty_filters (tests.test_application.AcceptanceTests.test_TC007_search_category_date_and_empty_filters) ... ok
+test_TC008_availability_and_no_participant_identity (tests.test_application.AcceptanceTests.test_TC008_availability_and_no_participant_identity) ... ok
+test_TC009_capacity_allocation_and_no_GET_mutations (tests.test_application.AcceptanceTests.test_TC009_capacity_allocation_and_no_GET_mutations) ... ok
+test_TC009_deadline_equality_rejected (tests.test_application.AcceptanceTests.test_TC009_deadline_equality_rejected) ... ok
+test_TC010_retries_and_database_uniqueness (tests.test_application.AcceptanceTests.test_TC010_retries_and_database_uniqueness) ... ok
+test_TC011_personal_history_and_queue_rank (tests.test_application.AcceptanceTests.test_TC011_personal_history_and_queue_rank) ... ok
+test_TC012_cancel_at_deadline_does_not_change_state (tests.test_application.AcceptanceTests.test_TC012_cancel_at_deadline_does_not_change_state) ... ok
+test_TC012_repeated_cancel_and_rejoin_new_priority (tests.test_application.AcceptanceTests.test_TC012_repeated_cancel_and_rejoin_new_priority) ... ok
+test_TC013_FIFO_promotion_and_idempotent_cancellation (tests.test_application.AcceptanceTests.test_TC013_FIFO_promotion_and_idempotent_cancellation) ... ok
+test_TC013_cancel_response_does_not_reveal_promoted_student (tests.test_application.AcceptanceTests.test_TC013_cancel_response_does_not_reveal_promoted_student) ... ok
+test_TC013_equal_timestamps_use_id_tiebreaker (tests.test_application.AcceptanceTests.test_TC013_equal_timestamps_use_id_tiebreaker) ... ok
+test_TC013_promotion_failure_rolls_back_cancellation (tests.test_application.AcceptanceTests.test_TC013_promotion_failure_rolls_back_cancellation) ... ok
+test_TC014_blank_reason_and_started_cancellation_rejected (tests.test_application.AcceptanceTests.test_TC014_blank_reason_and_started_cancellation_rejected) ... ok
+test_TC014_event_cancellation_preserves_history_no_promotion (tests.test_application.AcceptanceTests.test_TC014_event_cancellation_preserves_history_no_promotion) ... ok
+test_TC015_roster_filter_identity_and_queue_order (tests.test_application.AcceptanceTests.test_TC015_roster_filter_identity_and_queue_order) ... ok
+test_TC016_attendance_boundary_audit_and_correction (tests.test_application.AcceptanceTests.test_TC016_attendance_boundary_audit_and_correction) ... ok
+test_TC017_summary_excludes_draft_cancelled_and_started (tests.test_application.AcceptanceTests.test_TC017_summary_excludes_draft_cancelled_and_started) ... ok
+test_TC018_lock_failure_returns_retryable_error (tests.test_application.AcceptanceTests.test_TC018_lock_failure_returns_retryable_error) ... ok
+test_TC018_malformed_and_tampered_requests_rejected (tests.test_application.AcceptanceTests.test_TC018_malformed_and_tampered_requests_rejected) ... ok
+test_TC019_local_30_events_300_registrations (tests.test_application.AcceptanceTests.test_TC019_local_30_events_300_registrations) ... ok
+test_TC020_csrf_missing_and_valid_token (tests.test_application.AcceptanceTests.test_TC020_csrf_missing_and_valid_token) ... ok
+test_TC020_escaped_text_and_hash_storage (tests.test_application.AcceptanceTests.test_TC020_escaped_text_and_hash_storage) ... ok
+test_TC022_all_required_pages_render (tests.test_application.AcceptanceTests.test_TC022_all_required_pages_render) ... ok
+test_TC021_competing_requests_for_last_seat (tests.test_transactions.TransactionAcceptanceTests.test_TC021_competing_requests_for_last_seat) ... ok
+test_TC021_concurrent_duplicate_requests (tests.test_transactions.TransactionAcceptanceTests.test_TC021_concurrent_duplicate_requests) ... ok
+test_TC021_event_cancellation_rolls_back_on_update_failure (tests.test_transactions.TransactionAcceptanceTests.test_TC021_event_cancellation_rolls_back_on_update_failure) ... ok
+test_TC021_registration_persists_after_connection_restart (tests.test_transactions.TransactionAcceptanceTests.test_TC021_registration_persists_after_connection_restart) ... ok
+test_TC025_backup_restore_exact_rows_and_no_overwrite (tests.test_transactions.TransactionAcceptanceTests.test_TC025_backup_restore_exact_rows_and_no_overwrite) ... ok
+
+----------------------------------------------------------------------
+Ran 39 tests in 1.285s
+
+OK
+Destroying test database for alias 'default' ('<PROJECT_ROOT>/test_db.sqlite3')...
+ OK
+System check identified no issues (0 silenced).
+LOCAL_TC019_SECONDS=[0.006819, 0.003535, 0.003864, 0.003375, 0.003734, 0.003525, 0.003288, 0.003387, 0.003731, 0.003652, 0.00353, 0.003761, 0.003286, 0.003388, 0.003249, 0.00311, 0.003322, 0.003676, 0.003822, 0.00363]

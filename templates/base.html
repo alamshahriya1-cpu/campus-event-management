@@ -1,0 +1,29 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <meta name="description" content="Discover campus events, reserve your place, and manage your participation.">
+  <title>{% block title %}Campus Events{% endblock %} · Dongshin University</title>
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  <script src="{% static 'js/app.js' %}" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="container-xl header-inner">
+  <a class="brand" href="{% url 'home' %}"><span class="brand-mark" aria-hidden="true">C<span>•</span></span><span>Campus<span class="brand-light">Events</span></span></a>
+  {% if user.is_authenticated %}
+  <nav aria-label="Main navigation">
+    {% if business_role == 'Organizer' %}<a href="{% url 'dashboard' %}" class="{% if nav == 'dashboard' %}active{% endif %}">Overview</a>{% endif %}
+    <a href="{% url 'catalog' %}" class="{% if nav == 'events' %}active{% endif %}">{% if business_role == 'Organizer' %}Manage events{% else %}Discover{% endif %}</a>
+    {% if business_role == 'Student' %}<a href="{% url 'my_registrations' %}" class="{% if nav == 'mine' %}active{% endif %}">My registrations</a>{% endif %}
+  </nav>
+  <div class="account-menu"><span class="role-label">{{ business_role }}</span><span class="account-name">{{ user.first_name|default:user.username }}</span><form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="text-button" type="submit">Sign out</button></form></div>
+  {% else %}<span class="university-label">DONGSHIN UNIVERSITY</span>{% endif %}
+</div></header>
+<main id="main" class="container-xl main-content">{% block content %}{% endblock %}</main>
+<footer class="site-footer"><div class="container-xl"><span>Campus Events · Dongshin University</span><span>All times in Korea Standard Time (KST · UTC+9)</span></div></footer>
+<div id="feedback" class="feedback" role="alert" aria-live="assertive" hidden></div>
+{% block scripts %}{% endblock %}
+</body></html>
