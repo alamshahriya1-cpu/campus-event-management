@@ -1,10 +1,10 @@
 # Organizer user management
 
-Updated **18 November 2026**. This SRS/RTM addendum records FR019–FR025 and
-the revised FR020 acceptance criteria. The submitted **29 October baseline**
-is retained. Student creation, ID-based login, access controls, and unused-account
-deletion are implemented locally. Windows and hosted acceptance of the combined
-update remains pending.
+Updated **18 November 2026**. FR019–FR025 and revised ID editing are now
+integrated into [SRS 2.0](../srs/SRS.pdf) and the [current RTM](../rtm/RTM.xlsx).
+The original submitted baseline is archived. The host pulled the combined account
+update, and the team reported successful live deletion. Exact current 110-test
+Windows/host transcripts and the complete browser acceptance matrix were not supplied.
 
 ## Student accounts
 
@@ -129,8 +129,7 @@ registration, concurrency, and backup regressions. See the earlier
 `makemigrations --check --dry-run` reported no changes.
 
 The prior 62-test version passed on Windows and PythonAnywhere. Those historical
-runs do not verify this 110-test version. Browser rendering of the new forms and
-Windows/host testing remain pending; no new live deployment is claimed.
+runs do not verify this 110-test version. The host update and successful live deletion were subsequently reported by the team (E08–E09). Exact current Windows/host test transcripts and the full browser acceptance matrix remain unrecorded.
 
 ## Installation and manual acceptance
 

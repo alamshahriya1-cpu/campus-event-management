@@ -1,82 +1,73 @@
-# Requirement implementation status
+# Requirements implementation and evidence status
 
-Evidence date: **18 November 2026**. The submitted SRS/RTM retain their
-**29 October 2026** baseline. This supplement records implementation and observed
-verification; it does not certify professor acceptance.
+Revision **2.0**, reviewed **18 November 2026**, against application commit
+`b3d900f4ac7c516c086708305f53ebfdebd0422d`.
 
-**Live application: https://alamshahriya1.pythonanywhere.com/**
+The main [SRS](../srs/SRS.pdf), [RTM](../rtm/RTM.xlsx) and
+[diagrams](../diagrams/System_Diagrams.pdf) now include the current account
+features. The unchanged submitted baseline is [archived](../archive/2026-10-29-baseline/).
 
-All 18 baseline functional requirements and seven user-management extension
-requirements have implementations and passing automated checks. The latest
-**110-test suite passed on Linux**. The previous **62-test version passed on
-Windows and PythonAnywhere**; the new version awaits those runs and deployment. Hosted browser
-screenshots confirm the specific actions identified below. Remaining acceptance
-is retained in the [CSV source mapping](IMPLEMENTATION_STATUS.csv),
-[hosted verification record](HOSTED_VERIFICATION.md), and
-[test report](TEST_REPORT.md).
+| Measure | Complete / total | Percentage |
+| --- | ---: | ---: |
+| Original functional requirements | 18 / 18 | 100.0% |
+| Added account requirements | 7 / 7 | 100.0% |
+| Current functional requirements | 25 / 25 | 100.0% |
+| Non-functional requirements | 2 / 7 | 28.6% |
+| Original total scope | 20 / 25 | 80.0% |
+| Current total scope | 27 / 32 | 84.4% |
 
-| Requirement | Feature | Test ID | Current evidence |
-| --- | --- | --- | --- |
-| FR001 | Authentication | TC001 | Automated tests passed; hosted sign-in observed |
-| FR002 | Sign-out | TC002 | Automated tests passed |
-| FR003 | Roles and ownership | TC003 | Automated tests passed; hosted role views observed |
-| FR004 | Create Draft | TC004 | Automated tests passed; Windows draft creation observed |
-| FR005 | Controlled edits | TC005 | Automated tests passed |
-| FR006 | Publication | TC006 | Automated tests passed; Windows publication observed |
-| FR007 | Catalog search/filter | TC007 | Automated tests passed |
-| FR008 | Event details/privacy | TC008 | Automated tests passed |
-| FR009 | Atomic seat allocation | TC009 | Automated tests passed; hosted capacity preserved in promotion |
-| FR010 | Duplicate prevention | TC010 | Automated tests passed |
-| FR011 | Personal history/rank | TC011 | Automated tests passed; hosted personal history observed |
-| FR012 | Cancel and rejoin | TC012 | Automated tests passed; hosted cancellation passed |
-| FR013 | FIFO promotion | TC013 | Automated tests passed; hosted promotion passed |
-| FR014 | Cancel event | TC014 | Automated tests passed |
-| FR015 | Organizer roster | TC015 | Automated tests passed; hosted roster observed |
-| FR016 | Attendance/audit | TC016 | Automated tests passed; hosted attendance marking passed |
-| FR017 | Dashboard counts | TC017 | Automated tests passed; initial hosted totals observed |
-| FR018 | Backend validation | TC018 | Automated tests passed |
-| FR019 | Student account search and access | TC026 | Extension - automated tests passed; hosted list observed |
-| FR020 | Student detail editing (revised ID synchronization) | TC027, TC030 | Local tests passed; previous hosted name edit observed |
-| FR021 | Student password resets | TC028 | Extension - automated tests passed; manual reset acceptance pending |
-| FR022 | Organizer student creation | TC029 | Implemented locally - 110-test suite passed; host acceptance pending |
-| FR023 | Student ID login | TC030 | Implemented locally - preservation and login tests passed; host acceptance pending |
-| FR024 | Student deactivation/reactivation | TC031 | Implemented locally - login/session and record-preservation checks passed; host acceptance pending |
-| FR025 | Delete unused student account | TC032 | Implemented locally - confirmation, linked-record protection, permissions, and rollback checks passed; host acceptance pending |
-| NFR001 | Response time | TC019 | Partial - in-process benchmark only |
-| NFR002 | Security configuration | TC020 | Partial - production configuration and public HTTPS checked |
-| NFR003 | Integrity and persistence | TC021 | Partial - transaction tests and hosted saved-state checks passed |
-| NFR004 | Browser/mobile usability | TC022 | Partial - desktop evidence and team-reported phone checks; full matrix pending |
-| NFR005 | Maintainable setup | TC023 | Implemented - Windows and hosted setup verified |
-| NFR006 | Free live deployment | TC024 | Deployed - evaluator acceptance pending |
-| NFR007 | Backup and restore | TC025 | Verified by team report - demonstration backup restored locally and compared |
+Verified means complete under the documented evidence rule, not professor
+sign-off. Each requirement has equal weight; Partial receives no full-completion
+credit. Functional rows use inspected source and automated checks. Browser,
+hosted security, performance and evaluator criteria are assessed separately.
+The saved Linux test result is **110/110 passed in 3.087 s**; this is a separate
+test-pass metric. NFR007 accepts the team's reported restore comparison.
 
-The new requirements and revised FR020 criteria are specified in
-[USER_MANAGEMENT.md](USER_MANAGEMENT.md). The original SRS/RTM baseline is
-unchanged; this supplement now maps 32 requirements (25 FR and 7 NFR).
+The host pulled the account update after a private backup, and the team reported
+successful live deletion. An exact new Windows/host 110-test transcript was not
+supplied. See the [completion report](../review/COMPLETION_REPORT.pdf),
+[evidence register](../review/requirements.json) and
+[remaining acceptance record](../review/ACCEPTANCE_RECORD.md).
 
-## Outstanding acceptance
+| ID | Feature | Status | Test family | Evidence |
+| --- | --- | --- | --- | --- |
+| FR001 | Authentication | Verified | TC001 | E01, E02; E05 |
+| FR002 | Sign-out | Verified | TC002 | E01, E02 |
+| FR003 | Roles and ownership | Verified | TC003 | E01, E02; E05 |
+| FR004 | Create a draft event | Verified | TC004 | E01, E02 |
+| FR005 | Controlled event editing | Verified | TC005 | E01, E02 |
+| FR006 | Publish an event | Verified | TC006 | E01, E02 |
+| FR007 | Browse and filter events | Verified | TC007 | E01, E02 |
+| FR008 | Event details and privacy | Verified | TC008 | E01, E02 |
+| FR009 | Atomic seat allocation | Verified | TC009 | E01, E02 |
+| FR010 | Prevent duplicate registrations | Verified | TC010 | E01, E02 |
+| FR011 | Personal history and queue rank | Verified | TC011 | E01, E02; E05 |
+| FR012 | Cancel and rejoin | Verified | TC012 | E01, E02; E05 |
+| FR013 | FIFO waitlist promotion | Verified | TC013 | E01, E02; E05 |
+| FR014 | Cancel an event | Verified | TC014 | E01, E02 |
+| FR015 | Organizer participant roster | Verified | TC015 | E01, E02; E05 |
+| FR016 | Attendance and audit | Verified | TC016 | E01, E02; E05 |
+| FR017 | Organizer dashboard | Verified | TC017 | E01, E02; E05 |
+| FR018 | Server validation | Verified | TC018 | E01, E02 |
+| FR019 | Search student accounts | Verified | TC026 | E01, E02; E05 |
+| FR020 | Edit student details | Verified | TC027, TC030 | E01, E02; E05, E08 |
+| FR021 | Reset student passwords | Verified | TC028 | E01, E02 |
+| FR022 | Create student accounts | Verified | TC029 | E01, E02; E08 |
+| FR023 | Use Student ID for login | Verified | TC030 | E01, E02; E08 |
+| FR024 | Deactivate and reactivate | Verified | TC031 | E01, E02; E08 |
+| FR025 | Delete an unused student | Verified | TC032 | E01, E02; E08, E09 |
+| NFR001 | Response time | Partial | TC019 | E02 |
+| NFR002 | Deployed security | Partial | TC020 | E02, E04, E05 |
+| NFR003 | Integrity and persistence | Partial | TC021 | E02, E05 |
+| NFR004 | Browser and mobile usability | Partial | TC022 | E02, E05, E06 |
+| NFR005 | Maintainable setup | Verified | TC023 | E01, E02, E03, E04 |
+| NFR006 | Live deployment and evaluator access | Partial | TC024 | E04, E05, E08, E09 |
+| NFR007 | Backup and restore | Verified | TC025 | E02, E07, E08 |
 
-Install and verify the combined student-account patch on Windows and
-PythonAnywhere, following [STUDENT_ACCOUNT_CONTROLS.md](STUDENT_ACCOUNT_CONTROLS.md).
-Earlier deployment evidence does not certify the new behavior.
+## Remaining non-functional acceptance
 
-
-1. Complete remaining hosted journeys and direct Student access-denial cases.
-   Record the password-reset and old-session invalidation sequence separately.
-2. Record the full Chrome, Edge, and 390px/mobile browser matrix, including versions.
-3. Verify saved registrations and attendance after a full Web-app restart and
-   from a separate session/device.
-4. Measure NFR001 through the actual HTTPS URL with the baseline dataset and
-   connection details; retain the private recovery copy from the team-reported NFR007 exercise.
-5. Share private Student/Organizer access with the professor and record independent
-   evaluation. The free-app expiry was observed as **18 December 2026**; recheck
-   and extend it before assessment.
-
-The source containing the logo and user-management changes was uploaded as
-`6ff589484c6c09a2d1502517bd7c3717d96b01b1`. The current public commit has no
-GitHub Actions workflow, so remote CI is not claimed. The Windows application
-was started manually; batch-launcher execution remains unverified.
-
-A requirement stays partial where its complete acceptance criteria have not
-been demonstrated. Passing automated tests, successful hosting, and professor
-acceptance are recorded as distinct evidence.
+- **NFR001 (TC019):** Measure 20 warm requests through the deployed URL using 30 events/300 registrations; record environment and show at least 19 below 3 seconds.
+- **NFR002 (TC020):** Record current-release hosted Student direct-URL denial and the deployed security checklist, without publishing secrets.
+- **NFR003 (TC021):** Compare registrations, statuses, queue and attendance before and after a full PythonAnywhere application reload/restart using a separate session.
+- **NFR004 (TC022):** Record Chrome and Edge versions and a 390-pixel viewport; complete core flows and the new account forms with readable controls, errors and timezone labels.
+- **NFR006 (TC024):** Give the professor private Student and Organizer access; record independent evaluator flows/reload persistence and recheck hosting expiry before evaluation.

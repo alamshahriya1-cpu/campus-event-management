@@ -1,0 +1,1934 @@
+{
+  "version": "2.0",
+  "date": "2026-11-18",
+  "baseline_date": "2026-10-29",
+  "source_commit": "b3d900f4ac7c516c086708305f53ebfdebd0422d",
+  "repository": "https://github.com/alamshahriya1-cpu/campus-event-management",
+  "live_url": "https://alamshahriya1.pythonanywhere.com/",
+  "requirements": [
+    {
+      "Req. ID": "FR001",
+      "Requirement Description": "The system shall authenticate active Student and Organizer accounts before granting access to protected pages or APIs. Students use their saved login identifier; new and updated students use their Student ID under FR023.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC001",
+      "Module": "Authentication",
+      "Database Entity": "User, Session",
+      "Test Case ID": "TC001",
+      "Acceptance Criteria": "A valid active account signs in; an incorrect password or inactive account is rejected. Protected pages redirect anonymous users to sign-in; protected APIs return 401.",
+      "Status": "Verified",
+      "Title": "Authentication",
+      "Scope": "Original",
+      "SRS Section": "3.2.1",
+      "Diagram IDs": "D01, D02, D08",
+      "Source Files": "accounts/forms.py; accounts/permissions.py; common/middleware.py",
+      "Evidence IDs": "E01, E02; E05",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC001_anonymous_pages_and_apis",
+        "tests/test_application.py::test_TC001_valid_invalid_and_inactive_login",
+        "tests/test_application.py::test_TC001_invalid_or_multiple_roles_cannot_sign_in"
+      ]
+    },
+    {
+      "Req. ID": "FR002",
+      "Requirement Description": "The system shall terminate the current session when a signed-in user submits the sign-out action.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC001",
+      "Module": "Authentication",
+      "Database Entity": "Session",
+      "Test Case ID": "TC002",
+      "Acceptance Criteria": "After sign-out, opening a protected URL requires authentication again. Reusing the previous session cannot retrieve protected API data.",
+      "Status": "Verified",
+      "Title": "Sign-out",
+      "Scope": "Original",
+      "SRS Section": "3.2.2",
+      "Diagram IDs": "D02",
+      "Source Files": "config/urls.py; templates/base.html",
+      "Evidence IDs": "E01, E02",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC002_logout_invalidates_previous_session"
+      ]
+    },
+    {
+      "Req. ID": "FR003",
+      "Requirement Description": "The backend shall limit event management, participant lists, attendance, reporting and student account administration to Organizers. Students shall access only their own registration records.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC002",
+      "Module": "Authorization",
+      "Database Entity": "User, Group, Event, Registration",
+      "Test Case ID": "TC003",
+      "Acceptance Criteria": "Direct Student requests to Organizer APIs return 403. A Student cannot view or cancel another student’s registration, even by changing an ID in the request. Organizers can manage all campus events.",
+      "Status": "Verified",
+      "Title": "Roles and ownership",
+      "Scope": "Original",
+      "SRS Section": "3.2.3",
+      "Diagram IDs": "D01, D02, D08",
+      "Source Files": "accounts/permissions.py; events/views.py; registrations/views.py",
+      "Evidence IDs": "E01, E02; E05",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC003_student_cannot_access_organizer_endpoints",
+        "tests/test_application.py::test_TC003_other_students_registration_is_not_accessible"
+      ]
+    },
+    {
+      "Req. ID": "FR004",
+      "Requirement Description": "An Organizer shall create a Draft event containing title, description, category, venue, start/end times, registration closing time, and a positive integer seat capacity.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC003",
+      "Module": "Event management",
+      "Database Entity": "Event, User",
+      "Test Case ID": "TC004",
+      "Acceptance Criteria": "A valid draft is saved with creator, timestamps, and unique ID. It does not appear in the Student catalog. Invalid capacity or time ordering prevents creation.",
+      "Status": "Verified",
+      "Title": "Create a draft event",
+      "Scope": "Original",
+      "SRS Section": "3.2.4",
+      "Diagram IDs": "D02, D03, D06",
+      "Source Files": "events/models.py; events/services.py",
+      "Evidence IDs": "E01, E02",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC004_create_draft_and_hide_from_students",
+        "tests/test_application.py::test_TC004_invalid_capacity_and_time_never_create"
+      ]
+    },
+    {
+      "Req. ID": "FR005",
+      "Requirement Description": "Organizers shall edit all fields of Draft events. After publication and before the start, only title, description, category, and venue may change; capacity and all times shall remain fixed. Cancelled or started events shall be read-only except attendance.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC003",
+      "Module": "Event management",
+      "Database Entity": "Event",
+      "Test Case ID": "TC005",
+      "Acceptance Criteria": "Draft changes persist. Changing a published capacity or time is rejected. Permitted descriptive edits appear in event details. Edits to a Cancelled or started event fail without altering its data.",
+      "Status": "Verified",
+      "Title": "Controlled event editing",
+      "Scope": "Original",
+      "SRS Section": "3.2.5",
+      "Diagram IDs": "D02, D06",
+      "Source Files": "events/services.py",
+      "Evidence IDs": "E01, E02",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC005_edit_draft_and_published_rules",
+        "tests/test_application.py::test_TC005_started_and_cancelled_events_read_only"
+      ]
+    },
+    {
+      "Req. ID": "FR006",
+      "Requirement Description": "An Organizer shall publish a valid Draft only when the registration closing time is still in the future. Publication shall change its state to Published and make it visible to Students.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC004",
+      "Module": "Event lifecycle",
+      "Database Entity": "Event",
+      "Test Case ID": "TC006",
+      "Acceptance Criteria": "A valid draft becomes visible once published. Publication with a passed closing time is rejected. Repeated publication does not create another event or registration.",
+      "Status": "Verified",
+      "Title": "Publish an event",
+      "Scope": "Original",
+      "SRS Section": "3.2.6",
+      "Diagram IDs": "D02, D06",
+      "Source Files": "events/services.py",
+      "Evidence IDs": "E01, E02",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC006_publish_once_and_reject_expired_draft"
+      ]
+    },
+    {
+      "Req. ID": "FR007",
+      "Requirement Description": "Students shall browse Published events that have not started, search by title/venue, and filter by category and event date. Draft and Cancelled events shall not appear in this catalog.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC005",
+      "Module": "Event catalog",
+      "Database Entity": "Event",
+      "Test Case ID": "TC007",
+      "Acceptance Criteria": "Known title and venue searches return the correct events. Combined filters return matching future events only. No-match searches show an empty result without an error.",
+      "Status": "Verified",
+      "Title": "Browse and filter events",
+      "Scope": "Original",
+      "SRS Section": "3.2.7",
+      "Diagram IDs": "D02",
+      "Source Files": "events/selectors.py; templates/events/catalog.html",
+      "Evidence IDs": "E01, E02",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC007_search_category_date_and_empty_filters"
+      ]
+    },
+    {
+      "Req. ID": "FR008",
+      "Requirement Description": "Event details shall show description, venue, dates, capacity, remaining seats, registration-open status, and the signed-in student’s current registration status without revealing participant identities.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC005",
+      "Module": "Event details",
+      "Database Entity": "Event, Registration",
+      "Test Case ID": "TC008",
+      "Acceptance Criteria": "For capacity 3 and 2 Confirmed registrations, remaining seats equals 1. Closed registration is clearly indicated. No other student’s name, ID, or registration record is returned.",
+      "Status": "Verified",
+      "Title": "Event details and privacy",
+      "Scope": "Original",
+      "SRS Section": "3.2.8",
+      "Diagram IDs": "D02, D03",
+      "Source Files": "events/selectors.py; templates/events/detail.html",
+      "Evidence IDs": "E01, E02",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC008_availability_and_no_participant_identity"
+      ]
+    },
+    {
+      "Req. ID": "FR009",
+      "Requirement Description": "Before registration closes, the backend shall register a Student as Confirmed when a seat is available and no earlier waitlisted student is entitled to it; otherwise it shall create a Waitlisted registration. Allocation shall be atomic.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC006",
+      "Module": "Registration service",
+      "Database Entity": "Event, Registration",
+      "Test Case ID": "TC009",
+      "Acceptance Criteria": "With capacity 2, the first two distinct students are Confirmed and the third is Waitlisted. A Cancelled event or a request at/after closing time is rejected. Competing requests for the last seat never overbook.",
+      "Status": "Verified",
+      "Title": "Atomic seat allocation",
+      "Scope": "Original",
+      "SRS Section": "3.2.9",
+      "Diagram IDs": "D03, D04",
+      "Source Files": "registrations/services.py; events/services.py",
+      "Evidence IDs": "E01, E02",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC009_capacity_allocation_and_no_GET_mutations",
+        "tests/test_application.py::test_TC009_deadline_equality_rejected"
+      ]
+    },
+    {
+      "Req. ID": "FR010",
+      "Requirement Description": "The system shall maintain at most one registration record per student/event pair. Repeated registration while Confirmed or Waitlisted shall return the existing status without allocating another seat or queue position.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC006",
+      "Module": "Registration service",
+      "Database Entity": "Event, Registration",
+      "Test Case ID": "TC010",
+      "Acceptance Criteria": "Double-clicking Register and retrying the same request create one record and one allocation only. A database uniqueness constraint prevents a second student/event record.",
+      "Status": "Verified",
+      "Title": "Prevent duplicate registrations",
+      "Scope": "Original",
+      "SRS Section": "3.2.10",
+      "Diagram IDs": "D03, D04",
+      "Source Files": "registrations/models.py; registrations/services.py",
+      "Evidence IDs": "E01, E02",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC010_retries_and_database_uniqueness"
+      ]
+    },
+    {
+      "Req. ID": "FR011",
+      "Requirement Description": "Students shall view their own Confirmed, Waitlisted, and Cancelled registrations, event details, attendance status, and a current waitlist rank when relevant. History shall remain available after the event.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC007",
+      "Module": "Student dashboard",
+      "Database Entity": "Event, Registration",
+      "Test Case ID": "TC011",
+      "Acceptance Criteria": "Student A sees only A’s registrations. The earliest active waitlisted student has rank 1. After a promotion or waitlist cancellation, ranks refresh correctly on the next request.",
+      "Status": "Verified",
+      "Title": "Personal history and queue rank",
+      "Scope": "Original",
+      "SRS Section": "3.2.11",
+      "Diagram IDs": "D02, D03",
+      "Source Files": "registrations/views.py; events/selectors.py; templates/registrations/mine.html",
+      "Evidence IDs": "E01, E02; E05",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC011_personal_history_and_queue_rank"
+      ]
+    },
+    {
+      "Req. ID": "FR012",
+      "Requirement Description": "Before registration closes, a Student shall cancel their own Confirmed or Waitlisted registration. Repeating cancellation shall have no further effect. Rejoining while registration is open shall reuse the record with a new queue timestamp.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC008",
+      "Module": "Cancellation service",
+      "Database Entity": "Event, Registration",
+      "Test Case ID": "TC012",
+      "Acceptance Criteria": "A cancellation changes the record to Cancelled. Repeating it frees no additional seat. Requests at/after closing time fail. Rejoining does not reclaim the student’s old queue priority.",
+      "Status": "Verified",
+      "Title": "Cancel and rejoin",
+      "Scope": "Original",
+      "SRS Section": "3.2.12",
+      "Diagram IDs": "D04, D05",
+      "Source Files": "registrations/services.py",
+      "Evidence IDs": "E01, E02; E05",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC012_repeated_cancel_and_rejoin_new_priority",
+        "tests/test_application.py::test_TC012_cancel_at_deadline_does_not_change_state"
+      ]
+    },
+    {
+      "Req. ID": "FR013",
+      "Requirement Description": "When a Confirmed registration is cancelled before closing, the backend shall promote the earliest active Waitlisted registration within the same transaction. Queue order shall be joined_at then registration ID. Active here means registration status Waitlisted, not the account is_active flag.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC008",
+      "Module": "Waitlist service",
+      "Database Entity": "Event, Registration",
+      "Test Case ID": "TC013",
+      "Acceptance Criteria": "For queue A then B, cancelling a Confirmed place promotes A only and leaves B at rank 1. Cancelling a Waitlisted record does not promote anyone. A failed transaction leaves both cancellation and promotion unchanged.",
+      "Status": "Verified",
+      "Title": "FIFO waitlist promotion",
+      "Scope": "Original",
+      "SRS Section": "3.2.13",
+      "Diagram IDs": "D03, D05",
+      "Source Files": "registrations/services.py",
+      "Evidence IDs": "E01, E02; E05",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC013_FIFO_promotion_and_idempotent_cancellation",
+        "tests/test_application.py::test_TC013_equal_timestamps_use_id_tiebreaker",
+        "tests/test_application.py::test_TC013_promotion_failure_rolls_back_cancellation",
+        "tests/test_application.py::test_TC013_cancel_response_does_not_reveal_promoted_student"
+      ]
+    },
+    {
+      "Req. ID": "FR014",
+      "Requirement Description": "Before an event starts, an Organizer shall cancel a Draft or Published event with a nonblank reason. All active registrations shall become Cancelled in the same transaction; no waitlist promotion shall occur.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC009",
+      "Module": "Event lifecycle",
+      "Database Entity": "Event, Registration",
+      "Test Case ID": "TC014",
+      "Acceptance Criteria": "Cancelling an event updates all Confirmed and Waitlisted records, preserves history, exposes the event cancellation reason in personal details, and prevents new registration. Repeating the action has no additional effect.",
+      "Status": "Verified",
+      "Title": "Cancel an event",
+      "Scope": "Original",
+      "SRS Section": "3.2.14",
+      "Diagram IDs": "D03, D06",
+      "Source Files": "events/services.py",
+      "Evidence IDs": "E01, E02",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC014_event_cancellation_preserves_history_no_promotion",
+        "tests/test_application.py::test_TC014_blank_reason_and_started_cancellation_rejected"
+      ]
+    },
+    {
+      "Req. ID": "FR015",
+      "Requirement Description": "Organizers shall view an event’s registrations by status, including student name, student identifier, queue order, and attendance. This information shall be unavailable to Student accounts.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC010",
+      "Module": "Organizer roster",
+      "Database Entity": "Event, Registration, User",
+      "Test Case ID": "TC015",
+      "Acceptance Criteria": "Roster counts and statuses match the saved registrations. Waitlisted rows appear in queue order. A Student API request cannot obtain participant identities.",
+      "Status": "Verified",
+      "Title": "Organizer participant roster",
+      "Scope": "Original",
+      "SRS Section": "3.2.15",
+      "Diagram IDs": "D02, D03",
+      "Source Files": "registrations/views.py; templates/registrations/roster.html",
+      "Evidence IDs": "E01, E02; E05",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC015_roster_filter_identity_and_queue_order"
+      ]
+    },
+    {
+      "Req. ID": "FR016",
+      "Requirement Description": "From the event start onward, Organizers shall mark or clear attendance only for Confirmed registrations of a non-Cancelled event. The system shall store the latest marking actor and time.",
+      "Requirement Type": "Functional",
+      "Priority": "Medium",
+      "Use Case ID": "UC011",
+      "Module": "Attendance service",
+      "Database Entity": "Event, Registration",
+      "Test Case ID": "TC016",
+      "Acceptance Criteria": "Marking a Confirmed attendee records attendance. Repeating the same action does not increase attendee count. Waitlisted/Cancelled registrations and pre-start marking are rejected. An authorized correction updates the result.",
+      "Status": "Verified",
+      "Title": "Attendance and audit",
+      "Scope": "Original",
+      "SRS Section": "3.2.16",
+      "Diagram IDs": "D02, D03, D06",
+      "Source Files": "registrations/services.py",
+      "Evidence IDs": "E01, E02; E05",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC016_attendance_boundary_audit_and_correction"
+      ]
+    },
+    {
+      "Req. ID": "FR017",
+      "Requirement Description": "The Organizer dashboard shall show upcoming Published event count and their Confirmed/Waitlisted totals, attendance across all events, and per-event registration/attendance counts.",
+      "Requirement Type": "Functional",
+      "Priority": "Medium",
+      "Use Case ID": "UC012",
+      "Module": "Reporting",
+      "Database Entity": "Event, Registration",
+      "Test Case ID": "TC017",
+      "Acceptance Criteria": "Counts match seeded records. Draft/Cancelled/started events are excluded from upcoming totals. Event-level attendance counts equal the number of marked Confirmed registrations, not the number of marking requests.",
+      "Status": "Verified",
+      "Title": "Organizer dashboard",
+      "Scope": "Original",
+      "SRS Section": "3.2.17",
+      "Diagram IDs": "D01, D02",
+      "Source Files": "reports/views.py; templates/reports/dashboard.html",
+      "Evidence IDs": "E01, E02; E05",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC017_summary_excludes_draft_cancelled_and_started"
+      ]
+    },
+    {
+      "Req. ID": "FR018",
+      "Requirement Description": "The backend shall validate types, required fields, lengths, referenced IDs, role/ownership, event state and deadlines using server time, including the student account forms. Invalid requests shall not partially change saved data.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC003–UC018",
+      "Module": "Validation",
+      "Database Entity": "Event, Registration",
+      "Test Case ID": "TC018",
+      "Acceptance Criteria": "Direct API calls with blank fields, fractional capacity, invalid time order, unknown IDs, or tampered student/status fields fail or ignore nonwritable fields as specified, without unauthorized changes. Browser-only checks are insufficient.",
+      "Status": "Verified",
+      "Title": "Server validation",
+      "Scope": "Original",
+      "SRS Section": "3.2.18",
+      "Diagram IDs": "D01, D04, D05, D06, D09, D10",
+      "Source Files": "common/api.py; events/services.py; registrations/services.py",
+      "Evidence IDs": "E01, E02",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC018_malformed_and_tampered_requests_rejected",
+        "tests/test_application.py::test_TC018_lock_failure_returns_retryable_error"
+      ]
+    },
+    {
+      "Req. ID": "FR019",
+      "Requirement Description": "Organizers shall search and browse eligible Student accounts by name, username, Student ID or email.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC013",
+      "Module": "Account management",
+      "Database Entity": "User, StudentProfile, Group",
+      "Test Case ID": "TC026",
+      "Acceptance Criteria": "Only Organizers can access the list. Search and reset return matching accounts; pagination uses 25 accounts per page. Organizer, staff, superuser, mixed-role and missing-profile accounts are excluded.",
+      "Status": "Verified",
+      "Title": "Search student accounts",
+      "Scope": "Added",
+      "SRS Section": "3.2.19",
+      "Diagram IDs": "D08",
+      "Source Files": "accounts/user_views.py; templates/accounts/user_list.html",
+      "Evidence IDs": "E01, E02; E05",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_user_management.py",
+      "Automated Test Methods": [
+        "tests/test_user_management.py::test_TC026_anonymous_and_students_cannot_access_management",
+        "tests/test_user_management.py::test_TC026_navigation_is_organizer_only",
+        "tests/test_user_management.py::test_TC026_search_name_username_id_and_email",
+        "tests/test_user_management.py::test_TC026_search_limits_and_pagination",
+        "tests/test_user_management.py::test_TC026_organizers_and_privileged_or_invalid_students_are_protected",
+        "tests/test_user_management.py::test_TC026_sensitive_pages_are_not_cached_and_unknown_ids_are_404"
+      ]
+    },
+    {
+      "Req. ID": "FR020",
+      "Requirement Description": "Organizers shall edit Student first name, last name, Student ID and email, synchronizing the login username to the saved Student ID.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC014",
+      "Module": "Account management",
+      "Database Entity": "User, StudentProfile",
+      "Test Case ID": "TC027, TC030",
+      "Acceptance Criteria": "First name and Student ID are required; invalid lengths, email and duplicate ID/login are rejected. User/profile writes commit together. Preserve internal user ID, password, role, active state, registrations, queue order and attendance. Existing sessions remain valid after an ID-only change.",
+      "Status": "Verified",
+      "Title": "Edit student details",
+      "Scope": "Added",
+      "SRS Section": "3.2.20",
+      "Diagram IDs": "D03, D08, D10",
+      "Source Files": "accounts/user_forms.py; accounts/student_ids.py; accounts/user_views.py; tests/test_user_management.py; tests/test_student_accounts.py",
+      "Evidence IDs": "E01, E02; E05, E08",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_student_accounts.py; tests/test_user_management.py",
+      "Automated Test Methods": [
+        "tests/test_student_accounts.py::test_TC030_existing_account_gets_id_login_without_losing_records",
+        "tests/test_student_accounts.py::test_TC030_id_change_rejects_login_collisions_and_invalid_format",
+        "tests/test_student_accounts.py::test_TC030_failed_profile_write_rolls_back_login_change",
+        "tests/test_student_accounts.py::test_TC030_edit_does_not_reactivate_student",
+        "tests/test_student_accounts.py::test_TC030_command_provisions_ids_and_preserves_organizer_login",
+        "tests/test_student_accounts.py::test_TC030_command_rejects_mismatch_and_reserved_ids_before_password",
+        "tests/test_student_accounts.py::test_TC030_fresh_demo_uses_ids_and_repeat_seeding_preserves_records",
+        "tests/test_student_accounts.py::test_TC030_seed_refuses_to_replace_legacy_accounts",
+        "tests/test_user_management.py::test_TC027_saves_details_and_preserves_registration_rows_and_password",
+        "tests/test_user_management.py::test_TC027_duplicate_id_is_rejected_without_partial_user_changes",
+        "tests/test_user_management.py::test_TC027_validation_rejects_blank_overlong_and_invalid_values",
+        "tests/test_user_management.py::test_TC027_optional_fields_and_trimmed_values",
+        "tests/test_user_management.py::test_TC027_tampered_privilege_and_identity_fields_are_rejected",
+        "tests/test_user_management.py::test_TC027_post_requires_csrf_and_other_write_methods_are_rejected",
+        "tests/test_user_management.py::test_TC027_get_requests_never_change_records",
+        "tests/test_user_management.py::test_TC027_integrity_failure_rolls_back_name_and_email",
+        "tests/test_user_management.py::test_TC027_database_lock_is_retryable_and_rolls_back",
+        "tests/test_user_management.py::test_TC027_names_and_search_text_are_html_escaped"
+      ]
+    },
+    {
+      "Req. ID": "FR021",
+      "Requirement Description": "Organizers shall reset an eligible Student account password using two matching, validated entries.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC015",
+      "Module": "Account management",
+      "Database Entity": "User, Session",
+      "Test Case ID": "TC028",
+      "Acceptance Criteria": "Store only a password hash and never redisplay the password. Reject weak or mismatched entries. The previous password and existing student sessions fail after reset; other users are unaffected and an inactive account stays inactive.",
+      "Status": "Verified",
+      "Title": "Reset student passwords",
+      "Scope": "Added",
+      "SRS Section": "3.2.21",
+      "Diagram IDs": "D08, D10",
+      "Source Files": "accounts/user_forms.py; accounts/user_views.py; templates/accounts/user_password.html",
+      "Evidence IDs": "E01, E02",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_user_management.py",
+      "Automated Test Methods": [
+        "tests/test_user_management.py::test_TC028_password_reset_invalidates_student_session_only",
+        "tests/test_user_management.py::test_TC028_weak_or_mismatched_passwords_do_not_change_account",
+        "tests/test_user_management.py::test_TC028_reset_rejects_privilege_fields_and_does_not_reactivate"
+      ]
+    },
+    {
+      "Req. ID": "FR022",
+      "Requirement Description": "Organizers shall create additional Student accounts through Manage users without a four-account limit.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC016",
+      "Module": "Account management",
+      "Database Entity": "User, StudentProfile, Group",
+      "Test Case ID": "TC029",
+      "Acceptance Criteria": "Require first name, unique Student ID and two matching validated passwords; last name/email are optional. Atomically create an active, nonstaff, nonsuperuser User, Student membership and profile with matching username/ID. Reject duplicate/replayed submissions without overwriting. Students and anonymous users cannot create accounts.",
+      "Status": "Verified",
+      "Title": "Create student accounts",
+      "Scope": "Added",
+      "SRS Section": "3.2.22",
+      "Diagram IDs": "D03, D08, D10",
+      "Source Files": "accounts/user_forms.py; accounts/user_views.py; templates/accounts/user_create.html; tests/test_student_accounts.py",
+      "Evidence IDs": "E01, E02; E08",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_student_accounts.py",
+      "Automated Test Methods": [
+        "tests/test_student_accounts.py::test_TC029_create_stores_hashed_password_and_fixed_student_role",
+        "tests/test_student_accounts.py::test_TC029_created_student_can_register_and_view_own_history",
+        "tests/test_student_accounts.py::test_TC029_only_active_single_role_organizers_can_create",
+        "tests/test_student_accounts.py::test_TC029_create_navigation_get_cache_and_method_boundaries",
+        "tests/test_student_accounts.py::test_TC029_creation_requires_csrf",
+        "tests/test_student_accounts.py::test_TC029_invalid_identity_fields_never_create_accounts",
+        "tests/test_student_accounts.py::test_TC029_duplicate_ids_and_any_existing_login_are_rejected",
+        "tests/test_student_accounts.py::test_TC029_privilege_identity_and_extra_fields_are_rejected",
+        "tests/test_student_accounts.py::test_TC029_password_validation_and_no_password_redisplay",
+        "tests/test_student_accounts.py::test_TC029_profile_failure_rolls_back_user_and_membership",
+        "tests/test_student_accounts.py::test_TC029_database_lock_is_retryable_without_partial_account",
+        "tests/test_student_accounts.py::test_TC029_duplicate_submit_and_more_than_thirty_accounts",
+        "tests/test_student_accounts.py::test_TC029_optional_contact_fields_and_trimmed_id"
+      ]
+    },
+    {
+      "Req. ID": "FR023",
+      "Requirement Description": "New and Organizer-updated Student accounts shall use their Student ID as the login username.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC001, UC014, UC016",
+      "Module": "Account identity",
+      "Database Entity": "User, StudentProfile",
+      "Test Case ID": "TC030",
+      "Acceptance Criteria": "Accept 1–20 ASCII letters/digits/hyphens/underscores, starting with a letter or digit; trim surrounding whitespace and preserve leading zeros/hyphens. Reject case-insensitive collisions with any existing username or Student ID. New ID login succeeds and the old username fails after change. Preserve password, internal identity, role, active state and related history; Organizer login is unchanged. Installation alone renames no existing account.",
+      "Status": "Verified",
+      "Title": "Use Student ID for login",
+      "Scope": "Added",
+      "SRS Section": "3.2.23",
+      "Diagram IDs": "D03, D08, D10",
+      "Source Files": "accounts/student_ids.py; accounts/user_forms.py; accounts/forms.py; accounts/management/commands/; tests/test_student_accounts.py",
+      "Evidence IDs": "E01, E02; E08",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_student_accounts.py",
+      "Automated Test Methods": [
+        "tests/test_student_accounts.py::test_TC030_existing_account_gets_id_login_without_losing_records",
+        "tests/test_student_accounts.py::test_TC030_id_change_rejects_login_collisions_and_invalid_format",
+        "tests/test_student_accounts.py::test_TC030_failed_profile_write_rolls_back_login_change",
+        "tests/test_student_accounts.py::test_TC030_edit_does_not_reactivate_student",
+        "tests/test_student_accounts.py::test_TC030_command_provisions_ids_and_preserves_organizer_login",
+        "tests/test_student_accounts.py::test_TC030_command_rejects_mismatch_and_reserved_ids_before_password",
+        "tests/test_student_accounts.py::test_TC030_fresh_demo_uses_ids_and_repeat_seeding_preserves_records",
+        "tests/test_student_accounts.py::test_TC030_seed_refuses_to_replace_legacy_accounts"
+      ]
+    },
+    {
+      "Req. ID": "FR024",
+      "Requirement Description": "Organizers shall explicitly deactivate or reactivate eligible Student accounts after confirmation.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC017",
+      "Module": "Account lifecycle",
+      "Database Entity": "User, Session, Registration",
+      "Test Case ID": "TC031",
+      "Acceptance Criteria": "GET only reviews; confirmed CSRF-protected POST sets an explicit active state. Inactive login fails. State transitions remove that student’s unexpired database sessions; reactivation requires fresh login with the unchanged password. Preserve other sessions and all account/event records. Repeating the current state is a no-op. Deactivation does not free a seat or remove waitlist eligibility.",
+      "Status": "Verified",
+      "Title": "Deactivate and reactivate",
+      "Scope": "Added",
+      "SRS Section": "3.2.24",
+      "Diagram IDs": "D03, D08, D09",
+      "Source Files": "accounts/user_views.py; accounts/user_forms.py; accounts/user_lifecycle.py; templates/accounts/user_action.html; tests/test_student_lifecycle.py",
+      "Evidence IDs": "E01, E02; E08",
+      "Verification": "Automated checks passed; source inspected",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_student_lifecycle.py",
+      "Automated Test Methods": [
+        "tests/test_student_lifecycle.py::test_TC031_edit_page_shows_current_access_action",
+        "tests/test_student_lifecycle.py::test_TC031_TC032_get_only_reviews_and_pages_are_not_cached",
+        "tests/test_student_lifecycle.py::test_TC031_TC032_anonymous_and_student_requests_are_rejected",
+        "tests/test_student_lifecycle.py::test_TC031_TC032_organizer_staff_and_invalid_targets_are_protected",
+        "tests/test_student_lifecycle.py::test_TC031_TC032_inactive_and_mixed_role_organizers_cannot_act",
+        "tests/test_student_lifecycle.py::test_TC031_TC032_csrf_and_supported_methods",
+        "tests/test_student_lifecycle.py::test_TC031_TC032_confirmation_and_unexpected_fields_are_rejected",
+        "tests/test_student_lifecycle.py::test_TC031_deactivation_blocks_login_and_existing_session_requests",
+        "tests/test_student_lifecycle.py::test_TC031_reactivation_requires_new_login_and_old_cookies_stay_invalid",
+        "tests/test_student_lifecycle.py::test_TC031_other_users_sessions_and_passwords_are_preserved",
+        "tests/test_student_lifecycle.py::test_TC031_access_changes_preserve_all_account_and_event_records",
+        "tests/test_student_lifecycle.py::test_TC031_waitlist_entry_keeps_position_and_remains_eligible",
+        "tests/test_student_lifecycle.py::test_TC031_repeated_requests_keep_explicit_state_without_signing_out_new_login",
+        "tests/test_student_lifecycle.py::test_TC031_session_failure_rolls_back_state_change",
+        "tests/test_student_lifecycle.py::test_TC031_busy_failure_returns_retryable_response_without_state_change"
+      ]
+    },
+    {
+      "Req. ID": "FR025",
+      "Requirement Description": "Organizers shall permanently delete only unused Student accounts after typing the exact current Student ID.",
+      "Requirement Type": "Functional",
+      "Priority": "High",
+      "Use Case ID": "UC018",
+      "Module": "Account lifecycle",
+      "Database Entity": "User, StudentProfile, Session, Event, Registration",
+      "Test Case ID": "TC032",
+      "Acceptance Criteria": "Reject any registration in any status, past-event history, attendance audit reference or event creator/canceller link. Recheck target eligibility and links within the write transaction. Exact, case-sensitive ID confirmation is required. Remove profile, user, membership and sessions atomically; errors roll back. Protect Organizer, staff, superuser and mixed-role accounts. Linked history is never cascaded.",
+      "Status": "Verified",
+      "Title": "Delete an unused student",
+      "Scope": "Added",
+      "SRS Section": "3.2.25",
+      "Diagram IDs": "D03, D08, D09",
+      "Source Files": "accounts/user_views.py; accounts/user_forms.py; accounts/user_lifecycle.py; templates/accounts/user_action.html; tests/test_student_lifecycle.py",
+      "Evidence IDs": "E01, E02; E08, E09",
+      "Verification": "Automated checks passed; source inspected; team reported successful live deletion after deployment",
+      "Remaining Acceptance": "No functional implementation gap identified. Complete the applicable hosted/browser demonstrations under NFR002, NFR004 and NFR006.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_student_lifecycle.py",
+      "Automated Test Methods": [
+        "tests/test_student_lifecycle.py::test_TC031_TC032_get_only_reviews_and_pages_are_not_cached",
+        "tests/test_student_lifecycle.py::test_TC031_TC032_anonymous_and_student_requests_are_rejected",
+        "tests/test_student_lifecycle.py::test_TC031_TC032_organizer_staff_and_invalid_targets_are_protected",
+        "tests/test_student_lifecycle.py::test_TC031_TC032_inactive_and_mixed_role_organizers_cannot_act",
+        "tests/test_student_lifecycle.py::test_TC031_TC032_csrf_and_supported_methods",
+        "tests/test_student_lifecycle.py::test_TC031_TC032_confirmation_and_unexpected_fields_are_rejected",
+        "tests/test_student_lifecycle.py::test_TC032_delete_unused_account_profile_and_sessions_only",
+        "tests/test_student_lifecycle.py::test_TC032_delete_inactive_unused_student",
+        "tests/test_student_lifecycle.py::test_TC032_deletion_requires_exact_current_id",
+        "tests/test_student_lifecycle.py::test_TC032_all_registration_statuses_block_deletion",
+        "tests/test_student_lifecycle.py::test_TC032_past_attendance_and_cancelled_events_still_block_deletion",
+        "tests/test_student_lifecycle.py::test_TC032_event_and_attendance_audit_references_block_deletion",
+        "tests/test_student_lifecycle.py::test_TC032_new_registration_after_confirmation_get_prevents_delete",
+        "tests/test_student_lifecycle.py::test_TC032_target_privilege_change_after_get_is_rechecked",
+        "tests/test_student_lifecycle.py::test_TC032_protected_delete_failure_restores_profile_and_sessions",
+        "tests/test_student_lifecycle.py::test_TC032_integrity_failure_does_not_partially_delete_account",
+        "tests/test_student_lifecycle.py::test_TC032_busy_failure_is_retryable_and_keeps_profile",
+        "tests/test_student_lifecycle.py::test_TC032_names_are_escaped_on_confirmation_pages"
+      ]
+    },
+    {
+      "Req. ID": "NFR001",
+      "Requirement Description": "With 30 events and 300 registrations, at least 19 of 20 sequential warm event-list requests shall finish within 3 seconds on the recorded test connection.",
+      "Requirement Type": "Non-Functional",
+      "Priority": "Medium",
+      "Use Case ID": "N/A",
+      "Module": "Backend queries",
+      "Database Entity": "Event, Registration",
+      "Test Case ID": "TC019",
+      "Acceptance Criteria": "Record 20 timings after a warm-up request with the stated dataset; at least 19 are under 3 seconds. Record browser/device, network, and hosting configuration.",
+      "Status": "Partial",
+      "Title": "Response time",
+      "Scope": "Original",
+      "SRS Section": "3.3.1",
+      "Diagram IDs": "D01",
+      "Source Files": "events/selectors.py; tests/test_application.py",
+      "Evidence IDs": "E02",
+      "Verification": "In-process benchmark: 20/20 warm requests passed; this omits browser/network time.",
+      "Remaining Acceptance": "Measure 20 warm requests through the deployed URL using 30 events/300 registrations; record environment and show at least 19 below 3 seconds.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC019_local_30_events_300_registrations"
+      ]
+    },
+    {
+      "Req. ID": "NFR002",
+      "Requirement Description": "The deployed application shall use HTTPS, hashed passwords, CSRF protection, escaped output, server authorization, secret configuration outside source control, and DEBUG disabled.",
+      "Requirement Type": "Non-Functional",
+      "Priority": "High",
+      "Use Case ID": "UC001, UC002",
+      "Module": "Authentication and deployment",
+      "Database Entity": "User, Session",
+      "Test Case ID": "TC020",
+      "Acceptance Criteria": "Missing-CSRF mutations are blocked; passwords are stored as hashes; HTML-like event text renders safely. Inspect deployment settings and verify protected access with a Student account.",
+      "Status": "Partial",
+      "Title": "Deployed security",
+      "Scope": "Original",
+      "SRS Section": "3.3.2",
+      "Diagram IDs": "D01, D02, D08",
+      "Source Files": "config/settings.py; common/api.py; accounts/permissions.py",
+      "Evidence IDs": "E02, E04, E05",
+      "Verification": "Automated CSRF/authorization/hash/escaping checks; earlier production check --deploy and public HTTPS/header inspection.",
+      "Remaining Acceptance": "Record current-release hosted Student direct-URL denial and the deployed security checklist, without publishing secrets.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC020_csrf_missing_and_valid_token",
+        "tests/test_application.py::test_TC020_escaped_text_and_hash_storage"
+      ]
+    },
+    {
+      "Req. ID": "NFR003",
+      "Requirement Description": "Confirmed counts shall never exceed capacity. Each student/event pair shall remain unique, and related state changes shall commit together. Successful records shall persist across browser reload and application restart.",
+      "Requirement Type": "Non-Functional",
+      "Priority": "High",
+      "Use Case ID": "UC006, UC008, UC009",
+      "Module": "Database transactions",
+      "Database Entity": "Event, Registration",
+      "Test Case ID": "TC021",
+      "Acceptance Criteria": "Competing last-seat requests, duplicate registration, forced promotion failure, and event cancellation preserve all invariants. Restart retains registrations and statuses; no half-completed cancellation/promotion remains.",
+      "Status": "Partial",
+      "Title": "Integrity and persistence",
+      "Scope": "Original",
+      "SRS Section": "3.3.3",
+      "Diagram IDs": "D03, D04, D05, D06, D09",
+      "Source Files": "events/models.py; registrations/models.py; registrations/services.py; tests/test_transactions.py",
+      "Evidence IDs": "E02, E05",
+      "Verification": "Concurrent allocation, uniqueness, rollback and connection-restart tests passed; hosted saved-state screenshots exist.",
+      "Remaining Acceptance": "Compare registrations, statuses, queue and attendance before and after a full PythonAnywhere application reload/restart using a separate session.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_transactions.py",
+      "Automated Test Methods": [
+        "tests/test_transactions.py::test_TC021_competing_requests_for_last_seat",
+        "tests/test_transactions.py::test_TC021_concurrent_duplicate_requests",
+        "tests/test_transactions.py::test_TC021_registration_persists_after_connection_restart",
+        "tests/test_transactions.py::test_TC021_event_cancellation_rolls_back_on_update_failure"
+      ]
+    },
+    {
+      "Req. ID": "NFR004",
+      "Requirement Description": "Browsing, registration, personal status, and cancellation shall work in current Chrome and Edge and at a 390-pixel mobile viewport, with readable labels, timezone labels, and visible error messages.",
+      "Requirement Type": "Non-Functional",
+      "Priority": "Medium",
+      "Use Case ID": "UC005–UC008",
+      "Module": "Frontend",
+      "Database Entity": "N/A",
+      "Test Case ID": "TC022",
+      "Acceptance Criteria": "Complete those flows in both desktop browsers and the mobile viewport. Required controls are usable and unclipped; a full event clearly offers waitlisting instead of promising a seat. Revision 2.0 extends the same usability review to the new student account forms.",
+      "Status": "Partial",
+      "Title": "Browser and mobile usability",
+      "Scope": "Original",
+      "SRS Section": "3.3.4",
+      "Diagram IDs": "D01, D02, D08",
+      "Source Files": "templates/; static/css/app.css; static/js/app.js",
+      "Evidence IDs": "E02, E05, E06",
+      "Verification": "HTML rendering checks passed; desktop screenshots and successful phone checks reported by both team members.",
+      "Remaining Acceptance": "Record Chrome and Edge versions and a 390-pixel viewport; complete core flows and the new account forms with readable controls, errors and timezone labels.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_application.py",
+      "Automated Test Methods": [
+        "tests/test_application.py::test_TC022_all_required_pages_render"
+      ]
+    },
+    {
+      "Req. ID": "NFR005",
+      "Requirement Description": "The project shall separate accounts, events, registrations, and reports, with backend services for allocation/promotion, dependency pins, migrations, setup instructions, and automated critical-rule tests.",
+      "Requirement Type": "Non-Functional",
+      "Priority": "Medium",
+      "Use Case ID": "N/A",
+      "Module": "Source and tests",
+      "Database Entity": "N/A",
+      "Test Case ID": "TC023",
+      "Acceptance Criteria": "A clean setup can migrate, seed demonstration users/events, and run tests for capacity, duplicates, FIFO promotion, closing-time boundaries, permissions, and transaction rollback.",
+      "Status": "Verified",
+      "Title": "Maintainable setup",
+      "Scope": "Original",
+      "SRS Section": "3.3.5",
+      "Diagram IDs": "D01",
+      "Source Files": "requirements.txt; migrations in accounts/events/registrations; tests/; docs/development/",
+      "Evidence IDs": "E01, E02, E03, E04",
+      "Verification": "Separate modules/services, pinned dependencies, migrations, setup instructions and automated critical-rule coverage; clean Windows/host setup demonstrated.",
+      "Remaining Acceptance": "No baseline criterion outstanding. The batch launcher and remote CI are not claimed as executed.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "Manual/setup acceptance; see evidence register",
+      "Automated Test Methods": []
+    },
+    {
+      "Req. ID": "NFR006",
+      "Requirement Description": "The complete frontend and coded backend shall run on a free hosting tier with a provider subdomain and persistent data. The professor shall receive Student and Organizer demonstration access.",
+      "Requirement Type": "Non-Functional",
+      "Priority": "High",
+      "Use Case ID": "UC001–UC018",
+      "Module": "Deployment",
+      "Database Entity": "All application entities",
+      "Test Case ID": "TC024",
+      "Acceptance Criteria": "From an independent device/session, the evaluator opens the HTTPS URL and completes registration, cancellation, and organizer actions. Saved results remain after reload. Hosting access and expiry are checked before evaluation.",
+      "Status": "Partial",
+      "Title": "Live deployment and evaluator access",
+      "Scope": "Original",
+      "SRS Section": "3.3.6",
+      "Diagram IDs": "D01, D02, D08",
+      "Source Files": "config/wsgi.py; config/settings.py; docs/development/DEPLOYMENT.md",
+      "Evidence IDs": "E04, E05, E08, E09",
+      "Verification": "HTTPS deployment demonstrated; latest account update pulled on the host and deletion reported working.",
+      "Remaining Acceptance": "Give the professor private Student and Organizer access; record independent evaluator flows/reload persistence and recheck hosting expiry before evaluation.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "Manual/setup acceptance; see evidence register",
+      "Automated Test Methods": []
+    },
+    {
+      "Req. ID": "NFR007",
+      "Requirement Description": "The team shall document and test a manual consistent database backup and restore procedure for the demonstration deployment.",
+      "Requirement Type": "Non-Functional",
+      "Priority": "Medium",
+      "Use Case ID": "N/A",
+      "Module": "Database maintenance",
+      "Database Entity": "All application entities",
+      "Test Case ID": "TC025",
+      "Acceptance Criteria": "Restore a backup to a separate test instance. User/event counts, statuses, confirmed counts, queue order, and attendance match the recorded backup baseline.",
+      "Status": "Verified",
+      "Title": "Backup and restore",
+      "Scope": "Original",
+      "SRS Section": "3.3.7",
+      "Diagram IDs": "D01, D03",
+      "Source Files": "common/backup.py; accounts/management/commands/backup_database.py; accounts/management/commands/restore_database.py",
+      "Evidence IDs": "E02, E07, E08",
+      "Verification": "Consistent backup/separate restore commands shown; restored Windows instance ran and the team confirmed requested data comparisons. Synthetic recovery tests also passed.",
+      "Remaining Acceptance": "Evidence is team-reported, not an independent inspection of private database rows. Repeat against the evaluated dataset if it changes.",
+      "Evidence Date": "2026-11-18",
+      "Test Sources": "tests/test_backup.py; tests/test_transactions.py",
+      "Automated Test Methods": [
+        "tests/test_backup.py::test_TC025_backup_closes_connections_before_return",
+        "tests/test_backup.py::test_TC025_failed_backup_closes_connections_before_cleanup",
+        "tests/test_backup.py::test_TC025_destination_open_failure_closes_source",
+        "tests/test_backup.py::test_TC025_integrity_failure_closes_connections_before_cleanup",
+        "tests/test_transactions.py::test_TC025_backup_restore_exact_rows_and_no_overwrite"
+      ]
+    }
+  ],
+  "use_cases": [
+    {
+      "id": "UC001",
+      "actor": "Student, Organizer",
+      "title": "Sign in and out",
+      "requirements": "FR001, FR002, FR023",
+      "outcome": "Valid role and active account; saved ID/password signs in; POST sign-out ends session."
+    },
+    {
+      "id": "UC002",
+      "actor": "Student, Organizer",
+      "title": "Enforce access boundaries",
+      "requirements": "FR003",
+      "outcome": "Student data is own-only; Organizer operations reject Student requests."
+    },
+    {
+      "id": "UC003",
+      "actor": "Organizer",
+      "title": "Create and edit draft/details",
+      "requirements": "FR004, FR005, FR018",
+      "outcome": "Validate fields; published capacity/times remain fixed; started/cancelled event edits fail."
+    },
+    {
+      "id": "UC004",
+      "actor": "Organizer",
+      "title": "Publish valid draft",
+      "requirements": "FR006",
+      "outcome": "Future closing time and valid data; publish once."
+    },
+    {
+      "id": "UC005",
+      "actor": "Student",
+      "title": "Browse and view event",
+      "requirements": "FR007, FR008",
+      "outcome": "Future Published catalog; filter/search; availability without participant identity."
+    },
+    {
+      "id": "UC006",
+      "actor": "Student",
+      "title": "Register or join waitlist",
+      "requirements": "FR009, FR010",
+      "outcome": "Before closing; atomic allocation; duplicate returns existing record."
+    },
+    {
+      "id": "UC007",
+      "actor": "Student",
+      "title": "Review own registrations",
+      "requirements": "FR011",
+      "outcome": "History, attendance and refreshed queue rank."
+    },
+    {
+      "id": "UC008",
+      "actor": "Student",
+      "title": "Cancel or rejoin",
+      "requirements": "FR012, FR013",
+      "outcome": "Before closing; confirmed cancellation promotes FIFO; rejoin gets new priority."
+    },
+    {
+      "id": "UC009",
+      "actor": "Organizer",
+      "title": "Cancel an event",
+      "requirements": "FR014",
+      "outcome": "Before start; reason required; cancel all active registrations atomically."
+    },
+    {
+      "id": "UC010",
+      "actor": "Organizer",
+      "title": "Review participant roster",
+      "requirements": "FR015",
+      "outcome": "Filter by status; names/IDs, rank and attendance are organizer-only."
+    },
+    {
+      "id": "UC011",
+      "actor": "Organizer",
+      "title": "Mark or correct attendance",
+      "requirements": "FR016",
+      "outcome": "At/after start, Confirmed only, non-Cancelled event; latest actor/time retained."
+    },
+    {
+      "id": "UC012",
+      "actor": "Organizer",
+      "title": "Review dashboard",
+      "requirements": "FR017",
+      "outcome": "Derived counts; upcoming excludes Draft, Cancelled and started events."
+    },
+    {
+      "id": "UC013",
+      "actor": "Organizer",
+      "title": "Search student accounts",
+      "requirements": "FR019",
+      "outcome": "Eligible Student targets; name/login/ID/email search; 25 per page."
+    },
+    {
+      "id": "UC014",
+      "actor": "Organizer",
+      "title": "Edit student identity/details",
+      "requirements": "FR020, FR023",
+      "outcome": "Validate and save User/profile together; login becomes ID; related records preserved."
+    },
+    {
+      "id": "UC015",
+      "actor": "Organizer",
+      "title": "Reset student password",
+      "requirements": "FR021",
+      "outcome": "Validated matching entries; old password and sessions become invalid."
+    },
+    {
+      "id": "UC016",
+      "actor": "Organizer",
+      "title": "Create a Student account",
+      "requirements": "FR022, FR023",
+      "outcome": "Unique textual ID; fixed Student role; atomic account/profile/membership."
+    },
+    {
+      "id": "UC017",
+      "actor": "Organizer",
+      "title": "Deactivate or reactivate Student",
+      "requirements": "FR024",
+      "outcome": "Confirmed explicit state change; sessions removed; records and queue eligibility retained."
+    },
+    {
+      "id": "UC018",
+      "actor": "Organizer",
+      "title": "Delete unused Student",
+      "requirements": "FR025",
+      "outcome": "Exact current ID; no registration or audit references; atomic removal."
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "D01",
+      "file": "01_system_architecture",
+      "title": "System architecture",
+      "scope": "Modules, hosting boundary, sessions, static assets and private recovery copies."
+    },
+    {
+      "id": "D02",
+      "file": "02_use_cases",
+      "title": "Core use cases",
+      "scope": "UC001–UC012; student and organizer permissions."
+    },
+    {
+      "id": "D03",
+      "file": "03_entity_relationships",
+      "title": "Entity relationships",
+      "scope": "Physical core entities, cardinalities, audit references and deletion protection."
+    },
+    {
+      "id": "D04",
+      "file": "04_registration_activity",
+      "title": "Registration activity",
+      "scope": "Validation, serialization, duplicate/rejoin behavior and seat/waitlist allocation."
+    },
+    {
+      "id": "D05",
+      "file": "05_cancellation_sequence",
+      "title": "Cancellation and FIFO sequence",
+      "scope": "One transaction cancels the owned record and promotes the earliest waiter if applicable."
+    },
+    {
+      "id": "D06",
+      "file": "06_event_lifecycle",
+      "title": "Event lifecycle",
+      "scope": "Only Draft, Published and Cancelled are stored states; time-based restrictions are guards."
+    },
+    {
+      "id": "D07",
+      "file": "07_project_gantt",
+      "title": "Schedule and recorded progress",
+      "scope": "Original planned dates alongside known November evidence and remaining acceptance work."
+    },
+    {
+      "id": "D08",
+      "file": "08_account_use_cases",
+      "title": "Student account use cases",
+      "scope": "UC013–UC018 plus the Student ID login relationship to UC001."
+    },
+    {
+      "id": "D09",
+      "file": "09_account_lifecycle",
+      "title": "Student account lifecycle",
+      "scope": "Active/inactive transitions, session expiry and gated unused-account deletion."
+    },
+    {
+      "id": "D10",
+      "file": "10_student_identity_sequence",
+      "title": "Student creation and ID edit sequence",
+      "scope": "Atomic User/profile/membership creation and identity-preserving edits."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E01",
+      "name": "Code baseline",
+      "type": "Verified source comparison",
+      "detail": "GitHub b3d900f4ac7c516c086708305f53ebfdebd0422d; 67 local application/test files matched the fetched public commit. This documentation update does not change application behavior.",
+      "location": "https://github.com/alamshahriya1-cpu/campus-event-management/commit/b3d900f4ac7c516c086708305f53ebfdebd0422d"
+    },
+    {
+      "id": "E02",
+      "name": "Current automated suite",
+      "type": "Saved test output",
+      "detail": "110/110 tests passed in 3.087 seconds on Linux, Python 3.12.14 / Django 5.2.19. The 110 methods map to requirement test families; 32 requirement IDs do not mean 32 executable tests.",
+      "location": "docs/development/student-lifecycle-tests.txt"
+    },
+    {
+      "id": "E03",
+      "name": "Historical Windows run",
+      "type": "Team terminal screenshot",
+      "detail": "62/62 tests passed in 4.059 seconds on the earlier release. This is not a 110-test Windows result.",
+      "location": "Conversation screenshot, 18 November 2026; not embedded in the public package"
+    },
+    {
+      "id": "E04",
+      "name": "Historical hosted setup/run",
+      "type": "Team terminal screenshots",
+      "detail": "PythonAnywhere Python 3.12.8 / Django 5.2.19: migrations, static collection, deployment check, private seeding and 62/62 tests in 7.488 seconds succeeded.",
+      "location": "docs/development/HOSTED_VERIFICATION.md"
+    },
+    {
+      "id": "E05",
+      "name": "Hosted core workflows",
+      "type": "Team screenshots + earlier public checks",
+      "detail": "Organizer/Student sign-in, name edit with retained history, cancellation and FIFO promotion, roster and attendance marking were shown. Earlier public checks observed HTTPS and production headers.",
+      "location": "docs/development/HOSTED_VERIFICATION.md"
+    },
+    {
+      "id": "E06",
+      "name": "Mobile use",
+      "type": "Team report",
+      "detail": "Shahriya and Miraj each reported successful phone checks. Device/browser versions and a complete current-release checklist were not supplied.",
+      "location": "Team conversation, 18 November 2026"
+    },
+    {
+      "id": "E07",
+      "name": "Recovery demonstration",
+      "type": "Screenshots + team report",
+      "detail": "Consistent host backup and separate restored copy were created; a restored Windows instance ran at port 8001. The team said the requested account/event/status/queue/attendance comparison was complete. Private rows were not independently inspected.",
+      "location": "docs/development/BACKUP_RESTORE.md; team conversation"
+    },
+    {
+      "id": "E08",
+      "name": "Latest account update",
+      "type": "Team Bash screenshot",
+      "detail": "A private before-account-controls backup succeeded; git pull fast-forwarded the host from 6ff5894 to b3d900f (30 files). The team subsequently reported completing the deployment steps.",
+      "location": "Team conversation screenshot, 18 November 2026"
+    },
+    {
+      "id": "E09",
+      "name": "Deletion on the live app",
+      "type": "Team report",
+      "detail": "The team explicitly reported that deletion was working after the update. This does not establish every new negative-path/browser acceptance case.",
+      "location": "Team conversation, 18 November 2026"
+    }
+  ],
+  "test_methods": [
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC001_anonymous_pages_and_apis",
+      "test_case_ids": [
+        "TC001"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC001_valid_invalid_and_inactive_login",
+      "test_case_ids": [
+        "TC001"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC001_invalid_or_multiple_roles_cannot_sign_in",
+      "test_case_ids": [
+        "TC001"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC002_logout_invalidates_previous_session",
+      "test_case_ids": [
+        "TC002"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC003_student_cannot_access_organizer_endpoints",
+      "test_case_ids": [
+        "TC003"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC003_other_students_registration_is_not_accessible",
+      "test_case_ids": [
+        "TC003"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC004_create_draft_and_hide_from_students",
+      "test_case_ids": [
+        "TC004"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC004_invalid_capacity_and_time_never_create",
+      "test_case_ids": [
+        "TC004"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC005_edit_draft_and_published_rules",
+      "test_case_ids": [
+        "TC005"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC005_started_and_cancelled_events_read_only",
+      "test_case_ids": [
+        "TC005"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC006_publish_once_and_reject_expired_draft",
+      "test_case_ids": [
+        "TC006"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC007_search_category_date_and_empty_filters",
+      "test_case_ids": [
+        "TC007"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC008_availability_and_no_participant_identity",
+      "test_case_ids": [
+        "TC008"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC009_capacity_allocation_and_no_GET_mutations",
+      "test_case_ids": [
+        "TC009"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC009_deadline_equality_rejected",
+      "test_case_ids": [
+        "TC009"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC010_retries_and_database_uniqueness",
+      "test_case_ids": [
+        "TC010"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC011_personal_history_and_queue_rank",
+      "test_case_ids": [
+        "TC011"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC012_repeated_cancel_and_rejoin_new_priority",
+      "test_case_ids": [
+        "TC012"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC012_cancel_at_deadline_does_not_change_state",
+      "test_case_ids": [
+        "TC012"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC013_FIFO_promotion_and_idempotent_cancellation",
+      "test_case_ids": [
+        "TC013"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC013_equal_timestamps_use_id_tiebreaker",
+      "test_case_ids": [
+        "TC013"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC013_promotion_failure_rolls_back_cancellation",
+      "test_case_ids": [
+        "TC013"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC013_cancel_response_does_not_reveal_promoted_student",
+      "test_case_ids": [
+        "TC013"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC014_event_cancellation_preserves_history_no_promotion",
+      "test_case_ids": [
+        "TC014"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC014_blank_reason_and_started_cancellation_rejected",
+      "test_case_ids": [
+        "TC014"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC015_roster_filter_identity_and_queue_order",
+      "test_case_ids": [
+        "TC015"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC016_attendance_boundary_audit_and_correction",
+      "test_case_ids": [
+        "TC016"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC017_summary_excludes_draft_cancelled_and_started",
+      "test_case_ids": [
+        "TC017"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC018_malformed_and_tampered_requests_rejected",
+      "test_case_ids": [
+        "TC018"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC018_lock_failure_returns_retryable_error",
+      "test_case_ids": [
+        "TC018"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC020_csrf_missing_and_valid_token",
+      "test_case_ids": [
+        "TC020"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC020_escaped_text_and_hash_storage",
+      "test_case_ids": [
+        "TC020"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC022_all_required_pages_render",
+      "test_case_ids": [
+        "TC022"
+      ]
+    },
+    {
+      "file": "tests/test_application.py",
+      "method": "test_TC019_local_30_events_300_registrations",
+      "test_case_ids": [
+        "TC019"
+      ]
+    },
+    {
+      "file": "tests/test_backup.py",
+      "method": "test_TC025_backup_closes_connections_before_return",
+      "test_case_ids": [
+        "TC025"
+      ]
+    },
+    {
+      "file": "tests/test_backup.py",
+      "method": "test_TC025_failed_backup_closes_connections_before_cleanup",
+      "test_case_ids": [
+        "TC025"
+      ]
+    },
+    {
+      "file": "tests/test_backup.py",
+      "method": "test_TC025_destination_open_failure_closes_source",
+      "test_case_ids": [
+        "TC025"
+      ]
+    },
+    {
+      "file": "tests/test_backup.py",
+      "method": "test_TC025_integrity_failure_closes_connections_before_cleanup",
+      "test_case_ids": [
+        "TC025"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC029_create_stores_hashed_password_and_fixed_student_role",
+      "test_case_ids": [
+        "TC029"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC029_created_student_can_register_and_view_own_history",
+      "test_case_ids": [
+        "TC029"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC029_only_active_single_role_organizers_can_create",
+      "test_case_ids": [
+        "TC029"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC029_create_navigation_get_cache_and_method_boundaries",
+      "test_case_ids": [
+        "TC029"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC029_creation_requires_csrf",
+      "test_case_ids": [
+        "TC029"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC029_invalid_identity_fields_never_create_accounts",
+      "test_case_ids": [
+        "TC029"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC029_duplicate_ids_and_any_existing_login_are_rejected",
+      "test_case_ids": [
+        "TC029"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC029_privilege_identity_and_extra_fields_are_rejected",
+      "test_case_ids": [
+        "TC029"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC029_password_validation_and_no_password_redisplay",
+      "test_case_ids": [
+        "TC029"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC029_profile_failure_rolls_back_user_and_membership",
+      "test_case_ids": [
+        "TC029"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC029_database_lock_is_retryable_without_partial_account",
+      "test_case_ids": [
+        "TC029"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC029_duplicate_submit_and_more_than_thirty_accounts",
+      "test_case_ids": [
+        "TC029"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC029_optional_contact_fields_and_trimmed_id",
+      "test_case_ids": [
+        "TC029"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC030_existing_account_gets_id_login_without_losing_records",
+      "test_case_ids": [
+        "TC030"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC030_id_change_rejects_login_collisions_and_invalid_format",
+      "test_case_ids": [
+        "TC030"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC030_failed_profile_write_rolls_back_login_change",
+      "test_case_ids": [
+        "TC030"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC030_edit_does_not_reactivate_student",
+      "test_case_ids": [
+        "TC030"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC030_command_provisions_ids_and_preserves_organizer_login",
+      "test_case_ids": [
+        "TC030"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC030_command_rejects_mismatch_and_reserved_ids_before_password",
+      "test_case_ids": [
+        "TC030"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC030_fresh_demo_uses_ids_and_repeat_seeding_preserves_records",
+      "test_case_ids": [
+        "TC030"
+      ]
+    },
+    {
+      "file": "tests/test_student_accounts.py",
+      "method": "test_TC030_seed_refuses_to_replace_legacy_accounts",
+      "test_case_ids": [
+        "TC030"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC031_edit_page_shows_current_access_action",
+      "test_case_ids": [
+        "TC031"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC031_TC032_get_only_reviews_and_pages_are_not_cached",
+      "test_case_ids": [
+        "TC031",
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC031_TC032_anonymous_and_student_requests_are_rejected",
+      "test_case_ids": [
+        "TC031",
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC031_TC032_organizer_staff_and_invalid_targets_are_protected",
+      "test_case_ids": [
+        "TC031",
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC031_TC032_inactive_and_mixed_role_organizers_cannot_act",
+      "test_case_ids": [
+        "TC031",
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC031_TC032_csrf_and_supported_methods",
+      "test_case_ids": [
+        "TC031",
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC031_TC032_confirmation_and_unexpected_fields_are_rejected",
+      "test_case_ids": [
+        "TC031",
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC031_deactivation_blocks_login_and_existing_session_requests",
+      "test_case_ids": [
+        "TC031"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC031_reactivation_requires_new_login_and_old_cookies_stay_invalid",
+      "test_case_ids": [
+        "TC031"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC031_other_users_sessions_and_passwords_are_preserved",
+      "test_case_ids": [
+        "TC031"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC031_access_changes_preserve_all_account_and_event_records",
+      "test_case_ids": [
+        "TC031"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC031_waitlist_entry_keeps_position_and_remains_eligible",
+      "test_case_ids": [
+        "TC031"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC031_repeated_requests_keep_explicit_state_without_signing_out_new_login",
+      "test_case_ids": [
+        "TC031"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC031_session_failure_rolls_back_state_change",
+      "test_case_ids": [
+        "TC031"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC031_busy_failure_returns_retryable_response_without_state_change",
+      "test_case_ids": [
+        "TC031"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC032_delete_unused_account_profile_and_sessions_only",
+      "test_case_ids": [
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC032_delete_inactive_unused_student",
+      "test_case_ids": [
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC032_deletion_requires_exact_current_id",
+      "test_case_ids": [
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC032_all_registration_statuses_block_deletion",
+      "test_case_ids": [
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC032_past_attendance_and_cancelled_events_still_block_deletion",
+      "test_case_ids": [
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC032_event_and_attendance_audit_references_block_deletion",
+      "test_case_ids": [
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC032_new_registration_after_confirmation_get_prevents_delete",
+      "test_case_ids": [
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC032_target_privilege_change_after_get_is_rechecked",
+      "test_case_ids": [
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC032_protected_delete_failure_restores_profile_and_sessions",
+      "test_case_ids": [
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC032_integrity_failure_does_not_partially_delete_account",
+      "test_case_ids": [
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC032_busy_failure_is_retryable_and_keeps_profile",
+      "test_case_ids": [
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_student_lifecycle.py",
+      "method": "test_TC032_names_are_escaped_on_confirmation_pages",
+      "test_case_ids": [
+        "TC032"
+      ]
+    },
+    {
+      "file": "tests/test_transactions.py",
+      "method": "test_TC021_competing_requests_for_last_seat",
+      "test_case_ids": [
+        "TC021"
+      ]
+    },
+    {
+      "file": "tests/test_transactions.py",
+      "method": "test_TC021_concurrent_duplicate_requests",
+      "test_case_ids": [
+        "TC021"
+      ]
+    },
+    {
+      "file": "tests/test_transactions.py",
+      "method": "test_TC021_registration_persists_after_connection_restart",
+      "test_case_ids": [
+        "TC021"
+      ]
+    },
+    {
+      "file": "tests/test_transactions.py",
+      "method": "test_TC021_event_cancellation_rolls_back_on_update_failure",
+      "test_case_ids": [
+        "TC021"
+      ]
+    },
+    {
+      "file": "tests/test_transactions.py",
+      "method": "test_TC025_backup_restore_exact_rows_and_no_overwrite",
+      "test_case_ids": [
+        "TC025"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC026_anonymous_and_students_cannot_access_management",
+      "test_case_ids": [
+        "TC026"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC026_navigation_is_organizer_only",
+      "test_case_ids": [
+        "TC026"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC026_search_name_username_id_and_email",
+      "test_case_ids": [
+        "TC026"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC026_search_limits_and_pagination",
+      "test_case_ids": [
+        "TC026"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC026_organizers_and_privileged_or_invalid_students_are_protected",
+      "test_case_ids": [
+        "TC026"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC026_sensitive_pages_are_not_cached_and_unknown_ids_are_404",
+      "test_case_ids": [
+        "TC026"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC027_saves_details_and_preserves_registration_rows_and_password",
+      "test_case_ids": [
+        "TC027"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC027_duplicate_id_is_rejected_without_partial_user_changes",
+      "test_case_ids": [
+        "TC027"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC027_validation_rejects_blank_overlong_and_invalid_values",
+      "test_case_ids": [
+        "TC027"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC027_optional_fields_and_trimmed_values",
+      "test_case_ids": [
+        "TC027"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC027_tampered_privilege_and_identity_fields_are_rejected",
+      "test_case_ids": [
+        "TC027"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC027_post_requires_csrf_and_other_write_methods_are_rejected",
+      "test_case_ids": [
+        "TC027"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC027_get_requests_never_change_records",
+      "test_case_ids": [
+        "TC027"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC027_integrity_failure_rolls_back_name_and_email",
+      "test_case_ids": [
+        "TC027"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC027_database_lock_is_retryable_and_rolls_back",
+      "test_case_ids": [
+        "TC027"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC027_names_and_search_text_are_html_escaped",
+      "test_case_ids": [
+        "TC027"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC028_password_reset_invalidates_student_session_only",
+      "test_case_ids": [
+        "TC028"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC028_weak_or_mismatched_passwords_do_not_change_account",
+      "test_case_ids": [
+        "TC028"
+      ]
+    },
+    {
+      "file": "tests/test_user_management.py",
+      "method": "test_TC028_reset_rejects_privilege_fields_and_does_not_reactivate",
+      "test_case_ids": [
+        "TC028"
+      ]
+    }
+  ],
+  "counting_rule": "Each requirement has equal weight. Verified counts as one complete requirement; Partial counts as zero complete requirements. No fractional credit. Functional verification is based on source and automated checks; deployment/browser/evaluator criteria are scored separately under NFRs. Verified is not professor sign-off."
+}

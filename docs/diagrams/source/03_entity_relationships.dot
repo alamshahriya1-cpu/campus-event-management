@@ -1,16 +1,33 @@
-digraph ERD {
-graph [bgcolor="white", fontname="DejaVu Sans", pad="0.25", nodesep="0.45", ranksep="0.65"];
-node [fontname="DejaVu Sans", fontsize=12, color="#567086", fontcolor="#173B56", style="rounded,filled", fillcolor="#F0F5F8", shape=box, margin="0.16,0.12"];
-edge [fontname="DejaVu Sans", fontsize=10, color="#63798B", fontcolor="#374D5E", arrowsize=0.75];
-rankdir=LR; node [shape=record,style=filled,fontsize=10];
-user [label="{USER (Django)|id : PK\lusername : UNIQUE\lfirst_name, last_name\lpassword : hash\lis_active\l}"];
-profile [label="{STUDENT_PROFILE|user_id : PK, FK User\lstudent_number : UNIQUE\l}"];
-event [label="{EVENT|id : PK\ltitle, description, category, venue\lstart_at, end_at, registration_closes_at\lcapacity : 1..200\lstatus : Draft / Published / Cancelled\lcreated_by : FK User\lcreated_at, updated_at\lcancelled_by : FK User, nullable\lcancelled_at, cancellation_reason\lallocation_version\l}"];
-registration [label="{REGISTRATION|id : PK\levent_id : FK Event\lstudent_id : FK User\lstatus : Confirmed / Waitlisted / Cancelled\ljoined_at, confirmed_at, cancelled_at\lcancellation_source : Student / Event\lattended : boolean\lattendance_updated_at\lattendance_updated_by : FK User, nullable\lUNIQUE(event_id, student_id)\l}"];
-group [label="{GROUP (Django)|id : PK\lname : UNIQUE\lStudent or Organizer\l}"];
-user -> profile [label="has",taillabel="1",headlabel="0..1",dir=none,labeldistance=1.7];
-user -> event [label="creates",taillabel="1",headlabel="0..*",dir=none,labeldistance=1.7];
-user -> registration [label="registers",taillabel="1",headlabel="0..*",dir=none,labeldistance=1.7];
-event -> registration [label="contains",taillabel="1",headlabel="0..*",dir=none,labeldistance=1.7];
-user -> group [label="business role",taillabel="0..*",headlabel="1",dir=none,labeldistance=1.7];
+digraph G {
+graph [bgcolor="white", pad="0.25", nodesep="0.40", ranksep="0.55", fontname="DejaVu Sans", fontsize=13];
+node [shape=box, style="rounded,filled", fillcolor="#EDF4F7", color="#8EA8B7", fontcolor="#19384B", fontname="DejaVu Sans", fontsize=13, margin="0.20,0.13", penwidth=1.2];
+edge [color="#5F7280", fontcolor="#334F60", fontname="DejaVu Sans", fontsize=10, arrowsize=0.8, penwidth=1.2];
+rankdir=TB; node [shape=record,style=filled,fontsize=12];
+u [shape=plain,style="",label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#8EA8B7" BGCOLOR="#EDF4F7"><TR><TD><B>auth_user</B></TD></TR><TR><TD ALIGN="LEFT">PK id<BR ALIGN="LEFT"/>username UNIQUE (Student login = ID)<BR ALIGN="LEFT"/>password hash<BR ALIGN="LEFT"/>first_name / last_name / email<BR ALIGN="LEFT"/>is_active / is_staff / is_superuser<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+p [shape=plain,style="",label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#8EA8B7" BGCOLOR="#EDF4F7"><TR><TD><B>accounts_studentprofile</B></TD></TR><TR><TD ALIGN="LEFT">PK, FK user_id → User (PROTECT)<BR ALIGN="LEFT"/>student_number UNIQUE, max 20<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+g [shape=plain,style="",label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#8EA8B7" BGCOLOR="#EDF4F7"><TR><TD><B>auth_group</B></TD></TR><TR><TD ALIGN="LEFT">PK id<BR ALIGN="LEFT"/>name UNIQUE<BR ALIGN="LEFT"/>Student or Organizer business role<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+ug [shape=plain,style="",label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#8EA8B7" BGCOLOR="#EDF4F7"><TR><TD><B>auth_user_groups</B></TD></TR><TR><TD ALIGN="LEFT">PK id<BR ALIGN="LEFT"/>FK user_id / FK group_id<BR ALIGN="LEFT"/>UNIQUE(user_id, group_id)<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+e [shape=plain,style="",label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#8EA8B7" BGCOLOR="#EDF4F7"><TR><TD><B>events_event</B></TD></TR><TR><TD ALIGN="LEFT">PK id<BR ALIGN="LEFT"/>FK created_by_id / cancelled_by_id<BR ALIGN="LEFT"/>title / description / category / venue<BR ALIGN="LEFT"/>start_at / end_at / registration_closes_at<BR ALIGN="LEFT"/>capacity / status / allocation_version<BR ALIGN="LEFT"/>created_at / updated_at<BR ALIGN="LEFT"/>cancelled_at / cancellation_reason<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+r [shape=plain,style="",label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#8EA8B7" BGCOLOR="#EDF4F7"><TR><TD><B>registrations_registration</B></TD></TR><TR><TD ALIGN="LEFT">PK id<BR ALIGN="LEFT"/>FK event_id / student_id<BR ALIGN="LEFT"/>status / joined_at / confirmed_at<BR ALIGN="LEFT"/>cancelled_at / cancellation_source<BR ALIGN="LEFT"/>attended / attendance_updated_at<BR ALIGN="LEFT"/>FK attendance_updated_by_id (nullable)<BR ALIGN="LEFT"/>UNIQUE(event_id, student_id)<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+s [shape=plain,style="",label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#8EA8B7" BGCOLOR="#EDF4F7"><TR><TD><B>django_session</B></TD></TR><TR><TD ALIGN="LEFT">PK session_key<BR ALIGN="LEFT"/>session_data / expire_date<BR ALIGN="LEFT"/>Encoded user ID; no relational User FK<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+{rank=same;g;ug;u;}
+{rank=same;e;p;s;}
+u -> p [label="1 → 0..1
+Student requires profile"];
+u -> ug [label="1 → 0..*"];
+g -> ug [label="1 → 0..*"];
+u -> e [label="creator 1 → 0..*
+canceller 0..1 → 0..*
+PROTECT"];
+u -> r [label="student 1 → 0..*
+attendance actor 0..1 → 0..*
+PROTECT"];
+e -> r [label="1 → 0..*
+PROTECT"];
+u -> s [style=dashed,label="decoded identity
+not a database FK"];
+note [shape=note,label="Role exclusivity and case-insensitive ID collisions are checked by the application.
+Deletion explicitly removes an unused profile before its User in one transaction.
+Any registration or audit reference blocks deletion; event history is never cascaded.",fillcolor="white",fontsize=11];
+r -> note [style=invis];
 }

@@ -1,16 +1,34 @@
-digraph Lifecycle {
-graph [bgcolor="white", fontname="DejaVu Sans", pad="0.25", nodesep="0.45", ranksep="0.65"];
-node [fontname="DejaVu Sans", fontsize=12, color="#567086", fontcolor="#173B56", style="rounded,filled", fillcolor="#F0F5F8", shape=box, margin="0.16,0.12"];
-edge [fontname="DejaVu Sans", fontsize=10, color="#63798B", fontcolor="#374D5E", arrowsize=0.75];
-rankdir=LR;ranksep=.9;
-initial [label="",shape=circle,width=.16,style=filled,fillcolor="#173B56"];
-draft [label="Draft\nNot visible in Student catalog",fillcolor="#F0F5F8"];
-published [label="Published\nVisible before event start",fillcolor="#E3F0EB"];
-cancelled [label="Cancelled\nRegistration disabled",fillcolor="#FFF1E8"];
-initial -> draft [label="Create valid event"];
-draft -> draft [label="Edit draft fields"];
-draft -> published [label="Publish\nnow < closing < start < end"];
-draft -> cancelled [label="Organizer cancels\nbefore start; reason required"];
-published -> cancelled [label="Organizer cancels before start\nCancel all active registrations atomically"];
-published -> published [label="Before start: edit descriptive fields only\nFrom start: record eligible attendance"];
+digraph G {
+graph [bgcolor="white", pad="0.25", nodesep="0.40", ranksep="0.55", fontname="DejaVu Sans", fontsize=13];
+node [shape=box, style="rounded,filled", fillcolor="#EDF4F7", color="#8EA8B7", fontcolor="#19384B", fontname="DejaVu Sans", fontsize=13, margin="0.20,0.13", penwidth=1.2];
+edge [color="#5F7280", fontcolor="#334F60", fontname="DejaVu Sans", fontsize=10, arrowsize=0.8, penwidth=1.2];
+rankdir=TB;
+create [shape=oval,label="Organizer creates valid event"];
+draft [label="Draft
+Hidden from Student catalog
+All fields editable before start",fillcolor="#EDF4F7"];
+published [label="Published
+Future events appear in catalog
+Only descriptive edits before start",fillcolor="#DDEEEF"];
+cancelled [label="Cancelled
+Reason + actor + time retained
+All active registrations Cancelled
+No promotion",fillcolor="#FFF1E8"];
+create -> draft [label="valid fields, capacity 1–200
+now < closes < start < end"];
+draft -> published [label="Publish
+closing time still in future"];
+draft -> cancelled [label="Cancel before start
+nonblank reason"];
+published -> cancelled [label="Cancel before start
+nonblank reason"];
+published -> published [label="Repeat publish: no-op"];
+cancelled -> cancelled [label="Repeat cancel: no-op"];
+guard [shape=note,label="Time is a guard, not a stored event state.
+At closing: registration / student cancellation stop.
+At start: event edits / organizer cancellation stop.
+At or after start: attendance may be marked or cleared
+for Confirmed participants of a non-Cancelled event.
+Past Published events remain Published; there is no Completed state.",fillcolor="white"];
+published -> guard [style=dashed,arrowhead=none];
 }

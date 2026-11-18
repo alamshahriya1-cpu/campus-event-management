@@ -1,21 +1,40 @@
-digraph Architecture {
-graph [bgcolor="white", fontname="DejaVu Sans", pad="0.25", nodesep="0.45", ranksep="0.65"];
-node [fontname="DejaVu Sans", fontsize=12, color="#567086", fontcolor="#173B56", style="rounded,filled", fillcolor="#F0F5F8", shape=box, margin="0.16,0.12"];
-edge [fontname="DejaVu Sans", fontsize=10, color="#63798B", fontcolor="#374D5E", arrowsize=0.75];
+digraph G {
+graph [bgcolor="white", pad="0.25", nodesep="0.40", ranksep="0.55", fontname="DejaVu Sans", fontsize=13];
+node [shape=box, style="rounded,filled", fillcolor="#EDF4F7", color="#8EA8B7", fontcolor="#19384B", fontname="DejaVu Sans", fontsize=13, margin="0.20,0.13", penwidth=1.2];
+edge [color="#5F7280", fontcolor="#334F60", fontname="DejaVu Sans", fontsize=10, arrowsize=0.8, penwidth=1.2];
 rankdir=TB;
-students [label="Student browser\nEvent catalog and personal registrations"];
-organizers [label="Organizer browser\nEvent management, rosters and attendance"];
-{rank=same;students;organizers;}
-subgraph cluster_host {label="Planned web hosting environment";fontname="DejaVu Sans";fontsize=13;color="#BAC9D3";style=rounded;
-web [label="Django web application\nHTML templates + Bootstrap + JavaScript\nHTTPS routes and same-origin JSON APIs",fillcolor="#DCEAF3"];
-auth [label="Request protection\nSessions, CSRF and role authorization"];
-events [label="Event service\nValidation and lifecycle"];
-registration [label="Registration service\nCapacity, uniqueness, cancellation\nand FIFO waitlist promotion"];
-reports [label="Organizer services\nRoster, attendance and summaries"];
-{rank=same;events;registration;reports;}
-orm [label="Django ORM and transaction boundary\nSerialize event mutations and enforce constraints"];
-db [label="SQLite database\nUsers, groups, profiles, events and registrations",shape=cylinder,fillcolor="#E3F0EB"];
-web -> auth;auth -> events;auth -> registration;auth -> reports;
-events -> orm;registration -> orm;reports -> orm;orm -> db [label="Persistent read / write",dir=both];}
-students -> web [label="HTTPS",dir=both];organizers -> web [label="HTTPS",dir=both];
+browser [label="Student / Organizer browser
+Django HTML + CSS + JavaScript",fillcolor="#DDEEEF"];
+repo [label="GitHub repository
+Versioned source + tests + review documents"];
+subgraph cluster_host {label="PythonAnywhere web deployment"; color="#BBCDD6"; style="rounded";
+ gateway [label="HTTPS / WSGI
+Production configuration outside Git"];
+ static [label="Collected static files
+/static/ → staticfiles/"];
+ auth [label="Authentication + role checks
+CSRF + server validation"];
+ accounts [label="accounts
+Student identity + account controls"];
+ events [label="events + registrations
+Lifecycle / atomic allocation / FIFO"];
+ reports [label="reports
+Derived dashboard and roster counts"];
+ db [shape=cylinder,label="SQLite database
+Users, profiles, events, registrations
+Database-backed sessions",fillcolor="#DDEEEF"];
+ gateway -> auth; auth -> accounts; auth -> events; auth -> reports;
+ accounts -> db [label="atomic writes"];
+ events -> db [label="serialized allocation"];
+ reports -> db [label="read queries"];
+}
+backup [label="Private consistent backup
+Never committed to public repository"];
+restore [label="Separate restored database
+Verify before any deployment switch"];
+browser -> gateway [label="HTTPS requests / responses",dir=both];
+browser -> static [label="assets",dir=both];
+repo -> gateway [label="pull source, collect assets, reload",style=dashed];
+db -> backup [label="backup_database"];
+backup -> restore [label="restore_database"];
 }

@@ -1,23 +1,42 @@
-digraph Activity {
-graph [bgcolor="white", fontname="DejaVu Sans", pad="0.25", nodesep="0.45", ranksep="0.65"];
-node [fontname="DejaVu Sans", fontsize=12, color="#567086", fontcolor="#173B56", style="rounded,filled", fillcolor="#F0F5F8", shape=box, margin="0.16,0.12"];
-edge [fontname="DejaVu Sans", fontsize=10, color="#63798B", fontcolor="#374D5E", arrowsize=0.75];
-rankdir=TB;nodesep=.35;ranksep=.35;
-start [label="Register request",shape=oval,fillcolor="#DCEAF3"];
-auth [label="Session, CSRF and\nStudent role valid?",shape=diamond];
-reject [label="Reject request\nNo saved changes",fillcolor="#FFF1E8"];
-lock [label="Begin atomic transaction\nAcquire event write serialization"];
-open [label="Event Published and\nserver time before closing?",shape=diamond];
-exists [label="Existing Confirmed or\nWaitlisted registration?",shape=diamond];
-same [label="Return existing status\nNo extra seat or queue entry"];
-seat [label="Seat available and\nno earlier eligible waitlist?",shape=diamond];
-confirmed [label="Create or reuse record\nSet Confirmed"];
-waitlisted [label="Create or reuse record\nSet Waitlisted"];
-save [label="Set new joined_at for entry / re-entry\nClear previous cancellation and attendance\nEnforce unique student-event pair"];
-commit [label="Commit transaction\nReturn registration status",shape=oval,fillcolor="#E3F0EB"];
-start -> auth;auth -> reject [label="No"];auth -> lock [label="Yes"];
-lock -> open;open -> reject [label="No: rollback"];
-open -> exists [label="Yes"];exists -> same [label="Yes"];exists -> seat [label="No"];
-seat -> confirmed [label="Yes"];seat -> waitlisted [label="No"];
-confirmed -> save;waitlisted -> save;save -> commit;
+digraph G {
+graph [bgcolor="white", pad="0.25", nodesep="0.40", ranksep="0.55", fontname="DejaVu Sans", fontsize=13];
+node [shape=box, style="rounded,filled", fillcolor="#EDF4F7", color="#8EA8B7", fontcolor="#19384B", fontname="DejaVu Sans", fontsize=13, margin="0.20,0.13", penwidth=1.2];
+edge [color="#5F7280", fontcolor="#334F60", fontname="DejaVu Sans", fontsize=10, arrowsize=0.8, penwidth=1.2];
+rankdir=TB; nodesep=0.25; ranksep=0.35;
+start [shape=oval,label="Student submits Register",fillcolor="#DDEEEF"];
+auth [label="Check session, Student role and CSRF"];
+tx [label="BEGIN atomic write transaction
+Serialize on event allocation write"];
+valid [shape=diamond,label="Published and
+now < closes?",fillcolor="white"];
+reject [label="Reject with no change
+Rollback on failure",fillcolor="#FFF1E8"];
+existing [shape=diamond,label="Already Confirmed
+or Waitlisted?",fillcolor="white"];
+same [label="Return existing record/status
+No second allocation"];
+space [shape=diamond,label="Seat available and
+no earlier waiter?",fillcolor="white"];
+confirmed [label="Create / reuse row as Confirmed
+Set confirmation time"];
+wait [label="Create / reuse row as Waitlisted
+Order by joined_at, then id"];
+rejoin [label="For a previously Cancelled row:
+new joined_at; clear cancellation / attendance
+Keep the unique student + event record"];
+commit [shape=oval,label="COMMIT and return own result",fillcolor="#DDEEEF"];
+start -> auth -> tx -> valid;
+valid -> reject [label="no"];
+valid -> existing [label="yes"];
+existing -> same [label="yes"];
+same -> commit;
+existing -> space [label="no"];
+space -> confirmed [label="yes"];
+space -> wait [label="no"];
+confirmed -> rejoin; wait -> rejoin; rejoin -> commit;
+note [shape=note,label="No GET mutation; one row per Student/event.
+Busy/locked database: rollback, HTTP 503
+with Retry-After. At the closing instant,
+registration is already closed.",fillcolor="white"];
+commit -> note [style=invis];
 }

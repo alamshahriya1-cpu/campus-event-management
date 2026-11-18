@@ -8,11 +8,29 @@ Students discover events, reserve a place, or join a waiting list when an event 
 
 **Live application: [Campus Events](https://alamshahriya1.pythonanywhere.com/)**
 
-The previously deployed Django application is running on PythonAnywhere with Dongshin University branding and organizer user management. Its **62-test version passed on Linux, Windows, and PythonAnywhere**. The combined **student creation, student-ID login, deactivate/reactivate, and unused-account deletion update passed 110 tests locally on Linux**. The team reported copying the earlier account-creation files to Windows; no new Windows/host test result is recorded. See the [current installation guide](docs/development/STUDENT_ACCOUNT_CONTROLS.md). Hosted browser evidence below belongs to the earlier version and confirms Organizer and Student sign-in, student name editing, personal registrations, cancellation with automatic waitlist promotion, participant rosters, and attendance marking.
+The Django application is live. The host pulled the current account update
+(`b3d900f`) after a private backup, and the team reported that deletion is working.
+The saved current Linux suite passed **110 tests in 3.087 seconds**. Earlier
+Windows and PythonAnywhere runs passed 62 tests; an exact new 110-test transcript
+from those environments was not supplied.
 
-The online accounts use private passwords chosen by the team. Ask the project team for Student or Organizer demonstration access; the local development password below does not apply to the hosted site.
+The **revision 2.0 SRS, RTM and diagrams** include all current account features.
+**25/25 functional requirements** are implemented and supported by automated
+checks. Under the documented evidence rule, **27/32 total requirements are
+complete (84.4%)**; five non-functional acceptance evidence items remain Partial.
+This is not professor sign-off. See the [completion report](docs/review/COMPLETION_REPORT.pdf)
+and [review guide](docs/review/REVIEW_GUIDE.md).
 
-See the [hosted verification record](docs/development/HOSTED_VERIFICATION.md), [test report](docs/development/TEST_REPORT.md), and [requirement status](docs/development/IMPLEMENTATION_STATUS.md). The team reports successful phone checks and a demonstration-database restore on Windows. Full Chrome/Edge evidence, separately recorded host-restart persistence, hosted performance, and professor evaluation remain open. The new account forms need their own browser/host checks.
+Online accounts use private passwords chosen by the team. Ask the team for
+Student or Organizer demonstration access; the local development password below
+does not apply to the hosted site.
+
+See [hosted verification](docs/development/HOSTED_VERIFICATION.md),
+[test evidence](docs/development/TEST_REPORT.md), and
+[remaining checks](docs/review/ACCEPTANCE_RECORD.md). The team reports successful
+phone use and a demonstration-database restore. Full Chrome/Edge/current account
+form records, host-restart persistence, hosted timing, deployed security evidence
+and independent professor evaluation still require their stated records.
 
 ## Run on Windows
 
@@ -38,7 +56,7 @@ On a fresh local database, sign in as `organizer` or `DEMO-001` through `DEMO-00
 - Server validation, CSRF protection, escaped output, and environment-based configuration.
 - Migrations, synthetic demo data, backup/restore commands, and automated tests.
 
-Organizers can provision Students through **Manage users → Add student** and manage access through **Edit details → Account access**. Organizer/master accounts are excluded from student controls. Command-line provisioning remains available for the project team; for Students, the username must equal the student number. The [user-management addendum](docs/development/USER_MANAGEMENT.md) maps FR019–FR025 and the revised ID-edit behavior. Public self-registration, email notifications, payments, and calendar synchronization are outside this requirements baseline. The semester Gantt chart remains in the documentation.
+Organizers can provision Students through **Manage users → Add student** and manage access through **Edit details → Account access**. Organizer/master accounts are excluded from student controls. Command-line provisioning remains available for the project team; for Students, the username must equal the student number. The [current account guide](docs/development/USER_MANAGEMENT.md) maps FR019–FR025 and the revised ID-edit behavior. Public self-registration, email notifications, payments, and calendar synchronization are outside this requirements baseline. The semester Gantt chart remains in the documentation.
 
 ## Project documents
 
@@ -46,12 +64,20 @@ Organizers can provision Students through **Manage users → Add student** and m
 | --- | --- | --- |
 | Software Requirements Specification | [SRS PDF](docs/srs/SRS.pdf) | [SRS Word document](docs/srs/SRS.docx) |
 | System diagrams | [Diagram index](docs/diagrams/README.md) · [Diagram PDF](docs/diagrams/System_Diagrams.pdf) | [Diagram sources](docs/diagrams/source/) |
-| Requirements Traceability Matrix | [RTM overview](docs/rtm/README.md) · [Baseline CSV](docs/rtm/RTM.csv) | [RTM workbook](docs/rtm/RTM.xlsx) |
+| Requirements Traceability Matrix | [RTM overview](docs/rtm/README.md) · [Current CSV](docs/rtm/RTM.csv) | [RTM workbook](docs/rtm/RTM.xlsx) |
 | Implementation evidence | [Current status](docs/development/IMPLEMENTATION_STATUS.md) · [Test report](docs/development/TEST_REPORT.md) | [Status CSV](docs/development/IMPLEMENTATION_STATUS.csv) |
 | Live demonstration | [Campus Events](https://alamshahriya1.pythonanywhere.com/) · [Hosted verification](docs/development/HOSTED_VERIFICATION.md) | [Deployment and maintenance](docs/development/DEPLOYMENT.md) |
 | Developer reference | [API reference](docs/development/API.md) · [Team upload guide](docs/development/TEAM_UPLOAD.md) | Source code and tests |
 
-The SRS and RTM retain their **29 October 2026** baseline. Their original Planned records are preserved; the implementation supplement records newer evidence. The user-management addendum supplies the additional SRS requirements and RTM mapping, including FR022–FR025. Diagrams were prepared on **18 November 2026**. The original Gantt chart is a plan, not a claim of actual completion.
+The current SRS and RTM are **revision 2.0, 18 November 2026**, with 25 functional
+and 7 non-functional requirements, 18 use cases and 10 diagrams. The unchanged
+29 October submission is [archived](docs/archive/2026-10-29-baseline/). The Gantt
+bars remain the original plan, with recorded progress separately identified.
+
+Additional review files: [completion report](docs/review/COMPLETION_REPORT.pdf),
+[test-family index](docs/review/TESTCASE_INDEX.md),
+[acceptance record](docs/review/ACCEPTANCE_RECORD.md) and
+[review/upload guide](docs/review/REVIEW_GUIDE.md).
 
 ## Technology and code organization
 

@@ -1,27 +1,52 @@
-digraph UseCases {
-graph [bgcolor="white", fontname="DejaVu Sans", pad="0.25", nodesep="0.45", ranksep="0.65"];
-node [fontname="DejaVu Sans", fontsize=12, color="#567086", fontcolor="#173B56", style="rounded,filled", fillcolor="#F0F5F8", shape=box, margin="0.16,0.12"];
-edge [fontname="DejaVu Sans", fontsize=10, color="#63798B", fontcolor="#374D5E", arrowsize=0.75];
-rankdir=LR;
-student [label="Student",shape=box,fillcolor="#E3F0EB"];
-organizer [label="Organizer",shape=box,fillcolor="#E3F0EB"];
-subgraph cluster_system {label="Campus Event Registration and Waitlist Management System";fontname="DejaVu Sans";fontsize=13;color="#BAC9D3";
-node [shape=ellipse];
-auth [label="UC001\nSign in and sign out"];
-browse [label="UC005\nBrowse events and details"];
-register [label="UC006\nRegister or join waitlist"];
-own [label="UC007\nView own registrations"];
-cancel [label="UC008\nCancel own registration"];
-edit [label="UC003\nCreate and edit events"];
-publish [label="UC004\nPublish an event"];
-ce [label="UC009\nCancel an event"];
-roster [label="UC010\nView participant roster"];
-attendance [label="UC011\nRecord attendance"];
-summary [label="UC012\nView organizer summaries"];
-policy [shape=note,label="UC002: enforce role and ownership rules\nApplies to every protected operation.",fillcolor="#FFF8E9"];
-{rank=same;auth;browse;register;own;cancel;policy;}
-{rank=same;edit;publish;ce;roster;attendance;summary;}
-auth -> edit [style=invis]; browse -> publish [style=invis];register -> ce [style=invis];own -> roster [style=invis];cancel -> attendance [style=invis];policy -> summary [style=invis];}
-student -> auth [dir=none];student -> browse [dir=none];student -> register [dir=none];student -> own [dir=none];student -> cancel [dir=none];
-auth -> organizer [dir=none];edit -> organizer [dir=none];publish -> organizer [dir=none];ce -> organizer [dir=none];roster -> organizer [dir=none];attendance -> organizer [dir=none];summary -> organizer [dir=none];
+digraph G {
+graph [bgcolor="white", pad="0.25", nodesep="0.40", ranksep="0.55", fontname="DejaVu Sans", fontsize=13];
+node [shape=box, style="rounded,filled", fillcolor="#EDF4F7", color="#8EA8B7", fontcolor="#19384B", fontname="DejaVu Sans", fontsize=13, margin="0.20,0.13", penwidth=1.2];
+edge [color="#5F7280", fontcolor="#334F60", fontname="DejaVu Sans", fontsize=10, arrowsize=0.8, penwidth=1.2];
+rankdir=TB; nodesep=0.25; ranksep=0.45;
+student [shape=ellipse,label="Student",fillcolor="#DDEEEF"];
+organizer [shape=ellipse,label="Organizer",fillcolor="#DDEEEF"];
+subgraph cluster_shared {label="Shared access";color="#BBCDD6";
+ uc1 [shape=ellipse,label="UC001
+Sign in / sign out"];
+ uc2 [shape=ellipse,label="UC002
+Enforce role / ownership"];
+}
+subgraph cluster_student {label="Student event workflows";color="#BBCDD6";
+ uc5 [shape=ellipse,label="UC005
+Browse / view event"];
+ uc6 [shape=ellipse,label="UC006
+Register / waitlist"];
+ uc7 [shape=ellipse,label="UC007
+Review own history"];
+ uc8 [shape=ellipse,label="UC008
+Cancel / rejoin
+with FIFO promotion"];
+}
+subgraph cluster_org {label="Organizer event workflows";color="#BBCDD6";
+ uc3 [shape=ellipse,label="UC003
+Create / edit event"];
+ uc4 [shape=ellipse,label="UC004
+Publish draft"];
+ uc9 [shape=ellipse,label="UC009
+Cancel event"];
+ uc10 [shape=ellipse,label="UC010
+View roster"];
+ uc11 [shape=ellipse,label="UC011
+Mark / correct attendance"];
+ uc12 [shape=ellipse,label="UC012
+View dashboard"];
+}
+student -> {uc1 uc2 uc5 uc6 uc7 uc8} [dir=none];
+organizer -> {uc1 uc2 uc3 uc4 uc9 uc10 uc11 uc12} [dir=none];
+{rank=same;student;organizer;}
+{rank=same;uc1;uc2;}
+{rank=same;uc5;uc6;uc3;uc4;}
+{rank=same;uc7;uc8;uc9;uc10;}
+{rank=same;uc11;uc12;}
+uc5 -> uc7 [style=invis]; uc6 -> uc8 [style=invis];
+uc3 -> uc9 -> uc11 [style=invis]; uc4 -> uc10 -> uc12 [style=invis];
+note [shape=note,label="FR001–FR018
+Account administration continues in D08.
+The backend enforces every permission.",fillcolor="white"];
+uc12 -> note [style=invis];
 }

@@ -1,5 +1,23 @@
 # Verification report
 
+## Current evidence update — revision 2.0, 18 November 2026
+
+The team supplied a successful private pre-update backup and host pull to
+`b3d900f4ac7c516c086708305f53ebfdebd0422d`, then reported completing the deployment
+and confirmed live deletion was working (E08–E09). The current saved Linux result
+is 110/110 passed in 3.087 s (E02). Exact current Windows/host 110-test results and
+a complete browser/negative-path acceptance matrix were not supplied.
+
+The main [SRS](../srs/SRS.pdf), [RTM](../rtm/RTM.xlsx) and
+[diagrams](../diagrams/System_Diagrams.pdf) are now revision 2.0. The
+[completion report](../review/COMPLETION_REPORT.pdf) counts 25/25 functional and
+27/32 overall requirements complete (84.4%), with five Partial NFRs. Original
+submission files are archived unchanged. Earlier runs and pending statements
+below describe their preparation-time state, not a claim that the current
+account update is still undeployed.
+
+## Historical preparation and verification record
+
 ## Student access and unused-account deletion — 18 November 2026
 
 **110 tests passed locally on Linux in 3.087 s**, Python 3.12.14 / Django 5.2.19.

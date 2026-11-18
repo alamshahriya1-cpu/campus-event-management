@@ -5,8 +5,7 @@ student-ID logins, **Deactivate/Reactivate**, and **Delete unused account**.
 It supersedes Student_ID_Accounts_Update.zip and can be installed whether or not
 that earlier patch was copied. The Organizer account remains protected.
 
-**Verification: 110 tests passed locally on Linux in 3.087 seconds.** Windows,
-hosted, and interactive browser checks of this update remain pending. There are
+**Verification: 110 tests passed locally on Linux in 3.087 seconds.** The team subsequently pulled this update on the host and reported successful live deletion. Exact current Windows/host test transcripts and the full browser acceptance matrix were not supplied. There are
 no new dependencies or schema migrations. Installation does not change account
 names, passwords, active states, or delete any student automatically.
 
@@ -156,7 +155,6 @@ database casually.
 
 The requirement addendum and mapping are in
 [USER_MANAGEMENT.md](USER_MANAGEMENT.md) and
-[IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md). The original SRS/RTM
-baseline files are unchanged. New local evidence is in
+[IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md). The main SRS/RTM are now revision 2.0; unchanged originals are archived under `docs/archive/2026-10-29-baseline/`. New local evidence is in
 [student-lifecycle-tests.txt](student-lifecycle-tests.txt); previous 62-test host
 and Windows results do not verify this new version.

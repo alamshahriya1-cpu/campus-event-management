@@ -1,0 +1,34 @@
+digraph G {
+graph [bgcolor="white", pad="0.25", nodesep="0.40", ranksep="0.55", fontname="DejaVu Sans", fontsize=13];
+node [shape=box, style="rounded,filled", fillcolor="#EDF4F7", color="#8EA8B7", fontcolor="#19384B", fontname="DejaVu Sans", fontsize=13, margin="0.20,0.13", penwidth=1.2];
+edge [color="#5F7280", fontcolor="#334F60", fontname="DejaVu Sans", fontsize=10, arrowsize=0.8, penwidth=1.2];
+rankdir=TB;
+org [label="Organizer-only eligible Student target
+Single Student role + profile; no staff/superuser",fillcolor="#DDEEEF"];
+active [label="Active
+Fresh login allowed",fillcolor="#DDEEEF"];
+inactive [label="Inactive
+Login denied",fillcolor="#FFF7EA"];
+check [shape=diamond,label="Exact typed ID and
+no registration or
+audit references?",fillcolor="white"];
+blocked [label="Deletion blocked
+Keep account + all records",fillcolor="#FFF1E8"];
+deleted [label="Deleted (record removed)
+User + profile + membership + sessions
+committed in one transaction",fillcolor="#EDF4F7"];
+org -> active [label="Create Student"];
+active -> inactive [label="Confirm Deactivate
+expire stored sessions"];
+inactive -> active [label="Confirm Reactivate
+expire stored sessions; fresh login"];
+active -> check [label="Review deletion → confirmed POST"];
+inactive -> check [label="Review deletion → confirmed POST"];
+check -> blocked [label="no"];
+check -> deleted [label="yes; rechecked in transaction"];
+note [shape=note,label="GET only displays confirmation. Repeating the current active state is a no-op.
+Deactivation preserves identity, password, reserved places, waitlist eligibility and attendance.
+Any registration status, past record or event/attendance audit link blocks deletion.
+Protected master accounts are outside this state machine.",fillcolor="white"];
+deleted -> note [style=invis];
+}

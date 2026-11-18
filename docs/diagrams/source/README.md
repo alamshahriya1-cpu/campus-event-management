@@ -1,16 +1,22 @@
-# Editable diagram sources
+# Diagram sources
 
-Files 01, 02, 03, 04 and 06 use Graphviz DOT. Render a modified diagram with Graphviz, for example:
+`build_diagrams.py` rebuilds all 10 revision 2.0 figures and the combined PDF.
+Graphviz DOT handles architecture, account use cases, ER, activity and state diagrams;
+Matplotlib handles the core actor panels, the two sequences and the schedule.
+The D02 DOT file preserves an alternative logical layout; the printed D02
+figure uses the more compact Matplotlib actor panels. The script reads only
+`docs/review/requirements.json` and does not access application databases.
+
+Run from the repository root with Python containing matplotlib, Pillow and
+reportlab, plus the Graphviz `dot` executable:
 
 ```bash
-dot -Tpng -Gdpi=180 01_system_architecture.dot -o ../01_system_architecture.png
+python docs/diagrams/source/build_diagrams.py
 ```
 
-The cancellation sequence uses Python and Matplotlib. From this directory:
+DOT files are editable copies of the current generated figures. For a repeatable
+rebuild, also change their corresponding definitions in `build_diagrams.py`.
+SVG files preserve vector output; PNG files are convenient for documents.
 
-```bash
-python -m pip install matplotlib
-python 05_cancellation_sequence.py
-```
-
-The Gantt image is extracted from the original SRS to preserve its baseline dates. Revise the SRS and chart together if the project schedule changes. After editing diagrams, update the combined PDF and check the requirement mappings.
+The original plan is archived. Current D07 bars remain planned dates; recorded
+18 November evidence and remaining review work are labeled separately.

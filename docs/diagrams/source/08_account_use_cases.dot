@@ -1,0 +1,32 @@
+digraph G {
+graph [bgcolor="white", pad="0.25", nodesep="0.40", ranksep="0.55", fontname="DejaVu Sans", fontsize=13];
+node [shape=box, style="rounded,filled", fillcolor="#EDF4F7", color="#8EA8B7", fontcolor="#19384B", fontname="DejaVu Sans", fontsize=13, margin="0.20,0.13", penwidth=1.2];
+edge [color="#5F7280", fontcolor="#334F60", fontname="DejaVu Sans", fontsize=10, arrowsize=0.8, penwidth=1.2];
+rankdir=LR;
+org [shape=ellipse,label="Organizer",fillcolor="#DDEEEF"];
+student [shape=ellipse,label="Student",fillcolor="#DDEEEF"];
+subgraph cluster_admin {label="Manage users · eligible Student targets only";color="#BBCDD6";
+u13 [shape=ellipse,label="UC013 · FR019
+Search / browse students"];
+u14 [shape=ellipse,label="UC014 · FR020 / FR023
+Edit details + Student ID login"];
+u15 [shape=ellipse,label="UC015 · FR021
+Reset password"];
+u16 [shape=ellipse,label="UC016 · FR022 / FR023
+Create Student"];
+u17 [shape=ellipse,label="UC017 · FR024
+Deactivate / reactivate"];
+u18 [shape=ellipse,label="UC018 · FR025
+Delete unused Student"];
+}
+login [shape=ellipse,label="UC001 · FR001 / FR023
+Sign in with saved Student ID"];
+org -> {u13 u14 u15 u16 u17 u18} [dir=none];
+student -> login [dir=none];
+u14 -> login [style=dashed,label="sets login ID",constraint=false];
+u16 -> login [style=dashed,label="creates ID login",constraint=false];
+note [shape=note,label="Organizer / staff / superuser / mixed-role accounts are excluded.
+Student controls cannot grant roles or privileges.
+Organizer/master login is unchanged.",fillcolor="white"];
+u18 -> note [style=invis];
+}
