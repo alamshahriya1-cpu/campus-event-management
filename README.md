@@ -124,3 +124,7 @@ Both members share integration, testing, deployment, and presentation. Each memb
 - Final examination: **17 December 2026**.
 
 Keep `.env`, databases, backups, tokens, and private demonstration passwords outside the public repository. The optional `package.json` and `scripts/preview.mjs` support development preview tooling only; Node.js is not needed to run or deploy Django.
+## Team responsibilities
+
+- [RACI responsibility matrix](docs/raci/README.md)
+- [RACI PDF](docs/raci/RACI_Matrix.pdf)
