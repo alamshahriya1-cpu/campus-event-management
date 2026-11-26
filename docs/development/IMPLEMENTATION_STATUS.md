@@ -3,7 +3,7 @@
 Revision **2.0**, reviewed **18 November 2026**, against application commit
 `b3d900f4ac7c516c086708305f53ebfdebd0422d`.
 
-The main [SRS](../srs/SRS.pdf), [RTM](../rtm/RTM.xlsx) and
+The main [SRS](../../plans/srs/SRS.pdf), [RTM](../../plans/rtm/RTM.xlsx) and
 [diagrams](../diagrams/System_Diagrams.pdf) now include the current account
 features. The unchanged submitted baseline is [archived](../archive/2026-10-29-baseline/).
 

@@ -18,7 +18,7 @@ if "%FIRST_RUN%"=="1" (
   if errorlevel 1 goto failed
 )
 echo Open http://127.0.0.1:8000/ in your browser.
-echo Local usernames: organizer, student1, student2, student3, student4
+echo Local usernames: organizer, DEMO-001, DEMO-002, DEMO-003, DEMO-004
 echo First-run local password: CampusDemo!2026
 .venv\Scripts\python.exe manage.py runserver
 goto end

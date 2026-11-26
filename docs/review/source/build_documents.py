@@ -184,7 +184,7 @@ def build_srs():
     b.new('4  Route and API summary')
     b.table(['Route','Methods / access / purpose'],[
         ['/accounts/login/ ; /accounts/logout/','Login GET/POST; logout POST. Student or Organizer session.'],['/events/ ; /events/<id>/','GET catalog/details with role-based visibility.'],['/events/new/ ; /events/<id>/edit/','Organizer editor pages.'],['/my-registrations/','Student’s own history.'],['/events/<id>/participants/ ; /organizer/','Organizer roster and dashboard.'],['/organizer/users/','Organizer list/search; GET/HEAD.'],['/organizer/users/new/','Organizer creation; GET review / POST write.'],['/organizer/users/<id>/{edit,password}/','Organizer detail edit or password reset; GET/POST.'],['/organizer/users/<id>/{deactivate,reactivate,delete}/','Organizer confirmations; GET/POST. Separate routes, not a toggle.'],['/api/events/ ; /api/events/<id>/','GET list/detail; Organizer POST create and PATCH edit.'],['/api/events/<id>/{publish,cancel}/','Organizer POST; event lifecycle.'],['/api/events/<id>/register/','Student POST; Confirmed/Waitlisted allocation.'],['/api/my-registrations/','Student GET own rows.'],['/api/registrations/<id>/cancel/','Student POST own cancellation.'],['/api/events/<id>/participants/','Organizer GET roster.'],['/api/registrations/<id>/attendance/','Organizer PATCH mark/clear attendance.'],['/api/reports/dashboard/','Organizer GET summary.']],[3.95,3.15],9.3)
-    b.p('Braced actions above abbreviate separate routes. Account administration uses HTML forms, not new JSON endpoints. See docs/development/API.md and config/urls.py for the complete contract.')
+    b.p('Braced actions above abbreviate separate routes. Account administration uses HTML forms, not new JSON endpoints. See docs/development/API.md and src/config/urls.py for the complete contract.')
     b.p('Anonymous protected HTML requests redirect to login; APIs return 401. Wrong roles return 403; missing or protected account targets return 404. Invalid account input returns 400; linked-record/integrity conflicts return 409; busy writes return 503. Unsupported methods are rejected and GET never changes business data.')
     b.new('5  System models — diagram register',True)
     b.table(['ID','Model','Related scope'],[[d['id'],d['title'],d['scope']] for d in DATA['diagrams']],[.5,2.2,4.4],9.2)
@@ -232,7 +232,7 @@ def build_srs():
         for r in p.runs:r.font.size=Pt(9)
     b.p('Source/configuration evidence and framework guidance reviewed 18 November 2026. The demonstration uses private credentials and databases; neither is included in the public review package.')
     assert b.page==28,b.page
-    b.save(ROOT/'docs/srs/SRS.docx')
+    b.save(ROOT/'plans/srs/SRS.docx')
     print('SRS planned pages',b.page)
 
 METRICS=[['Original functional requirements','18 / 18','100.0%'],['Added account requirements','7 / 7','100.0%'],['Current functional requirements','25 / 25','100.0%'],['Non-functional requirements','2 / 7','28.6%'],['Original total scope','20 / 25','80.0%'],['Current total scope','27 / 32','84.4%'],['Mapped current requirements','32 / 32','100.0%']]
@@ -285,7 +285,7 @@ def build_report():
     b.table(['Document','Use during review'],[
         ['COMPLETION_REPORT.pdf','Explain the denominator and remaining evidence items.'],['SRS.pdf / SRS.docx','Read the revised 25 functional and 7 non-functional requirements.'],['RTM.xlsx / RTM.csv','Follow IDs to SRS sections, use cases, diagrams, source, test families and evidence.'],['System_Diagrams.pdf','Review 10 models including the current account lifecycle and identity updates.'],['TESTCASE_INDEX.md / saved test log','Trace TC001–TC032 to 110 executable test methods and manual criteria.'],['ACCEPTANCE_RECORD.md','Record the remaining checks without inventing results.'],['docs/archive/2026-10-29-baseline/','Compare the original submitted scope and unchanged baseline files.']],[2.6,4.5],10)
     b.h('Example requirement walk-through')
-    b.p('FR025 → SRS section 3.2.25 → UC018 → D03/D08/D09 → accounts/user_views.py and accounts/user_lifecycle.py → TC032 in tests/test_student_lifecycle.py → saved 110-test pass (E02) and team-reported live deletion (E09). Demonstrate successful unused-account deletion and rejection when a Student has saved registrations.')
+    b.p('FR025 → SRS section 3.2.25 → UC018 → D03/D08/D09 → src/accounts/user_views.py and src/accounts/user_lifecycle.py → TC032 in tests/test_student_lifecycle.py → saved 110-test pass (E02) and team-reported live deletion (E09). Demonstrate successful unused-account deletion and rejection when a Student has saved registrations.')
     b.h('Suggested progress statement')
     b.p('“We have implemented all 25 functional requirements: the original 18 plus 7 account-management requirements. The application is live and the source is on GitHub. Our saved Linux suite passes 110 tests. On an equal-weight requirement count, 27 of 32 requirements are complete, or 84.4%. Five quality/deployment acceptance records still need to be finished. The final presentation and submission report will be delivered separately.”')
     b.h('Review record — to be completed during evaluation')

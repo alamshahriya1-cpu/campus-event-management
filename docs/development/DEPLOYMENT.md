@@ -1,6 +1,6 @@
 # PythonAnywhere deployment and maintenance
 
-**Pending feature update:** the combined student creation, ID-login, access
+**Historical feature-update note (18 November 2026):** the combined student creation, ID-login, access
 controls, and unused-account deletion patch passed 110 tests locally on Linux.
 The recorded hosted 62-test result below belongs to the earlier version.
 Follow [STUDENT_ACCOUNT_CONTROLS.md](STUDENT_ACCOUNT_CONTROLS.md) before claiming
@@ -71,7 +71,7 @@ existing file. The hostname is specific to this team's deployment.
 python -c "import os,secrets; from pathlib import Path; os.umask(0o077); f=Path('.env').open('x'); f.write('DJANGO_DEBUG=False\nDJANGO_SECRET_KEY='+secrets.token_urlsafe(64)+'\nDJANGO_ALLOWED_HOSTS=alamshahriya1.pythonanywhere.com\nDJANGO_CSRF_TRUSTED_ORIGINS=https://alamshahriya1.pythonanywhere.com\nDJANGO_TRUST_PROXY=False\n'); f.close(); print('Production settings created.')"
 ```
 
-`config/settings.py` loads this file from the project directory. The deployed
+`src/config/settings.py` loads this file from the project directory. The deployed
 configuration uses `DJANGO_TRUST_PROXY=False`; HTTPS and secure requests were
 verified with this setting. Keep `.env` and account passwords private. For a
 different hosting account, use its exact assigned hostname and paths.
@@ -137,9 +137,12 @@ import os
 import sys
 
 project_path = "/home/alamshahriya1/campus-event-management"
+source_path = project_path + "/src"
 
-if project_path not in sys.path:
-    sys.path.insert(0, project_path)
+# Root supports the previous layout during the one-time transition.
+for path in (project_path, source_path):
+    if path not in sys.path:
+        sys.path.insert(0, path)
 
 os.environ["DJANGO_SETTINGS_MODULE"] = "config.settings"
 
@@ -180,6 +183,12 @@ Keep a private database backup and a separate recovery copy. Follow
 pending even though automated backup/restore tests passed on the host.
 
 ## Updating the deployed version
+
+**One-time `src/` layout migration:** follow
+[REPOSITORY_MIGRATION.md](REPOSITORY_MIGRATION.md) before the first pull of this
+layout. Update the external WSGI path as described there. The static mapping,
+virtualenv, root `.env`, and live database remain at their existing locations.
+
 
 In Bash, activate the existing environment:
 

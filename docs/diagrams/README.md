@@ -2,7 +2,7 @@
 
 Prepared 18 November 2026 against application source `b3d900f`.
 
-[Combined diagram PDF](System_Diagrams.pdf) · [SRS](../srs/SRS.pdf) · [RTM](../rtm/RTM.xlsx)
+[Combined diagram PDF](System_Diagrams.pdf) · [SRS](../../plans/srs/SRS.pdf) · [RTM](../../plans/rtm/RTM.xlsx)
 
 | ID | Diagram | PNG | SVG | Scope |
 | --- | --- | --- | --- | --- |

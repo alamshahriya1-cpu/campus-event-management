@@ -1,6 +1,6 @@
 # Original submitted baseline
 
-These are unchanged copies of the 29 October 2026 SRS and RTM and their original planned Gantt. Current revision 2.0 is under `docs/srs/` and `docs/rtm/`. Do not use the archived Planned statuses as current completion evidence.
+These are unchanged copies of the 29 October 2026 SRS and RTM and their original planned Gantt. Current revision 2.0 is under `plans/srs/` and `plans/rtm/`. Do not use the archived Planned statuses as current completion evidence.
 
 - `RTM.xlsx`: SHA-256 `1cf85f1e827028047502b652d29d8a5d9485c64d17942b954380d7c0110f322d`
 - `SRS.pdf`: SHA-256 `0b6d2c2bac1690536cb09da282b84de0505035a918b827a0ea5e5a6f75e8e68e`

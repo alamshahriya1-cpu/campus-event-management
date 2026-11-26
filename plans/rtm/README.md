@@ -2,7 +2,7 @@
 
 - [RTM.xlsx](RTM.xlsx): editable workbook with the original two tabs retained.
 - [RTM.csv](RTM.csv): the same 32 requirement rows and 19 mapping/evidence columns.
-- [Original baseline](../archive/2026-10-29-baseline/RTM.xlsx): unchanged Planned records.
+- [Original baseline](../../docs/archive/2026-10-29-baseline/RTM.xlsx): unchanged Planned records.
 
 The **Group Members** tab contains formula-based completion totals. The
 **Requirements Traceability Matri** tab retains its original Excel sheet name
@@ -21,7 +21,16 @@ when supporting evidence changes. Summary formulas update automatically.
 Update the corresponding evidence, SRS and report at the same time; a workbook
 edit alone does not regenerate the other files.
 
-See [COMPLETION_REPORT.pdf](../review/COMPLETION_REPORT.pdf) for denominators and
-[TESTCASE_INDEX.md](../review/TESTCASE_INDEX.md) for the 110 test methods. TC023
+See [COMPLETION_REPORT.pdf](../../docs/review/COMPLETION_REPORT.pdf) for denominators and
+[TESTCASE_INDEX.md](../../docs/review/TESTCASE_INDEX.md) for the 110 test methods. TC023
 and TC024 include manual setup/evaluator acceptance; a TC ID is not necessarily
 one executable test method.
+
+[All plans](../README.md) · [Repository layout](../../docs/REPOSITORY_LAYOUT.md)
+
+## Repository layout update — 25 November 2026
+
+Current source references use `src/`. Requirements, acceptance statuses and the
+18 November evidence baseline are unchanged. See the
+[folder map](../../docs/REPOSITORY_LAYOUT.md) and
+[migration guide](../../docs/development/REPOSITORY_MIGRATION.md).

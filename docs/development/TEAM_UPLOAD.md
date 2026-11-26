@@ -1,4 +1,13 @@
+> **Historical upload instructions.** The repository has since moved to `src/` and `plans/`.
+> For current work, clone the repository and follow [the layout migration guide](REPOSITORY_MIGRATION.md).
+> Do not re-upload the old two-part source packages; their paths would recreate the previous layout.
+
 # Upload the application in two parts
+
+Historical guide for the initial application upload. For the current
+documentation folders, start with the [planning index](../../plans/README.md)
+and [repository layout](../REPOSITORY_LAYOUT.md). The existing application is
+already combined; the steps below record the original handoff.
 
 These packages add code to `alamshahriya1-cpu/campus-event-management`. **Both uploads are required.** Keep the existing SRS, RTM and diagrams in place.
 
