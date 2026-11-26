@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { FileBlob, SpreadsheetFile } from '@oai/artifact-tool';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../../..');
-const out=process.env.REVIEW_OUTPUT_DIR || path.join(root,'docs/rtm');
+const out=process.env.REVIEW_OUTPUT_DIR || path.join(root,'plans/rtm');
 await fs.mkdir(out,{recursive:true});
 const data=JSON.parse(await fs.readFile(path.join(root,'docs/review/requirements.json'),'utf8'));
 const wb=await SpreadsheetFile.importXlsx(await FileBlob.load(path.join(root,'docs/archive/2026-10-29-baseline/RTM.xlsx')));

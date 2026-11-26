@@ -60,11 +60,17 @@ Organizers can provision Students through **Manage users → Add student** and m
 
 ## Project documents
 
+Start with the [planning index](plans/README.md) for requirements, traceability,
+team responsibilities and the schedule. Supporting design and evidence files
+are indexed under [docs](docs/README.md).
+
 | Deliverable | View on GitHub | Editable source |
 | --- | --- | --- |
-| Software Requirements Specification | [SRS PDF](docs/srs/SRS.pdf) | [SRS Word document](docs/srs/SRS.docx) |
+| Software Requirements Specification | [SRS PDF](plans/srs/SRS.pdf) | [SRS Word document](plans/srs/SRS.docx) |
 | System diagrams | [Diagram index](docs/diagrams/README.md) · [Diagram PDF](docs/diagrams/System_Diagrams.pdf) | [Diagram sources](docs/diagrams/source/) |
-| Requirements Traceability Matrix | [RTM overview](docs/rtm/README.md) · [Current CSV](docs/rtm/RTM.csv) | [RTM workbook](docs/rtm/RTM.xlsx) |
+| Requirements Traceability Matrix | [RTM overview](plans/rtm/README.md) · [Current CSV](plans/rtm/RTM.csv) | [RTM workbook](plans/rtm/RTM.xlsx) |
+| Team responsibilities | [RACI overview](plans/raci/README.md) · [RACI PDF](plans/raci/RACI_Matrix.pdf) | [RACI workbook](plans/raci/RACI_Matrix.xlsx) |
+| Project schedule | [Schedule notes](plans/schedule/README.md) · [Gantt chart](docs/diagrams/07_project_gantt.png) | [Diagram generator](docs/diagrams/source/build_diagrams.py) |
 | Implementation evidence | [Current status](docs/development/IMPLEMENTATION_STATUS.md) · [Test report](docs/development/TEST_REPORT.md) | [Status CSV](docs/development/IMPLEMENTATION_STATUS.csv) |
 | Live demonstration | [Campus Events](https://alamshahriya1.pythonanywhere.com/) · [Hosted verification](docs/development/HOSTED_VERIFICATION.md) | [Deployment and maintenance](docs/development/DEPLOYMENT.md) |
 | Developer reference | [API reference](docs/development/API.md) · [Team upload guide](docs/development/TEAM_UPLOAD.md) | Source code and tests |
@@ -79,18 +85,44 @@ Additional review files: [completion report](docs/review/COMPLETION_REPORT.pdf),
 [acceptance record](docs/review/ACCEPTANCE_RECORD.md) and
 [review/upload guide](docs/review/REVIEW_GUIDE.md).
 
+## Repository layout update
+
+Application code now lives in `src/`; SRS, RTM and RACI live in `plans/`. Run
+commands from the repository root as before. Existing PythonAnywhere deployments
+need the [one-time path update](docs/development/REPOSITORY_MIGRATION.md) before
+loading this layout. The existing root `.env`, database and `staticfiles/` stay
+in place. This refactor does not change requirement acceptance statuses.
+
 ## Technology and code organization
+
+The repository root is the project folder; planning documents are grouped in
+`plans/`. See the [repository layout](docs/REPOSITORY_LAYOUT.md) for the complete
+folder map and the old-to-new locations.
+
+| Folder | Purpose |
+| --- | --- |
+| `src/` | Django applications, configuration, templates and static source files |
+| `tests/` | Application and transaction tests |
+| `scripts/` | Local setup and optional preview tooling |
+| `plans/srs/` | Current software requirements specification |
+| `plans/rtm/` | Current requirement-to-implementation/test mappings |
+| `plans/raci/` | Two-member responsibility matrix |
+| `plans/schedule/` | Schedule notes and links to the canonical Gantt chart |
+| `docs/diagrams/` | System models, Gantt figure and editable diagram sources |
+| `docs/development/` | Setup, API, deployment and test evidence |
+| `docs/review/` | Completion report, acceptance records and document generators |
+| `docs/archive/` | Original submitted baseline |
 
 | Component | Implementation |
 | --- | --- |
 | Frontend | Django templates, bundled Bootstrap 5.3.8, CSS, JavaScript |
 | Backend | Python 3.12, Django 5.2.19, same-origin JSON APIs |
 | Database | SQLite, migrations, constraints, atomic transactions |
-| Accounts | `accounts/`: roles, login, profile, provisioning and maintenance |
-| Events | `events/`: lifecycle, search, details, state validation |
-| Registration | `registrations/`: allocation, cancellation, FIFO, attendance |
-| Reports | `reports/`: organizer counts and dashboard |
-| Shared code | `common/`: API errors, authentication middleware, database copies |
+| Accounts | `src/accounts/`: roles, login, profile, provisioning and maintenance |
+| Events | `src/events/`: lifecycle, search, details, state validation |
+| Registration | `src/registrations/`: allocation, cancellation, FIFO, attendance |
+| Reports | `src/reports/`: organizer counts and dashboard |
+| Shared code | `src/common/`: API errors, authentication middleware, database copies |
 | Verification | `tests/`: requirement-linked acceptance and transaction tests |
 | Hosting | PythonAnywhere free tier, Python 3.12, provider subdomain and HTTPS |
 
@@ -124,7 +156,8 @@ Both members share integration, testing, deployment, and presentation. Each memb
 - Final examination: **17 December 2026**.
 
 Keep `.env`, databases, backups, tokens, and private demonstration passwords outside the public repository. The optional `package.json` and `scripts/preview.mjs` support development preview tooling only; Node.js is not needed to run or deploy Django.
+
 ## Team responsibilities
 
-- [RACI responsibility matrix](docs/raci/README.md)
-- [RACI PDF](docs/raci/RACI_Matrix.pdf)
+- [RACI responsibility matrix](plans/raci/README.md)
+- [RACI PDF](plans/raci/RACI_Matrix.pdf)

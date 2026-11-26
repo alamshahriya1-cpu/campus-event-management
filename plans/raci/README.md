@@ -7,6 +7,9 @@ The responsibility matrix uses the supplied reference layout: slanted role heade
 - [Printable PDF](RACI_Matrix.pdf)
 - [Editable Excel workbook](RACI_Matrix.xlsx)
 
+Planning links: [All plans](../README.md) · [SRS](../srs/README.md) ·
+[RTM](../rtm/README.md) · [Schedule](../schedule/README.md).
+
 ## Team roles
 
 | Group | Role | Team member |

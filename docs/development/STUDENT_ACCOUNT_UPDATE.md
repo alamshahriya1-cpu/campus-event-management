@@ -8,7 +8,7 @@ and confirmed live deletion was working (E08–E09). The current saved Linux res
 is 110/110 passed in 3.087 s (E02). Exact current Windows/host 110-test results and
 a complete browser/negative-path acceptance matrix were not supplied.
 
-The main [SRS](../srs/SRS.pdf), [RTM](../rtm/RTM.xlsx) and
+The main [SRS](../../plans/srs/SRS.pdf), [RTM](../../plans/rtm/RTM.xlsx) and
 [diagrams](../diagrams/System_Diagrams.pdf) are now revision 2.0. The
 [completion report](../review/COMPLETION_REPORT.pdf) counts 25/25 functional and
 27/32 overall requirements complete (84.4%), with five Partial NFRs. Original
