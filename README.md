@@ -4,7 +4,31 @@ A full-stack **Python / Django / SQLite** project for Software Design Part 2, Do
 
 Students discover events, reserve a place, or join a waiting list when an event is full. Organizers publish events, manage participant rosters, record attendance, and review totals. The Python backend enforces capacity, permissions, deadlines, duplicate prevention, and first-in-first-out waitlist promotion.
 
-## Current status - 18 November 2026
+## Current verification — repository layout update
+
+The repository layout update was merged into `main` as commit
+`8341805`. Application code is now under `src/`, while SRS, RTM
+and RACI documents are under `plans/`.
+
+| Verification | Result |
+| --- | --- |
+| Windows automated tests | 110 tests passed in 5.015 seconds |
+| PythonAnywhere automated tests | 110 tests passed in 12.048 seconds |
+| PythonAnywhere deployment check | No issues identified |
+| Migration consistency check | No changes detected |
+| PythonAnywhere static collection | 7 files copied; 6 post-processed |
+
+Evidence: team-provided Windows and PythonAnywhere terminal
+screenshots. After the deployment update, the team confirmed
+that the live website and existing student, event and
+registration data were working correctly.
+
+These results supersede the earlier test-run summaries below.
+Earlier dated sections remain as historical records.
+The SRS/RTM requirement acceptance statuses and completion
+percentages have not been recalculated by this update.
+
+## Historical status - 18 November 2026
 
 **Live application: [Campus Events](https://alamshahriya1.pythonanywhere.com/)**
 
