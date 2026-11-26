@@ -1,6 +1,30 @@
 # Hosted verification record
 
-## Current evidence update — revision 2.0, 18 November 2026
+## Current verification — repository layout update
+
+The repository layout update was merged into `main` as commit
+`8341805`. Application code is now under `src/`, while SRS, RTM
+and RACI documents are under `plans/`.
+
+| Verification | Result |
+| --- | --- |
+| Windows automated tests | 110 tests passed in 5.015 seconds |
+| PythonAnywhere automated tests | 110 tests passed in 12.048 seconds |
+| PythonAnywhere deployment check | No issues identified |
+| Migration consistency check | No changes detected |
+| PythonAnywhere static collection | 7 files copied; 6 post-processed |
+
+Evidence: team-provided Windows and PythonAnywhere terminal
+screenshots. After the deployment update, the team confirmed
+that the live website and existing student, event and
+registration data were working correctly.
+
+These results supersede the earlier test-run summaries below.
+Earlier dated sections remain as historical records.
+The SRS/RTM requirement acceptance statuses and completion
+percentages have not been recalculated by this update.
+
+## Historical evidence baseline — revision 2.0, 18 November 2026
 
 The team supplied a successful private pre-update backup and host pull to
 `b3d900f4ac7c516c086708305f53ebfdebd0422d`, then reported completing the deployment
